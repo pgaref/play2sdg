@@ -1,7 +1,24 @@
-@(message: String)
+@(users: List[User])
+	
+@main("play2SDG 0.0.1 Alpha") {
 
-@main("Welcome to Play 2.0") {
-    
-    @play20.welcome(message, style = "Java")
-    
+    <header>
+        <hgroup>
+            <h1>play2SDG User Dashboard</h1>
+            <h2>Listing all stored Users</h2>
+        </hgroup>
+    </header>
+
+    <article  class="users">
+    			 <h4>SHIT</h4>
+       			<ul class="list">
+                        @users.map { user =>
+                            <li user-id="@user.email">
+                                <h4>@user.name</h4>
+                            </li>
+                        }
+                    </ul>
+      
+    </article>
+
 }
