@@ -26,8 +26,8 @@ public class Task extends Model {
         return find.fetch("project")
         		.where()
         		.eq("done", false)
-        		.eq("project.members.email", useremail).
-        		findList();
+        		.eq("project.members.email", useremail)
+        		.findList();
     }
 
     public static Task create(Task task, Long project, String folder) {
