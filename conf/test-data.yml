@@ -1,16 +1,26 @@
 # Users
 
-- &bob !!models.ZenUser
+- !!models.User
+    email:      pgaref@example.com
+    name:       Panagiotis
+    password:   password
+
+- !!models.User
+    email:      test@example.com
+    name:       testUser
+    password:   test
+
+- !!models.User
     email:      bob@example.com
     name:       Bob
     password:   secret
 
-- &jane !!models.ZenUser
+- !!models.User
     email:      jane@example.com
     name:       Jane
     password:   secret
 
-- &jeff !!models.ZenUser
+- !!models.User
     email:      jeff@example.com
     name:       Jeff
     password:   secret

@@ -12,7 +12,7 @@ import models.*;
 import java.util.*;
 
 
-public class UserModel{
+public class TestUserModel{
 	@Before
     public void setUp() {
         start(fakeApplication(inMemoryDatabase()));
@@ -35,20 +35,22 @@ public class UserModel{
         assertNull(User.authenticate("tom@gmail.com", "secret"));
     }
     
-//    @Test
-//    public void fullTest() {
-//        Ebean.save((List) Yaml.load("test-data.yml"));
-//
-//        // Count things
-//        assertEquals(3, User.find.findRowCount());
-//
-//        // Try to authenticate as users
-//        assertNotNull(User.authenticate("bob@example.com", "secret"));
-//        assertNotNull(User.authenticate("jane@example.com", "secret"));
-//        assertNull(User.authenticate("jeff@example.com", "badpassword"));
-//        assertNull(User.authenticate("tom@example.com", "secret"));
-//
-//
-//    }
+    @Test
+    public void fullTest() {
+        Ebean.save((List) Yaml.load("test-data.yml"));
+
+        // Count things
+        assertEquals(5, User.find.findRowCount());
+
+        // Try to authenticate as users
+        assertNotNull(User.authenticate("bob@example.com", "secret"));
+        assertNotNull(User.authenticate("jane@example.com", "secret"));
+        
+        // Non existing users!
+        assertNull(User.authenticate("jeff@example.com", "badpassword"));
+        assertNull(User.authenticate("tom@example.com", "secret"));
+
+
+    }
 
 }
