@@ -10,14 +10,12 @@
     </header>
 
     <article  class="users">
-    			 <h4>SHIT</h4>
-       			<ul class="list">
-                        @users.map { user =>
-                            <li user-id="@user.email">
-                                <h4>@user.name</h4>
-                            </li>
-                        }
-                    </ul>
+    			 <h4>User Map</h4>
+       				<ul class="list">
+        				@users.map { user =>
+            				@views.html.user(user)
+            			}
+    			</ul>
       
     </article>
 
