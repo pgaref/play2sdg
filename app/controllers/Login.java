@@ -1,13 +1,14 @@
 package controllers;
 
-import models.*;
+import models.User;
 import play.data.Form;
 import play.mvc.Controller;
+import static play.data.Form.*;
 import play.mvc.Result;
 
 public class Login extends Controller {
 
-    private final static Form<LoginModel> loginForm = new Form<LoginModel>(LoginModel.class);
+    private final static Form<Login.LoginModel> loginForm = new Form<Login.LoginModel>(Login.LoginModel.class);
 
     public static Result index() {
         return ok(views.html.login.render(loginForm));
@@ -24,11 +25,10 @@ public class Login extends Controller {
             }
             return null;
         }
-
     }
 
     public static Result authenticate() {
-        Form<LoginModel> form = loginForm.bindFromRequest();
+        Form<Login.LoginModel> form = loginForm.bindFromRequest();
 
         if (form.hasErrors()) {
             return badRequest(views.html.login.render(form));
@@ -39,4 +39,3 @@ public class Login extends Controller {
         }
     }
 }
-

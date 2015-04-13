@@ -1,21 +1,28 @@
-@(projects: List[Project])(body: Html)
-
+@(projects: List[Project], user: User)(body: Html)
+<!DOCTYPE html>
 <html>
     <head>
-        <title>Zentasks</title>
+        <title>Zentasks</title>       
+        <script type="text/javascript" src="/public/javascripts/jquery-1.9.0.min.js"></script>
         <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
-        <script type="text/javascript" src="@routes.Assets.at("javascripts/jquery-1.7.1.js")"></script>
-    </head>
+        
+	</head>
     <body>
         <header>
             <a href="@routes.Application.index" id="logo"><span>Zen</span>tasks</a>
+            <dl id="user">
+                <dt>@user.name</dt>
+                <dd>
+                    <a href="@routes.Application.logout()">Logout</a>
+                </dd>
+            </dl>
         </header>
         <nav>
             <h4 class="dashboard"><a href="#/">Dashboard</a></h4>
             <ul id="projects">
                 @projects.groupBy(_.folder).map {
-                    case (group, projects) => {
-                        @views.html.elements.group(group, projects)
+                    case (folder, projects) => {
+                        @views.html.elements.group(folder, projects)
                     }
                 }
             </ul>

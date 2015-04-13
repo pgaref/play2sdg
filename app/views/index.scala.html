@@ -1,6 +1,6 @@
-@(projects: List[Project], todoTasks: List[Task])
+@(projects: List[Project], todoTasks: List[Task], user: User)
 
-@main(projects) {
+@main(projects, user) {
 
     <header>
         <hgroup>
@@ -18,17 +18,7 @@
                     </header>
                     <ul class="list">
                         @tasks.map { task =>
-                            <li data-task-id="@task.id">
-                                <h4>@task.title</h4>
-                                @if(task.dueDate != null) {
-                                    <time datetime="@task.dueDate">
-                                        @task.dueDate.format("MMM dd yyyy")</time>
-                                }
-
-                                @if(task.assignedTo != null && task.assignedTo.email != null) {
-                                    <span class="assignedTo">@task.assignedTo.email</span>
-                                }
-                            </li>
+                            @views.html.elements.taskitem(task)
                         }
                     </ul>
                 </div>

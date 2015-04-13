@@ -10,24 +10,24 @@
     name:       testUser
     password:   test
 
-- !!models.User
+- &bob !!models.User
     email:      bob@example.com
     name:       Bob
     password:   secret
 
-- !!models.User
+- &jane !!models.User
     email:      jane@example.com
     name:       Jane
     password:   secret
 
-- !!models.User
+- &jeff !!models.User
     email:      jeff@example.com
     name:       Jeff
     password:   secret
     
 # Projects
 
-- !!models.Project
+- &play2 !!models.Project
     name:       Play 2.0
     folder:     Play framework
     members:
@@ -35,39 +35,39 @@
         - *jane
         - *jeff
 
-- !!models.Project
+- &play1 !!models.Project
     name:       Play 1.2.4
     folder:     Play framework
     members:
         - *bob
         - *jane
 
-- !!models.Project
+- &website !!models.Project
     name:       Website
     folder:     Play framework
     members:
         - *bob
         - *jeff
 
-- !!models.Project
+- &todo !!models.Project
     name:       Things to do
     folder:     Personal
     members:
         - *bob
 
-- !!models.Project
+- &privatebob !!models.Project
     name:       Private
     folder:     Personal
     members:
         - *bob
 
-- !!models.Project
+- &privatejane !!models.Project
     name:       Private
     folder:     Personal
     members:
         - *jane
 
-- !!models.Project
+- &privatejeff !!models.Project
     name:       Private
     folder:     Personal
     members:
