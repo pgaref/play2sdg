@@ -24,3 +24,91 @@
     email:      jeff@example.com
     name:       Jeff
     password:   secret
+    
+# Projects
+
+- !!models.Project
+    name:       Play 2.0
+    folder:     Play framework
+    members:
+        - *bob
+        - *jane
+        - *jeff
+
+- !!models.Project
+    name:       Play 1.2.4
+    folder:     Play framework
+    members:
+        - *bob
+        - *jane
+
+- !!models.Project
+    name:       Website
+    folder:     Play framework
+    members:
+        - *bob
+        - *jeff
+
+- !!models.Project
+    name:       Things to do
+    folder:     Personal
+    members:
+        - *bob
+
+- !!models.Project
+    name:       Private
+    folder:     Personal
+    members:
+        - *bob
+
+- !!models.Project
+    name:       Private
+    folder:     Personal
+    members:
+        - *jane
+
+- !!models.Project
+    name:       Private
+    folder:     Personal
+    members:
+        - *jeff
+                
+# Task
+
+- !!models.Task
+    title:      Fix the documentation
+    done:       false
+    folder:     Todo
+    project:    *play2
+    assignedTo: *bob
+
+- !!models.Task
+    title:      Prepare the beta release
+    done:       false
+    folder:     Urgent
+    dueDate:    2011-11-15
+    project:    *play2
+    assignedTo: *bob
+
+- !!models.Task
+    title:      Buy some milk
+    done:       false
+    folder:     Todo
+    project:    *privatebob
+    assignedTo: *bob
+
+- !!models.Task
+    title:      Check 1.2.4-RC2
+    done:       false
+    folder:     Todo
+    dueDate:    2011-11-18
+    project:    *play1
+    assignedTo: *bob
+
+- !!models.Task
+    title:      Finish zentask integration
+    done:       true
+    folder:     Todo
+    dueDate:    2011-11-15
+    project:    *privatejeff
+    assignedTo: *jeff
