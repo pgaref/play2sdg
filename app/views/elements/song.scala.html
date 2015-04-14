@@ -1,0 +1,19 @@
+@(song: Song)
+
+
+<li data-task-id="@song.id">
+    
+    <h4>@song.title</h4>
+    <span class="assignToList"><a href=@song.link>      Link</a></span>
+    
+    @if(song.link != null) {
+        <span class="assignedTo">@song.artist</span>
+    }
+    
+    @if(song.releaseDate != null) { 
+        <time datetime="@song.releaseDate">
+            @song.releaseDate.format("MMM dd yyyy")</time>
+    }
+
+    
+</li>

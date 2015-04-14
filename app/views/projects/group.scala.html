@@ -1,0 +1,18 @@
+@(folder: String, projects: List[Project])
+
+<li data-group="@folder">
+    <span class="toggle"></span>
+    <h4 class="groupName">@folder</h4>
+    <span class="loader">Loading</span>
+     <!--<dl class="optionsx">
+        <dt>Options</dt>
+        <dd>
+            <button class="newProject">New project</button>
+        </dd> 
+    </dl>-->
+    <ul>
+        @projects.map { project =>
+            @views.html.projects.item(project)
+        }
+    </ul>
+</li>
