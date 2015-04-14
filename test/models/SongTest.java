@@ -12,7 +12,7 @@ import base.AbstractDBApplicationTest;
 
 import com.avaje.ebean.Ebean;
 
-public class TaskTest extends AbstractDBApplicationTest {
+public class SongTest extends AbstractDBApplicationTest {
 
     @BeforeClass
     public static void setUp() {
@@ -33,6 +33,6 @@ public class TaskTest extends AbstractDBApplicationTest {
 
         // Find all Bob's todo tasks
         List<Song> bobsTasks = Song.findTodoInvolving("bob@example.com");
-        assertEquals(4, bobsTasks.size());
+        assertEquals(31, bobsTasks.size());
     }
 }

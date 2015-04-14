@@ -1,4 +1,5 @@
 package models;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +11,8 @@ import javax.persistence.ManyToMany;
 import play.db.ebean.Model;
 import play.mvc.Security;
 import controllers.Secured;
-//
-//@Security.Authenticated(Secured.class)
+
+@Security.Authenticated(Secured.class)
 @Entity
 public class Project extends Model {
     private static final long serialVersionUID = 1L;

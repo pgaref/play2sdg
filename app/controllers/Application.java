@@ -1,35 +1,35 @@
 package controllers;
 
-import models.*;
-import play.*;
-import play.data.*;
-import play.mvc.*;
-import static play.data.Form.*;
-import views.html.*;
+import models.Project;
+import models.Song;
+import models.User;
+import play.Routes;
+import play.mvc.Controller;
+import play.mvc.Result;
+import play.mvc.Security;
 
 public class Application extends Controller {
 
-	// public static Result index() {
-	// return ok(index.render("This is a demo play2SDG Web Application"));
-	//
-	// }
-
-	// public static Result index() {
-	// return ok(index.render( User.find.all() ));
-	// }
-	@Security.Authenticated(Secured.class)
+    @Security.Authenticated(Secured.class)
     public static Result index() {
-        return ok(views.html.index.render(Project.findInvolving(request().username()), Task.findTodoInvolving(request().username()), User.find.byId(request().username())));
+        return ok(views.html.index.render(Project.findInvolving(request().username()), Song.findTodoInvolving(request().username()), User.find.byId(request().username())));
+
     }
 
-//	public static Result indexAll() {
-//		return ok(index.render(Project.find.all(), Task.find.all()));
-//	}
-	
-	public static Result logout() {
-	    session().clear();
-	    flash("success", "You've been logged out");
-	    return redirect(routes.Login.index());
-	}
+    public static Result logout() {
+        session().clear();
+        flash("success", "You've been logged out");
+        return redirect(routes.Login.index());
+    }
+
+    public static Result javascriptRoutes() {
+        response().setContentType("text/javascript");
+        return ok(Routes.javascriptRouter("jsRoutes",
+                controllers.routes.javascript.ProjectController.add(),
+                controllers.routes.javascript.ProjectController.delete(),
+                controllers.routes.javascript.ProjectController.rename()
+                ));
+
+    }
 
 }
