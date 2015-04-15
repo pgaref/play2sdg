@@ -1,5 +1,7 @@
 package models;
 
+import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -21,6 +23,19 @@ public class User extends Model {
 
     public static User authenticate(String email, String password) {
         return find.where().eq("email", email).eq("password", password).findUnique();
+    }
+    
+    public static User findbyEmail(String email) {
+        return find.where().eq("email", email).findUnique();
+    }
+
+    public static int getUserID(String email){
+    	List<User> l = User.find.all();
+    	for(int i =0 ; i < l.size(); i++){
+    		if(l.get(i).email.equals(email))
+    			return i;
+    	}
+    	return -1;
     }
 
     public static Finder<String, User> find = new Finder<String, User>(String.class, User.class);

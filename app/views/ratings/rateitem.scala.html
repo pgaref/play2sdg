@@ -1,7 +1,7 @@
-@(project: Project)
+@(song: Song)
 
-<li data-project="@project.id">
-    <a class="name" href="#">@project.name</a>
+<li data-project="@song.id">
+    <a class="name">@song.title</a>
     <button class="delete" href="#">Delete</button>
     <span class="loader">Loading</span>
 </li>

@@ -9,49 +9,62 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
 import play.db.ebean.Model;
+import play.db.ebean.Model.Finder;
 import play.mvc.Security;
 import controllers.Secured;
 
 @Security.Authenticated(Secured.class)
 @Entity
-public class Project extends Model {
+public class Rating extends Model {
     private static final long serialVersionUID = 1L;
 
     @Id
     public Long id;
-    public String name;
     public String folder;
+    public String usermail;
     @ManyToMany(cascade = CascadeType.REMOVE)
-    public List<User> members = new ArrayList<User>();
+    public List<Song> songs = new ArrayList<Song>();
 
-    public Project(String name, String folder, User owner) {
-        this.name = name;
+    
+    public Rating(String u, String folder, Long Songid) {
+        this.usermail = u;
         this.folder = folder;
-        this.members.add(owner);
+        this.songs.add(Song.find.ref(Songid));
+        this.save();
     }
 
-    public static Model.Finder<Long, Project> find = new Model.Finder(Long.class, Project.class);
+    public static Model.Finder<Long, Rating> find = new Finder<Long, Rating>(Long.class, Rating.class);
 
-    public static Project create(String name, String folder, String owner) {
-        Project project = new Project(name, folder, User.find.ref(owner));
-        project.save();
-        project.saveManyToManyAssociations("members");
-        return project;
+    public static Rating create(User u, String folder, Long Songid) {
+        Rating rating = new Rating(u.email, folder,Songid);
+        rating.saveManyToManyAssociations("songs");
+        rating.saveManyToManyAssociations("usermail");
+        return rating;
     }
 
-    public static List<Project> findInvolving(String useremail) {
-        return find.where().eq("members.email", useremail).orderBy("id desc").findList();
+    public static List<Rating> findInvolving(String useremail) {
+       // return find.where().eq("usermail.email", useremail).findList();
+       //return find.fetch("project").where().eq("done", false).eq("project.members.email", useremail).findList();
+    	
+    	User current = User.findbyEmail(useremail);
+    	System.out.println("got"+ useremail + " found"+ current.name);
+    	
+    	if(hasRatings(useremail))
+    		return find.where().eq("usermail", current.email).findList();
+    	else
+    		return new ArrayList<Rating>();
     }
 
-    public static boolean isMember(Long project, String user) {
-        return find.where().eq("members.email", user).eq("id", project).findRowCount() > 0;
+    public static boolean hasRatings(String usermail) {
+    	
+    	return find.where().eq("usermail", usermail).findRowCount() > 0;
     }
 
-    public static String rename(Long projectId, String newName) {
-        Project project = find.ref(projectId);
-        project.name = newName;
-        project.update();
-        return newName;
+    public static String rename(Long Id, String newName) {
+        Rating r = find.ref(Id);
+        r.folder = newName;
+        r.update();
+        return r.folder;
     }
 
 }

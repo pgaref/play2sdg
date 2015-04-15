@@ -19,88 +19,40 @@
     email:      jeff@example.com
     name:       Jeff
     password:   secret
-    
-# Projects
-
-- &play2 !!models.Project
-    name:       Play 2.0
-    folder:     Play framework
-    members:
-        - *bob
-        - *jane
-        - *jeff
-
-- &play1 !!models.Project
-    name:       Play 1.2.4
-    folder:     Play framework
-    members:
-        - *bob
-        - *jane
-
-- &website !!models.Project
-    name:       Website
-    folder:     Play framework
-    members:
-        - *bob
-        - *jeff
-
-- &todo !!models.Project
-    name:       Things to do
-    folder:     Personal
-    members:
-        - *bob
-
-- &privatebob !!models.Project
-    name:       Private
-    folder:     Personal
-    members:
-        - *bob
-
-- &privatejane !!models.Project
-    name:       Private
-    folder:     Personal
-    members:
-        - *jane
-
-- &privatejeff !!models.Project
-    name:       Private
-    folder:     Personal
-    members:
-        - *jeff
                 
 # Songs
 
-- !!models.Song
+- &song1 !!models.Song
     title:        My Long Song title
     artist:       TestArtist
     link:         http://Link.com
     releaseDate:  2011-11-15
 
-- !!models.Song
+- &song2 !!models.Song
     title:        Cash Diamond Ring Swimming Pools
     artist:       Dena
     link:         http://www.youtube.com/watch?v=r4CDc9yCAqE
     releaseDate:  1967-11-12
          
-- !!models.Song
+- &song3 !!models.Song
     title:        Kathy Lee
     artist:       Jessy Lanza
     link:         http://vimeo.com/73455369
     releaseDate:  2004-11-11
     
-- !!models.Song
+- &song4 !!models.Song
     title:        In my Bed (live)
     artist:       The Orwells
     link:         http://www.youtube.com/watch?v=8tA_2qCGnmE
     releaseDate:  2009-11-09   
     
-- !!models.Song
+- &song5 !!models.Song
     artist:       Orange & Stik Figa
     title:        Smoke Rings
     link:         https://www.youtube.com/watch?v=Q5teohMyGEY
     releaseDate:  2001-11-07
     
-- !!models.Song
+- &song6 !!models.Song
     artist:       Labyrinth Ear
     title:        Navy Light
     link:         http://www.youtube.com/watch?v=a9qKkG7NDu0
@@ -255,3 +207,46 @@
     title:        Homegirl (Rampa Mix)
     link:         http://www.youtube.com/watch?v=fnhMNOWxLYw
     releaseDate:  2004-11-06   
+    
+# Ratings
+
+- !!models.Rating
+    usermail: pgaref@example.com
+    folder: ThumbsUP-rating	
+    songs:
+        - *song1
+        - *song2
+        - *song3
+
+- !!models.Rating
+    usermail: bob@example.com
+    folder: ThumbsUP-rating	
+    songs:
+        - *song2
+        - *song3
+        - *song4
+        - *song5
+        - *song6
+
+- !!models.Rating
+    usermail: jane@example.com
+    folder: ThumbsUP-rating	
+    songs:
+        - *song1
+        - *song2
+        - *song3
+        
+- !!models.Rating
+    usermail: jeff@example.com
+    folder: ThumbsUP-rating	
+    songs:
+        - *song1
+        - *song2
+        - *song3
+
+- !!models.Rating
+    usermail: pgaref@example.com
+    folder: Like-rating
+    songs:
+        - *song2
+        - *song3

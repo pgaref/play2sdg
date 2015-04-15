@@ -13,21 +13,13 @@ import play.db.ebean.Model;
 public class Song extends Model {
 
     @Id
-    public Long id;
+    public Integer id;
     public String title;
     public String artist;
     public Date releaseDate;
     public String link;
     
     
-    
-    public static Model.Finder<Long, Song> find = new Model.Finder(Long.class, Song.class);
-
-    public static List<Song> findTodoInvolving(String useremail) {
-    	return find.all();
-        //return find.fetch("project").where().eq("done", false).eq("project.members.email", useremail).findList();
-    }
-
     public static Song create(Song song, String title, String artist, Date released, String link) {
     	song.title = title;
     	song.artist = artist;
@@ -36,4 +28,15 @@ public class Song extends Model {
     	song.save();
         return song;
     }
+    
+    public static Model.Finder<Long, Song> find = new Model.Finder(Long.class, Song.class);
+
+    public static List<Song> findAllSongs() {
+    	return find.all();
+    }
+    
+    public static Song findByTitle(String title){
+    	return find.where().eq("title", title).findUnique();
+    }
+
 }

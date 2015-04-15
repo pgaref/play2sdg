@@ -24,7 +24,7 @@ public class SongTest extends AbstractDBApplicationTest {
 
         // Count things
         assertEquals(3, User.find.findRowCount());
-        assertEquals(7, Project.find.findRowCount());
+        assertEquals(7, Rating.find.findRowCount());
         assertEquals(5, Song.find.findRowCount());
     }
 
@@ -32,7 +32,7 @@ public class SongTest extends AbstractDBApplicationTest {
     public void findTodoTasksInvolving() {
 
         // Find all Bob's todo tasks
-        List<Song> bobsTasks = Song.findTodoInvolving("bob@example.com");
+        List<Song> bobsTasks = Song.findAllSongs("bob@example.com");
         assertEquals(31, bobsTasks.size());
     }
 }

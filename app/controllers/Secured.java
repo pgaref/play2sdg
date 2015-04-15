@@ -6,6 +6,7 @@ import play.mvc.Security;
 
 public class Secured extends Security.Authenticator {
 
+	//request.username will be users email!
 	@Override
 	public String getUsername(Context ctx) {
 		return ctx.session().get("email");

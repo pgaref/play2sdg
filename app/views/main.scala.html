@@ -1,8 +1,8 @@
-@(projects: List[Project], user: User)(body: Html)
+@(ratings: List[Rating], user: User)(body: Html)
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Zentasks</title>
+        <title>play2SDG</title>
         <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
         <script type="text/javascript" src="/public/javascripts/jquery-1.9.0.min.js"></script>
         <script type="text/javascript" src="@routes.Application.javascriptRoutes()"></script>
@@ -57,8 +57,10 @@
 	               
 	</head>
     <body>
+    	<!--  Header User logout -->
         <header>
             <a href="@routes.Application.index" id="logo"><span>play</span>2<span2>sdg</span2></a>
+            
             <dl id="user">
                 <dt>@user.name</dt>
                 <dd>
@@ -66,15 +68,33 @@
                 </dd>
             </dl>
         </header>
+        
         <nav>
-            <h4 class="dashboard"><a href="#/">Dashboard</a></h4>
+            <h4 class="dashboard"><a href="#/">User Profile</a></h4>
             <ul id="projects">
-                @projects.groupBy(_.folder).map {
-                    case (folder, projects) => {
-                        @views.html.projects.group(folder, projects)
-                    }
+                @ratings.map { rate=>
+                        @views.html.ratings.rategroup(rate)
                 }
             </ul>
+            
+            <dl class="optionsx">
+        		<!--<dt>Options</dt>-->
+        		</br>
+        		<dd>
+            		<button class="newProject">New Rating</button>
+        		</dd>
+        		 
+        		</br>
+        		</br>
+        		
+        		<dl id="test">
+                <dd>
+                    <a href="@routes.Application.recommend()"> Recommendations</a>
+                </dd>
+            </dl>
+        		
+    	 	</dl>
+            
         </nav>
         <section id="main">
             @body

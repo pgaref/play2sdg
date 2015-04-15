@@ -8,7 +8,10 @@ GET     /                       controllers.Application.index()
 GET     /login                  controllers.Login.index()
 POST    /login                  controllers.Login.authenticate()
 GET     /logout                 controllers.Application.logout()
-POST    /project                controllers.ProjectController.add()
+
+GET 	/recommend				controllers.Application.recommend()
+
+POST    /project/:project       controllers.ProjectController.add(project: Long)
 DELETE  /project/:project       controllers.ProjectController.delete(project: Long)
 PUT     /project/:project       controllers.ProjectController.rename(project: Long)
 

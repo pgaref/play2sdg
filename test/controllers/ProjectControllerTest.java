@@ -8,7 +8,7 @@ import static play.test.Helpers.status;
 
 import java.util.List;
 
-import models.Project;
+import models.Rating;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class ProjectControllerTest extends AbstractDBApplicationTest {
                         .withFormUrlEncodedBody(ImmutableMap.of("folder", "Some folder"))
                 );
         assertEquals(200, status(result));
-        Project project = Project.find.where()
+        Rating project = Rating.find.where()
                 .eq("folder", "Some folder").findUnique();
         assertNotNull(project);
         assertEquals("New project", project.name);
@@ -45,7 +45,7 @@ public class ProjectControllerTest extends AbstractDBApplicationTest {
 
     @Test
     public void renameProject() {
-        long id = Project.find.where()
+        long id = Rating.find.where()
                 .eq("members.email", "bob@example.com")
                 .eq("name", "Private").findUnique().id;
 
@@ -58,12 +58,12 @@ public class ProjectControllerTest extends AbstractDBApplicationTest {
                 );
 
         assertEquals(200, status(result));
-        assertEquals(newName, Project.find.byId(id).name);
+        assertEquals(newName, Rating.find.byId(id).name);
     }
 
     @Test
     public void renameProjectForbidden() {
-        long id = Project.find.where()
+        long id = Rating.find.where()
                 .eq("members.email", "jeff@example.com")
                 .eq("name", "Private").findUnique().id;
 
@@ -73,7 +73,7 @@ public class ProjectControllerTest extends AbstractDBApplicationTest {
                         .withFormUrlEncodedBody(ImmutableMap.of("name", "New name"))
                 );
         assertEquals(403, status(result));
-        assertEquals("Private", Project.find.byId(id).name);
+        assertEquals("Private", Rating.find.byId(id).name);
     }
 
 }

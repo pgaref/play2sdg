@@ -1,26 +1,30 @@
 package controllers;
 
-import models.Project;
+import models.Rating;
+import models.User;
 import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Http.Context;
 import play.mvc.Result;
 import play.mvc.Security;
 
+
 @Security.Authenticated(Secured.class)
 public class ProjectController extends Controller {
 
     private static final DynamicForm dynForm = play.data.Form.form();
 
-    public static Result add() {
+    public static Result add(Long Songid) {
 
-        Project newProject = Project.create("New project", dynForm.bindFromRequest().get("folder"), request().username());
-        return ok(views.html.projects.item.render(newProject));
+      //  Rating newProject = Rating.create("New project", dynForm.bindFromRequest().get("folder"), request().username());
+    	Rating newRate = Rating.create(User.findbyEmail(request().username()),dynForm.bindFromRequest().get("folder"),Songid);
+        return ok(views.html.ratings.rategroup.render(newRate));
     }
 
-    public static Result rename(Long project) {
-        if (isMemberOf(project)) {
-            return ok(Project.rename(project, dynForm.bindFromRequest().get("name")));
+    
+    public static Result rename(Long rating) {
+        if (isMemberOf(rating)) {
+            return ok(Rating.rename(rating, dynForm.bindFromRequest().get("name")));
         } else {
             return forbidden();
         }
@@ -28,14 +32,14 @@ public class ProjectController extends Controller {
 
     public static Result delete(Long project) {
         if (isMemberOf(project)) {
-            Project.find.ref(project).delete();
+            Rating.find.ref(project).delete();
             return ok();
         } else {
             return forbidden();
         }
     }
 
-    private static boolean isMemberOf(Long project) {
-        return Project.isMember(project, Context.current().request().username());
+    private static boolean isMemberOf(Long rating) {
+        return Rating.hasRatings(Context.current().request().username());
     }
 }

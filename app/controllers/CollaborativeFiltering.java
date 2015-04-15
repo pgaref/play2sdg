@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import models.Rating;
 import models.Song;
 import models.User;
 
@@ -14,19 +15,31 @@ public class CollaborativeFiltering {
 	
 	
 	CollaborativeFiltering(){
-		List<User> users = User.find.all();
-		List<Song> songs = Song.find.all();
+		int userSize = User.find.all().size();
+		int songSize = Song.find.all().size();
 		
-		userItem = new Vector(users.size());
-		coOcc = new Integer [users.size()][songs.size()];
+		userItem = new Vector<>(userSize);
+		coOcc = new Integer [songSize][songSize];
 		
-		System.out.println("saads" +users.size() );
-		for(int i = 0; i < users.size(); i++ ){
-			userItem.set(i, new Vector<Integer>(songs.size()));
-			for(int j =0; j < songs.size(); j++ ){
-				userItem.get(i).set(j, 0) ;
+		System.out.println("User Size: " +userSize + " Songs Size: "+ songSize);
+		
+		
+		for(int i = 0; i < userSize; i++ ){
+			userItem.add(new Vector<Integer>(songSize));
+			for(int j =0; j < songSize; j++ ){
+				userItem.get(i).add(0) ;
 			}
 		}
+		
+		for(int i = 0; i < songSize; i++ ){
+			for(int j =0; j < songSize; j++ ){
+				coOcc[i][j] = 0;
+			}
+		}
+		
+		System.out.println("userItem size: "+ userItem.size() +" X "+ userItem.get(0).size());
+		System.out.println("coOcc size: "+ coOcc.length +" X "+ coOcc[0].length);
+		
 	}
 
 	void addRating(int user, int item, int rating) {
@@ -52,14 +65,16 @@ public class CollaborativeFiltering {
 	}
 	
 	/*
-	 * TODO CHECK Correctness
+	 * TODO Validate behavior
 	 */
 	Vector<Vector<Integer>> multiply(Vector<Integer> userRow, int user){
 		
-		Vector<Vector<Integer>> userRec = new Vector<Vector<Integer>>(userRow.size());
+		Vector<Vector<Integer>> userRec= new Vector<>(userItem.size());
 		
 		for(int i =0 ;i < coOcc.length; i++){
-			for(int j =0 ;j < coOcc[i].length; i++){
+			userRec.add(new Vector<Integer>(userRow.size()));
+			for(int j =0 ;j < coOcc[i].length; j++){
+				userRec.get(i).add(0);
 				int value = coOcc[i][j];
 				if(i == user){
 					value =  coOcc[i][j] * userRow.get(j);
@@ -71,15 +86,49 @@ public class CollaborativeFiltering {
 	}
 
 	Vector<Integer> merge(Vector<Vector<Integer>> allUserRec) {
-		Vector<Integer> rec = new Vector<Integer>(allUserRec.get(0).size());
+		Vector<Integer> rec = new Vector<>(allUserRec.get(0).size());
 		for (Vector<Integer> cur : allUserRec){
-			for (int i = 0; i < allUserRec.get(0).size(); i++)
+			
+			for (int i = 0; i < allUserRec.get(0).size(); i++){
+				rec.add(0);
 				rec.set(i, cur.get(i) + rec.get(i) );
+			}
 		}
 		return rec;
 	}
 	
+	/**
+	 * Helper Functions
+	 * @param username
+	 */
 	
+	public void loadUserRatings(String username) {
+		List<Rating> stored = Rating.findInvolving(username);
+
+		System.out.println("Ratings for me: "+ stored.size());
+		System.out.println("User id:"+User.getUserID(username));
+		for (Rating r : stored) {
+			for (Song s : r.songs){
+				System.out.println("Song id for me"+ s.id);
+				this.addRating( User.getUserID(username), s.id, 1);
+			}
+		}
+	}
+
+	public List<Song> recc2Song(String username) {
+		int userId = User.getUserID(username);
+		Vector<Integer> tmp = this.getRec(userId);
+		
+		System.out.println("Recom vector: "+ tmp);
+
+		List<Song> newRec = new ArrayList<Song>();
+		for (int i = 0; i < tmp.size(); i++) {
+			if (tmp.get(i) > 0)
+				newRec.add(Song.find.ref((long) i));
+		}
+		return newRec;
+
+	}
 	
 
 }

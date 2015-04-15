@@ -1,11 +1,11 @@
-@(projects: List[Project], songs: List[Song], user: User)
+@(ratings: List[Rating], songs: List[Song], user: User)
 
-@main(projects, user) {
+@main(ratings, user) {
 
     <header>
         <hgroup>
             <h1>Dashboard</h1>
-            <h2>Ratings over all Songs</h2>
+            <h2>Songs</h2>
         </hgroup>
     </header>
 
@@ -13,7 +13,7 @@
         
                 <div class="folder" data-folder-id="Songs List">
                     <header>
-                        <h3>Songs I like</h3>
+                        <h3>All Songs List</h3>
                     </header>
                     <ul class="list">
                         @songs.map { song =>

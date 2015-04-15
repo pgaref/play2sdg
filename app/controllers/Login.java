@@ -20,7 +20,7 @@ public class Login extends Controller {
 
         public String validate() {
             if (User.authenticate(email, password) == null) {
-                return "Invalid user or password";
+                return "Invalid usermail or password";
             }
             return null;
         }
