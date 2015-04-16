@@ -14,6 +14,12 @@ import play.mvc.Security;
 
 public class Application extends Controller {
 
+	/*
+	 * One CF per web App instance
+	 */
+	private static CollaborativeFiltering cf = new CollaborativeFiltering();
+	
+	
     @Security.Authenticated(Secured.class)
     public static Result index() {
     	//change to  mail validation!!
@@ -21,16 +27,10 @@ public class Application extends Controller {
     	return ok(views.html.index.render(Rating.findInvolving(request().username()), Song.findAllSongs(), User.find.byId(request().username())));
     }
 
-    public static Result logout() {
-        session().clear();
-        flash("success", "You've been logged out");
-        return redirect(routes.Login.index());
-    }
+    
     
     @Security.Authenticated(Secured.class)
-    public static Result recommend(){
-    	
-    	CollaborativeFiltering cf = new CollaborativeFiltering();
+    public static Result getUserRecommendations(){
     	cf.loadUserRatings(request().username());
     	List<Song> recList = cf.recc2Song(request().username());
     	return ok(views.html.ratings.cf.render(recList ,User.find.byId(request().username())  ));	
@@ -38,7 +38,13 @@ public class Application extends Controller {
     
    
     
-
+    
+    public static Result logout() {
+        session().clear();
+        flash("success", "You've been logged out");
+        return redirect(routes.Login.index());
+    }
+    
     public static Result javascriptRoutes() {
         response().setContentType("text/javascript");
         return ok(Routes.javascriptRouter("jsRoutes",

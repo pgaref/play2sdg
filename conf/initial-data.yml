@@ -202,7 +202,7 @@
     link:         http://www.youtube.com/watch?v=-I3m3cWDEtM
     releaseDate:  2002-11-01   
 
-- !!models.Song
+- &last !!models.Song
     artist:       Santa
     title:        Homegirl (Rampa Mix)
     link:         http://www.youtube.com/watch?v=fnhMNOWxLYw
@@ -212,15 +212,16 @@
 
 - !!models.Rating
     usermail: pgaref@example.com
-    folder: ThumbsUP-rating	
+    folder: PlayList-one	
     songs:
         - *song1
         - *song2
         - *song3
+        - *last
 
 - !!models.Rating
     usermail: bob@example.com
-    folder: ThumbsUP-rating	
+    folder: PlayList-test	
     songs:
         - *song2
         - *song3
@@ -230,7 +231,7 @@
 
 - !!models.Rating
     usermail: jane@example.com
-    folder: ThumbsUP-rating	
+    folder: PlayList-two	
     songs:
         - *song1
         - *song2
@@ -238,7 +239,7 @@
         
 - !!models.Rating
     usermail: jeff@example.com
-    folder: ThumbsUP-rating	
+    folder: PlayList-jeffy	
     songs:
         - *song1
         - *song2
@@ -246,7 +247,7 @@
 
 - !!models.Rating
     usermail: pgaref@example.com
-    folder: Like-rating
+    folder: PlayList-random
     songs:
         - *song2
         - *song3

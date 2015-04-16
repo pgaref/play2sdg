@@ -29,7 +29,7 @@ public class Song extends Model {
         return song;
     }
     
-    public static Model.Finder<Long, Song> find = new Model.Finder(Long.class, Song.class);
+    public static Model.Finder<Long, Song> find = new Model.Finder<Long, Song>(Long.class, Song.class);
 
     public static List<Song> findAllSongs() {
     	return find.all();
@@ -37,6 +37,19 @@ public class Song extends Model {
     
     public static Song findByTitle(String title){
     	return find.where().eq("title", title).findUnique();
+    }
+    
+    public static Song findByID(int id){
+    	return Song.find.all().get(id);
+    }
+    
+    public static int getSongID(String title){
+    	List<Song> l = Song.find.all();
+    	for(int i =0 ; i < l.size(); i++){
+    		if(l.get(i).title.equals(title))
+    			return i;
+    	}
+    	return -1;
     }
 
 }
