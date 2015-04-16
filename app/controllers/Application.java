@@ -2,6 +2,7 @@ package controllers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Vector;
 
 import models.Rating;
@@ -36,8 +37,16 @@ public class Application extends Controller {
     	return ok(views.html.ratings.cf.render(recList ,User.find.byId(request().username())  ));	
     }
     
-   
-    
+    @Security.Authenticated(Secured.class)
+    public static Result rate(String songtitle){
+//    	final Map<String, String[]> values = request().body().asFormUrlEncoded();
+//    	final String name = values.get("java_songid")[0];
+//    	System.out.println("Managed to get SongId: "+ name);
+    	
+    	System.out.println("Plain song id: "+ songtitle); 	
+    	cf.addRating(User.getUserID(request().username()), Song.getSongID(songtitle), 1);
+    	return ok(views.html.index.render(Rating.findInvolving(request().username()), Song.findAllSongs(), User.find.byId(request().username())));
+    }
     
     public static Result logout() {
         session().clear();

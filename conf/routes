@@ -10,6 +10,7 @@ POST    /login                  controllers.Login.authenticate()
 GET     /logout                 controllers.Application.logout()
 
 GET 	/recommend				controllers.Application.getUserRecommendations()
+GET		/rate					controllers.Application.rate(String)
 
 POST    /project/:project       controllers.ProjectController.add(project: Long)
 DELETE  /project/:project       controllers.ProjectController.delete(project: Long)

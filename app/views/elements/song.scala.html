@@ -10,7 +10,9 @@
         <span class="assignedTo">@song.artist</span>
     }
     
-    <span class="thumbsUp"><a href=#>      Thumbs UP</a></span>
+    <span class="thumbsUp"><a href='@routes.Application.rate(song.title)'>      Thumbs UP</a></span>
+    
+    
     
     @if(song.releaseDate != null) { 
         <time datetime="@song.releaseDate">
