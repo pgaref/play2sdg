@@ -35,7 +35,7 @@ public class Rating extends Model {
 
     public static Model.Finder<Long, Rating> find = new Finder<Long, Rating>(Long.class, Rating.class);
 
-    public static Rating create(User u, String folder, Long Songid) {
+    public static Rating create(RelationalUser u, String folder, Long Songid) {
         Rating rating = new Rating(u.email, folder,Songid);
         rating.saveManyToManyAssociations("songs");
         rating.saveManyToManyAssociations("usermail");
@@ -46,7 +46,7 @@ public class Rating extends Model {
        // return find.where().eq("usermail.email", useremail).findList();
        //return find.fetch("project").where().eq("done", false).eq("project.members.email", useremail).findList();
     	
-    	User current = User.findbyEmail(useremail);
+    	RelationalUser current = RelationalUser.findbyEmail(useremail);
     	System.out.println("got"+ useremail + " found"+ current.name);
     	
     	if(hasRatings(useremail))

@@ -1,9 +1,9 @@
-# Routes
-# This file defines all application routes (Higher priority routes first)
-# ~~~~
+#Routes
+#This file defines all application routes (Higher priority routes first)
+#~~~~
 
 
-# PAGES
+#PAGES
 GET     /                       controllers.Application.index()
 GET     /login                  controllers.Login.index()
 POST    /login                  controllers.Login.authenticate()
@@ -12,13 +12,31 @@ GET     /logout                 controllers.Application.logout()
 GET 	/recommend				controllers.Application.getUserRecommendations()
 GET		/rate					controllers.Application.rate(String)
 
-POST    /project/:project       controllers.ProjectController.add(project: Long)
-DELETE  /project/:project       controllers.ProjectController.delete(project: Long)
-PUT     /project/:project       controllers.ProjectController.rename(project: Long)
+POST	/project/:project       controllers.ProjectController.add(project: Long)
+DELETE 	/project/:project       controllers.ProjectController.delete(project: Long)
+PUT 	/project/:project       controllers.ProjectController.rename(project: Long)
 
 # JS ROUTES
-GET     /public/javascript/routes          controllers.Application.javascriptRoutes()
+GET 	/public/javascript/routes          controllers.Application.javascriptRoutes()
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /public/*file               controllers.Assets.at(path="/public", file)
-GET     /assets/*file               controllers.Assets.at(path="/public", file)
+GET 	/public/*file               controllers.Assets.at(path="/public", file)
+GET 	/assets/*file               controllers.Assets.at(path="/public", file)
+
+
+################# New Cassandra Controler Stuff #################
+
+# Persist Operation
+#GET /persist controllers.UserController.persist()
+
+# List All Users Operation
+GET /listUsers controllers.UserController.listAllUsers()
+
+# List All Songs Operation ---> NOT RECOMMENDED FOR REAL DATA!!!
+GET /listSongs controllers.UserController.listAllSongs()
+
+# Update Operation
+#GET /update controllers.UserController.update()
+
+# Delete Operation
+#GET /delete controllers.UserController.delete()

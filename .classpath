@@ -1,126 +1,162 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" output="target/scala-2.11/classes" path="app"/>
-	<classpathentry kind="src" output="target/scala-2.11/test-classes" path="test"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.typesafe.play/twirl-api_2.11/jars/twirl-api_2.11-1.0.2.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.typesafe.play/twirl-api_2.11/srcs/twirl-api_2.11-1.0.2-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.apache.commons/commons-lang3/jars/commons-lang3-3.1.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.apache.commons/commons-lang3/srcs/commons-lang3-3.1-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.scala-lang.modules/scala-xml_2.11/bundles/scala-xml_2.11-1.0.1.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.scala-lang.modules/scala-xml_2.11/srcs/scala-xml_2.11-1.0.1-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.typesafe.play/play_2.11/jars/play_2.11-2.3.7.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.typesafe.play/play_2.11/srcs/play_2.11-2.3.7-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.typesafe.play/build-link/jars/build-link-2.3.7.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.typesafe.play/build-link/srcs/build-link-2.3.7-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.typesafe.play/play-exceptions/jars/play-exceptions-2.3.7.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.typesafe.play/play-exceptions/srcs/play-exceptions-2.3.7-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.javassist/javassist/bundles/javassist-3.18.2-GA.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.javassist/javassist/srcs/javassist-3.18.2-GA-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.typesafe.play/play-iteratees_2.11/jars/play-iteratees_2.11-2.3.7.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.typesafe.play/play-iteratees_2.11/srcs/play-iteratees_2.11-2.3.7-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.scala-stm/scala-stm_2.11/jars/scala-stm_2.11-0.7.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.scala-stm/scala-stm_2.11/srcs/scala-stm_2.11-0.7-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.typesafe/config/bundles/config-1.2.1.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.typesafe/config/srcs/config-1.2.1-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.typesafe.play/play-json_2.11/jars/play-json_2.11-2.3.7.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.typesafe.play/play-json_2.11/srcs/play-json_2.11-2.3.7-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.typesafe.play/play-functional_2.11/jars/play-functional_2.11-2.3.7.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.typesafe.play/play-functional_2.11/srcs/play-functional_2.11-2.3.7-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.typesafe.play/play-datacommons_2.11/jars/play-datacommons_2.11-2.3.7.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.typesafe.play/play-datacommons_2.11/srcs/play-datacommons_2.11-2.3.7-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/joda-time/joda-time/jars/joda-time-2.3.jar" sourcepath="/Users/pgaref/.ivy2/cache/joda-time/joda-time/srcs/joda-time-2.3-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.joda/joda-convert/jars/joda-convert-1.6.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.joda/joda-convert/srcs/joda-convert-1.6-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.fasterxml.jackson.core/jackson-annotations/bundles/jackson-annotations-2.3.2.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.fasterxml.jackson.core/jackson-annotations/srcs/jackson-annotations-2.3.2-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.fasterxml.jackson.core/jackson-core/bundles/jackson-core-2.3.2.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.fasterxml.jackson.core/jackson-core/srcs/jackson-core-2.3.2-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.fasterxml.jackson.core/jackson-databind/bundles/jackson-databind-2.3.2.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.fasterxml.jackson.core/jackson-databind/srcs/jackson-databind-2.3.2-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.11/bundles/scala-parser-combinators_2.11-1.0.1.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.scala-lang.modules/scala-parser-combinators_2.11/srcs/scala-parser-combinators_2.11-1.0.1-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/io.netty/netty/bundles/netty-3.9.3.Final.jar" sourcepath="/Users/pgaref/.ivy2/cache/io.netty/netty/srcs/netty-3.9.3.Final-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.typesafe.netty/netty-http-pipelining/jars/netty-http-pipelining-1.1.2.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.typesafe.netty/netty-http-pipelining/srcs/netty-http-pipelining-1.1.2-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.slf4j/slf4j-api/jars/slf4j-api-1.7.6.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.slf4j/slf4j-api/srcs/slf4j-api-1.7.6-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.slf4j/jul-to-slf4j/jars/jul-to-slf4j-1.7.6.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.slf4j/jul-to-slf4j/srcs/jul-to-slf4j-1.7.6-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.slf4j/jcl-over-slf4j/jars/jcl-over-slf4j-1.7.6.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.slf4j/jcl-over-slf4j/srcs/jcl-over-slf4j-1.7.6-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/ch.qos.logback/logback-core/jars/logback-core-1.1.1.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/ch.qos.logback/logback-classic/jars/logback-classic-1.1.1.jar" sourcepath="/Users/pgaref/.ivy2/cache/ch.qos.logback/logback-classic/srcs/logback-classic-1.1.1-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.typesafe.akka/akka-actor_2.11/jars/akka-actor_2.11-2.3.4.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.typesafe.akka/akka-actor_2.11/srcs/akka-actor_2.11-2.3.4-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.typesafe.akka/akka-slf4j_2.11/jars/akka-slf4j_2.11-2.3.4.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.typesafe.akka/akka-slf4j_2.11/srcs/akka-slf4j_2.11-2.3.4-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/commons-codec/commons-codec/jars/commons-codec-1.9.jar" sourcepath="/Users/pgaref/.ivy2/cache/commons-codec/commons-codec/srcs/commons-codec-1.9-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/xerces/xercesImpl/jars/xercesImpl-2.11.0.jar" sourcepath="/Users/pgaref/.ivy2/cache/xerces/xercesImpl/srcs/xercesImpl-2.11.0-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/xml-apis/xml-apis/jars/xml-apis-1.4.01.jar" sourcepath="/Users/pgaref/.ivy2/cache/xml-apis/xml-apis/srcs/xml-apis-1.4.01-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/javax.transaction/jta/jars/jta-1.1.jar" sourcepath="/Users/pgaref/.ivy2/cache/javax.transaction/jta/srcs/jta-1.1-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.typesafe.play/play-java_2.11/jars/play-java_2.11-2.3.7.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.typesafe.play/play-java_2.11/srcs/play-java_2.11-2.3.7-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.yaml/snakeyaml/bundles/snakeyaml-1.13.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.yaml/snakeyaml/srcs/snakeyaml-1.13-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.hibernate/hibernate-validator/jars/hibernate-validator-5.0.3.Final.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.hibernate/hibernate-validator/srcs/hibernate-validator-5.0.3.Final-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/javax.validation/validation-api/jars/validation-api-1.1.0.Final.jar" sourcepath="/Users/pgaref/.ivy2/cache/javax.validation/validation-api/srcs/validation-api-1.1.0.Final-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.fasterxml/classmate/bundles/classmate-1.0.0.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.fasterxml/classmate/srcs/classmate-1.0.0-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.jboss.logging/jboss-logging/jars/jboss-logging-3.2.0.Final.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.jboss.logging/jboss-logging/srcs/jboss-logging-3.2.0.Final-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.springframework/spring-context/jars/spring-context-4.0.3.RELEASE.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.springframework/spring-context/srcs/spring-context-4.0.3.RELEASE-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.springframework/spring-core/jars/spring-core-4.0.3.RELEASE.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.springframework/spring-core/srcs/spring-core-4.0.3.RELEASE-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.springframework/spring-beans/jars/spring-beans-4.0.3.RELEASE.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.springframework/spring-beans/srcs/spring-beans-4.0.3.RELEASE-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.reflections/reflections/jars/reflections-0.9.8.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.reflections/reflections/srcs/reflections-0.9.8-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.google.guava/guava/bundles/guava-16.0.1.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.google.guava/guava/srcs/guava-16.0.1-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/dom4j/dom4j/jars/dom4j-1.6.1.jar" sourcepath="/Users/pgaref/.ivy2/cache/dom4j/dom4j/srcs/dom4j-1.6.1-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.google.code.findbugs/jsr305/jars/jsr305-2.0.3.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.google.code.findbugs/jsr305/srcs/jsr305-2.0.3-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.apache.tomcat/tomcat-servlet-api/jars/tomcat-servlet-api-8.0.5.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.apache.tomcat/tomcat-servlet-api/srcs/tomcat-servlet-api-8.0.5-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.typesafe.play/play-jdbc_2.11/jars/play-jdbc_2.11-2.3.7.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.typesafe.play/play-jdbc_2.11/srcs/play-jdbc_2.11-2.3.7-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.jolbox/bonecp/bundles/bonecp-0.8.0.RELEASE.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.jolbox/bonecp/srcs/bonecp-0.8.0.RELEASE-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.h2database/h2/jars/h2-1.3.175.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.h2database/h2/srcs/h2-1.3.175-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/tyrex/tyrex/jars/tyrex-1.0.1.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.typesafe.play/play-cache_2.11/jars/play-cache_2.11-2.3.7.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.typesafe.play/play-cache_2.11/srcs/play-cache_2.11-2.3.7-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/net.sf.ehcache/ehcache-core/jars/ehcache-core-2.6.8.jar" sourcepath="/Users/pgaref/.ivy2/cache/net.sf.ehcache/ehcache-core/srcs/ehcache-core-2.6.8-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.typesafe.play/play-java-ebean_2.11/jars/play-java-ebean_2.11-2.3.7.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.typesafe.play/play-java-ebean_2.11/srcs/play-java-ebean_2.11-2.3.7-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.typesafe.play/play-java-jdbc_2.11/jars/play-java-jdbc_2.11-2.3.7.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.typesafe.play/play-java-jdbc_2.11/srcs/play-java-jdbc_2.11-2.3.7-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.avaje.ebeanorm/avaje-ebeanorm/jars/avaje-ebeanorm-3.3.4.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.avaje.ebeanorm/avaje-ebeanorm/srcs/avaje-ebeanorm-3.3.4-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.avaje.ebeanorm/avaje-ebeanorm-agent/jars/avaje-ebeanorm-agent-3.2.2.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.avaje.ebeanorm/avaje-ebeanorm-agent/srcs/avaje-ebeanorm-agent-3.2.2-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.hibernate.javax.persistence/hibernate-jpa-2.0-api/jars/hibernate-jpa-2.0-api-1.0.1.Final.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.hibernate.javax.persistence/hibernate-jpa-2.0-api/srcs/hibernate-jpa-2.0-api-1.0.1.Final-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.webjars/jquery/jars/jquery-2.1.1.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.webjars/jquery/srcs/jquery-2.1.1-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.webjars/bootstrap/jars/bootstrap-3.3.1.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.webjars/bootstrap/srcs/bootstrap-3.3.1-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.typesafe.play/play-test_2.11/jars/play-test_2.11-2.3.7.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.typesafe.play/play-test_2.11/srcs/play-test_2.11-2.3.7-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/junit/junit/jars/junit-4.11.jar" sourcepath="/Users/pgaref/.ivy2/cache/junit/junit/srcs/junit-4.11-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.hamcrest/hamcrest-core/jars/hamcrest-core-1.3.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.hamcrest/hamcrest-core/srcs/hamcrest-core-1.3-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.specs2/specs2-core_2.11/jars/specs2-core_2.11-2.3.12.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.specs2/specs2-core_2.11/srcs/specs2-core_2.11-2.3.12-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.specs2/specs2-matcher_2.11/jars/specs2-matcher_2.11-2.3.12.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.specs2/specs2-matcher_2.11/srcs/specs2-matcher_2.11-2.3.12-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.specs2/specs2-common_2.11/jars/specs2-common_2.11-2.3.12.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.specs2/specs2-common_2.11/srcs/specs2-common_2.11-2.3.12-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.scalaz/scalaz-core_2.11/bundles/scalaz-core_2.11-7.0.6.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.scalaz/scalaz-core_2.11/srcs/scalaz-core_2.11-7.0.6-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.scalaz/scalaz-concurrent_2.11/bundles/scalaz-concurrent_2.11-7.0.6.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.scalaz/scalaz-concurrent_2.11/srcs/scalaz-concurrent_2.11-7.0.6-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.scalaz/scalaz-effect_2.11/bundles/scalaz-effect_2.11-7.0.6.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.scalaz/scalaz-effect_2.11/srcs/scalaz-effect_2.11-7.0.6-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.specs2/specs2-junit_2.11/jars/specs2-junit_2.11-2.3.12.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.specs2/specs2-junit_2.11/srcs/specs2-junit_2.11-2.3.12-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.specs2/specs2-mock_2.11/jars/specs2-mock_2.11-2.3.12.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.specs2/specs2-mock_2.11/srcs/specs2-mock_2.11-2.3.12-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.mockito/mockito-core/jars/mockito-core-1.9.5.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.mockito/mockito-core/srcs/mockito-core-1.9.5-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.objenesis/objenesis/jars/objenesis-1.0.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.objenesis/objenesis/srcs/objenesis-1.0-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.specs2/specs2-matcher-extra_2.11/jars/specs2-matcher-extra_2.11-2.3.12.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.specs2/specs2-matcher-extra_2.11/srcs/specs2-matcher-extra_2.11-2.3.12-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.specs2/specs2-analysis_2.11/jars/specs2-analysis_2.11-2.3.12.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.specs2/specs2-analysis_2.11/srcs/specs2-analysis_2.11-2.3.12-sources.jar"/>
-	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_COMPILER_CONTAINER"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.specs2/classycle/jars/classycle-1.4.3.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.specs2/classycle/srcs/classycle-1.4.3-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/com.novocode/junit-interface/jars/junit-interface-0.11-RC1.jar" sourcepath="/Users/pgaref/.ivy2/cache/com.novocode/junit-interface/srcs/junit-interface-0.11-RC1-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.scala-sbt/test-interface/jars/test-interface-1.0.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.scala-sbt/test-interface/srcs/test-interface-1.0-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.fluentlenium/fluentlenium-festassert/jars/fluentlenium-festassert-0.9.2.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.fluentlenium/fluentlenium-festassert/srcs/fluentlenium-festassert-0.9.2-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.fluentlenium/fluentlenium-core/jars/fluentlenium-core-0.9.2.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.fluentlenium/fluentlenium-core/srcs/fluentlenium-core-0.9.2-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.seleniumhq.selenium/selenium-java/jars/selenium-java-2.39.0.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.seleniumhq.selenium/selenium-java/srcs/selenium-java-2.39.0-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.seleniumhq.selenium/selenium-android-driver/jars/selenium-android-driver-2.39.0.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.seleniumhq.selenium/selenium-android-driver/srcs/selenium-android-driver-2.39.0-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.seleniumhq.selenium/selenium-remote-driver/jars/selenium-remote-driver-2.39.0.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.seleniumhq.selenium/selenium-remote-driver/srcs/selenium-remote-driver-2.39.0-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/cglib/cglib-nodep/jars/cglib-nodep-2.1_3.jar" sourcepath="/Users/pgaref/.ivy2/cache/cglib/cglib-nodep/srcs/cglib-nodep-2.1_3-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.json/json/jars/json-20080701.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.json/json/srcs/json-20080701-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.seleniumhq.selenium/selenium-api/jars/selenium-api-2.39.0.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.seleniumhq.selenium/selenium-api/srcs/selenium-api-2.39.0-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.apache.httpcomponents/httpclient/jars/httpclient-4.3.1.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.apache.httpcomponents/httpclient/srcs/httpclient-4.3.1-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.apache.httpcomponents/httpcore/jars/httpcore-4.3.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.apache.httpcomponents/httpcore/srcs/httpcore-4.3-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/commons-logging/commons-logging/jars/commons-logging-1.1.3.jar" sourcepath="/Users/pgaref/.ivy2/cache/commons-logging/commons-logging/srcs/commons-logging-1.1.3-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.apache.commons/commons-exec/jars/commons-exec-1.1.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.apache.commons/commons-exec/srcs/commons-exec-1.1-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/net.java.dev.jna/jna/jars/jna-3.4.0.jar" sourcepath="/Users/pgaref/.ivy2/cache/net.java.dev.jna/jna/srcs/jna-3.4.0-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/net.java.dev.jna/platform/jars/platform-3.4.0.jar" sourcepath="/Users/pgaref/.ivy2/cache/net.java.dev.jna/platform/srcs/platform-3.4.0-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.seleniumhq.selenium/selenium-chrome-driver/jars/selenium-chrome-driver-2.39.0.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.seleniumhq.selenium/selenium-chrome-driver/srcs/selenium-chrome-driver-2.39.0-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.seleniumhq.selenium/selenium-htmlunit-driver/jars/selenium-htmlunit-driver-2.39.0.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.seleniumhq.selenium/selenium-htmlunit-driver/srcs/selenium-htmlunit-driver-2.39.0-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/net.sourceforge.htmlunit/htmlunit/jars/htmlunit-2.13.jar" sourcepath="/Users/pgaref/.ivy2/cache/net.sourceforge.htmlunit/htmlunit/srcs/htmlunit-2.13-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/xalan/xalan/jars/xalan-2.7.1.jar" sourcepath="/Users/pgaref/.ivy2/cache/xalan/xalan/srcs/xalan-2.7.1-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/xalan/serializer/jars/serializer-2.7.1.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/commons-collections/commons-collections/jars/commons-collections-3.2.1.jar" sourcepath="/Users/pgaref/.ivy2/cache/commons-collections/commons-collections/srcs/commons-collections-3.2.1-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.apache.httpcomponents/httpmime/jars/httpmime-4.3.1.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.apache.httpcomponents/httpmime/srcs/httpmime-4.3.1-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/net.sourceforge.htmlunit/htmlunit-core-js/jars/htmlunit-core-js-2.13.jar" sourcepath="/Users/pgaref/.ivy2/cache/net.sourceforge.htmlunit/htmlunit-core-js/srcs/htmlunit-core-js-2.13-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/net.sourceforge.nekohtml/nekohtml/jars/nekohtml-1.9.19.jar" sourcepath="/Users/pgaref/.ivy2/cache/net.sourceforge.nekohtml/nekohtml/srcs/nekohtml-1.9.19-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/net.sourceforge.cssparser/cssparser/jars/cssparser-0.9.11.jar" sourcepath="/Users/pgaref/.ivy2/cache/net.sourceforge.cssparser/cssparser/srcs/cssparser-0.9.11-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.w3c.css/sac/jars/sac-1.3.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.w3c.css/sac/srcs/sac-1.3-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/commons-io/commons-io/jars/commons-io-2.2.jar" sourcepath="/Users/pgaref/.ivy2/cache/commons-io/commons-io/srcs/commons-io-2.2-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.eclipse.jetty/jetty-websocket/jars/jetty-websocket-8.1.12.v20130726.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.eclipse.jetty/jetty-websocket/srcs/jetty-websocket-8.1.12.v20130726-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.eclipse.jetty/jetty-util/jars/jetty-util-8.1.12.v20130726.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.eclipse.jetty/jetty-util/srcs/jetty-util-8.1.12.v20130726-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.eclipse.jetty/jetty-io/jars/jetty-io-8.1.12.v20130726.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.eclipse.jetty/jetty-io/srcs/jetty-io-8.1.12.v20130726-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.eclipse.jetty/jetty-http/jars/jetty-http-8.1.12.v20130726.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.eclipse.jetty/jetty-http/srcs/jetty-http-8.1.12.v20130726-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.seleniumhq.selenium/selenium-firefox-driver/jars/selenium-firefox-driver-2.39.0.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.seleniumhq.selenium/selenium-firefox-driver/srcs/selenium-firefox-driver-2.39.0-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.seleniumhq.selenium/selenium-ie-driver/jars/selenium-ie-driver-2.39.0.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.seleniumhq.selenium/selenium-ie-driver/srcs/selenium-ie-driver-2.39.0-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.seleniumhq.selenium/selenium-iphone-driver/jars/selenium-iphone-driver-2.39.0.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.seleniumhq.selenium/selenium-iphone-driver/srcs/selenium-iphone-driver-2.39.0-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.seleniumhq.selenium/selenium-safari-driver/jars/selenium-safari-driver-2.39.0.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.seleniumhq.selenium/selenium-safari-driver/srcs/selenium-safari-driver-2.39.0-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.webbitserver/webbit/jars/webbit-0.4.14.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.webbitserver/webbit/srcs/webbit-0.4.14-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.seleniumhq.selenium/selenium-support/jars/selenium-support-2.39.0.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.seleniumhq.selenium/selenium-support/srcs/selenium-support-2.39.0-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.easytesting/fest-assert/jars/fest-assert-1.4.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.easytesting/fest-assert/srcs/fest-assert-1.4-sources.jar"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.easytesting/fest-util/jars/fest-util-1.1.6.jar" sourcepath="/Users/pgaref/.ivy2/cache/org.easytesting/fest-util/srcs/fest-util-1.1.6-sources.jar"/>
-	<classpathentry kind="con" path="org.scala-ide.sdt.launching.SCALA_CONTAINER"/>
+	<classpathentry kind="src" output=".target" path="app"/>
+	<classpathentry kind="src" path="conf"/>
+	<classpathentry kind="src" output=".target" path="test"/>
+	<classpathentry kind="lib" path="/home/pg1712/workspace/play2sdg/target/scala-2.10/classes_managed"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/play/play_2.10/jars/play_2.10-2.1.5.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/play/sbt-link/jars/sbt-link-2.1.5.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.javassist/javassist/jars/javassist-3.16.1-GA.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/play/play-exceptions/jars/play-exceptions-2.1.5.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/play/templates_2.10/jars/templates_2.10-2.1.5.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.github.scala-incubator.io/scala-io-file_2.10/jars/scala-io-file_2.10-0.4.2.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.github.scala-incubator.io/scala-io-core_2.10/jars/scala-io-core_2.10-0.4.2.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.jsuereth/scala-arm_2.10/jars/scala-arm_2.10-1.3.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/play/play-iteratees_2.10/jars/play-iteratees_2.10-2.1.5.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.scala-stm/scala-stm_2.10.0/jars/scala-stm_2.10.0-0.6.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.typesafe/config/bundles/config-1.0.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/io.netty/netty/bundles/netty-3.6.3.Final.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.typesafe.netty/netty-http-pipelining/jars/netty-http-pipelining-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.slf4j/slf4j-api/jars/slf4j-api-1.6.6.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.slf4j/jul-to-slf4j/jars/jul-to-slf4j-1.6.6.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.slf4j/jcl-over-slf4j/jars/jcl-over-slf4j-1.6.6.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/ch.qos.logback/logback-core/jars/logback-core-1.0.7.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/ch.qos.logback/logback-classic/jars/logback-classic-1.0.7.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.typesafe.akka/akka-actor_2.10/bundles/akka-actor_2.10-2.1.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.typesafe.akka/akka-slf4j_2.10/bundles/akka-slf4j_2.10-2.1.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/joda-time/joda-time/jars/joda-time-2.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.joda/joda-convert/jars/joda-convert-1.2.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.apache.commons/commons-lang3/jars/commons-lang3-3.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.ning/async-http-client/jars/async-http-client-1.7.6.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/oauth.signpost/signpost-core/jars/signpost-core-1.2.1.2.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/commons-codec/commons-codec/jars/commons-codec-1.3.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/oauth.signpost/signpost-commonshttp4/jars/signpost-commonshttp4-1.2.1.2.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.apache.httpcomponents/httpcore/jars/httpcore-4.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.apache.httpcomponents/httpclient/jars/httpclient-4.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/commons-logging/commons-logging/jars/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.codehaus.jackson/jackson-core-asl/jars/jackson-core-asl-1.9.10.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.codehaus.jackson/jackson-mapper-asl/jars/jackson-mapper-asl-1.9.10.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/xerces/xercesImpl/jars/xercesImpl-2.11.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/xml-apis/xml-apis/jars/xml-apis-1.4.01.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/net.sf.ehcache/ehcache-core/jars/ehcache-core-2.6.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/javax.transaction/jta/jars/jta-1.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.scala-lang/scala-reflect/jars/scala-reflect-2.10.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.impetus.client/kundera-cassandra/jars/kundera-cassandra-2.5.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.impetus.core/kundera-core/jars/kundera-core-2.5.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/commons-lang/commons-lang/jars/commons-lang-2.4.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/javax.persistence/persistence-api/jars/persistence-api-2.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.apache.lucene/lucene-core/jars/lucene-core-3.5.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/cglib/cglib/jars/cglib-2.2.2.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/asm/asm/jars/asm-3.3.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/javassist/javassist/jars/javassist-3.9.0.GA.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.hibernate/hibernate-core/jars/hibernate-core-4.1.7.Final.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/antlr/antlr/jars/antlr-2.7.7.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.jboss.logging/jboss-logging/jars/jboss-logging-3.1.0.GA.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.jboss.spec.javax.transaction/jboss-transaction-api_1.1_spec/jars/jboss-transaction-api_1.1_spec-1.0.0.Final.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/dom4j/dom4j/jars/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.hibernate.javax.persistence/hibernate-jpa-2.0-api/jars/hibernate-jpa-2.0-api-1.0.1.Final.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.hibernate.common/hibernate-commons-annotations/jars/hibernate-commons-annotations-4.0.1.Final.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.thoughtworks.xstream/xstream/jars/xstream-1.4.3.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/xmlpull/xmlpull/jars/xmlpull-1.1.3.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/xpp3/xpp3_min/jars/xpp3_min-1.1.4c.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.vividsolutions/jts/jars/jts-1.11.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.apache.cassandra/cassandra-thrift/jars/cassandra-thrift-1.2.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.apache.thrift/libthrift/jars/libthrift-0.7.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/javax.servlet/servlet-api/jars/servlet-api-2.5.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.apache.cassandra/cassandra-all/jars/cassandra-all-1.2.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.xerial.snappy/snappy-java/bundles/snappy-java-1.0.4.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.ning/compress-lzf/bundles/compress-lzf-0.8.4.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/commons-cli/commons-cli/jars/commons-cli-1.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.googlecode.concurrentlinkedhashmap/concurrentlinkedhashmap-lru/jars/concurrentlinkedhashmap-lru-1.3.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.antlr/antlr/jars/antlr-3.2.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.antlr/antlr-runtime/jars/antlr-runtime-3.2.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.antlr/stringtemplate/jars/stringtemplate-3.2.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.apache.cassandra.deps/avro/jars/avro-1.4.0-cassandra-1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.mortbay.jetty/jetty/jars/jetty-6.1.22.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.mortbay.jetty/jetty-util/jars/jetty-util-6.1.22.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.mortbay.jetty/servlet-api/jars/servlet-api-2.5-20081211.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/jline/jline/jars/jline-1.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.googlecode.json-simple/json-simple/jars/json-simple-1.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.github.stephenc.high-scale-lib/high-scale-lib/jars/high-scale-lib-1.1.2.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/edu.stanford.ppl/snaptree/jars/snaptree-0.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.yammer.metrics/metrics-core/jars/metrics-core-2.0.3.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.github.stephenc/jamm/jars/jamm-0.2.5.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.apache.cassandra/cassandra-clientutil/jars/cassandra-clientutil-1.2.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.jboss.netty/netty/bundles/netty-3.2.8.Final.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.slf4j/slf4j-log4j12/jars/slf4j-log4j12-1.7.2.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/log4j/log4j/bundles/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.scale7/scale7-pelops/jars/scale7-pelops-1.3-1.1.x.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.eaio.uuid/uuid/jars/uuid-3.2.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.scale7/scale7-core/jars/scale7-core-1.3.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/commons-pool/commons-pool/jars/commons-pool-1.6.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.xerial/snappy/jars/snappy-1.0.1-rc4.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/net.dataforte.cassandra/cassandra-connection-pool/jars/cassandra-connection-pool-0.7.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/play/play-java_2.10/jars/play-java_2.10-2.1.5.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.yaml/snakeyaml/bundles/snakeyaml-1.10.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.hibernate/hibernate-validator/jars/hibernate-validator-4.3.0.Final.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/javax.validation/validation-api/jars/validation-api-1.0.0.GA.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.springframework/spring-context/jars/spring-context-3.1.2.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.springframework/spring-core/jars/spring-core-3.1.2.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.springframework/spring-beans/jars/spring-beans-3.1.2.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.reflections/reflections/jars/reflections-0.9.8.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.google.guava/guava/jars/guava-13.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.google.code.findbugs/jsr305/jars/jsr305-2.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/javax.servlet/javax.servlet-api/jars/javax.servlet-api-3.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/play/play-java-ebean_2.10/jars/play-java-ebean_2.10-2.1.5.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/play/play-java-jdbc_2.10/jars/play-java-jdbc_2.10-2.1.5.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/play/play-jdbc_2.10/jars/play-jdbc_2.10-2.1.5.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.jolbox/bonecp/bundles/bonecp-0.7.1.RELEASE.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.h2database/h2/jars/h2-1.3.168.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/tyrex/tyrex/jars/tyrex-1.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.avaje.ebeanorm/avaje-ebeanorm/jars/avaje-ebeanorm-3.1.2.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.avaje.ebeanorm/avaje-ebeanorm-api/jars/avaje-ebeanorm-api-3.1.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.avaje.ebeanorm/avaje-ebeanorm-agent/jars/avaje-ebeanorm-agent-3.2.2.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.avaje.ebeanorm/avaje-ebeanorm-server/jars/avaje-ebeanorm-server-3.1.2.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/play/play-test_2.10/jars/play-test_2.10-2.1.5.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.hamcrest/hamcrest-core/jars/hamcrest-core-1.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.specs2/specs2_2.10/jars/specs2_2.10-1.13.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.specs2/scalaz-core_2.10/jars/scalaz-core_2.10-7.0.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.specs2/scalaz-concurrent_2.10/jars/scalaz-concurrent_2.10-7.0.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.specs2/scalaz-effect_2.10/jars/scalaz-effect_2.10-7.0.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/com.novocode/junit-interface/jars/junit-interface-0.10.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.scala-tools.testing/test-interface/jars/test-interface-0.5.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.fluentlenium/fluentlenium-festassert/jars/fluentlenium-festassert-0.7.3.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.fluentlenium/fluentlenium-core/jars/fluentlenium-core-0.7.3.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.seleniumhq.selenium/selenium-java/jars/selenium-java-2.25.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.seleniumhq.selenium/selenium-android-driver/jars/selenium-android-driver-2.25.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.seleniumhq.selenium/selenium-remote-driver/jars/selenium-remote-driver-2.25.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/cglib/cglib-nodep/jars/cglib-nodep-2.1_3.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.json/json/jars/json-20080701.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.seleniumhq.selenium/selenium-api/jars/selenium-api-2.25.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.apache.httpcomponents/httpclient/jars/httpclient-4.1.2.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.apache.httpcomponents/httpcore/jars/httpcore-4.1.3.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/commons-codec/commons-codec/jars/commons-codec-1.6.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.apache.commons/commons-exec/jars/commons-exec-1.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/net.java.dev.jna/jna/jars/jna-3.4.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/net.java.dev.jna/platform/jars/platform-3.4.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.seleniumhq.selenium/selenium-chrome-driver/jars/selenium-chrome-driver-2.25.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.seleniumhq.selenium/selenium-htmlunit-driver/jars/selenium-htmlunit-driver-2.25.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/net.sourceforge.htmlunit/htmlunit/jars/htmlunit-2.9.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/xalan/xalan/jars/xalan-2.7.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/xalan/serializer/jars/serializer-2.7.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/commons-collections/commons-collections/jars/commons-collections-3.2.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/commons-lang/commons-lang/jars/commons-lang-2.6.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.apache.httpcomponents/httpmime/jars/httpmime-4.1.2.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/net.sourceforge.htmlunit/htmlunit-core-js/jars/htmlunit-core-js-2.9.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/net.sourceforge.nekohtml/nekohtml/jars/nekohtml-1.9.15.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/net.sourceforge.cssparser/cssparser/jars/cssparser-0.9.5.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.w3c.css/sac/jars/sac-1.3.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/commons-io/commons-io/jars/commons-io-2.0.1.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.seleniumhq.selenium/selenium-firefox-driver/jars/selenium-firefox-driver-2.25.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.seleniumhq.selenium/selenium-ie-driver/jars/selenium-ie-driver-2.25.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.seleniumhq.selenium/selenium-iphone-driver/jars/selenium-iphone-driver-2.25.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.seleniumhq.selenium/selenium-safari-driver/jars/selenium-safari-driver-2.25.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.webbitserver/webbit/jars/webbit-0.4.6.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.seleniumhq.selenium/selenium-support/jars/selenium-support-2.25.0.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/junit/junit-dep/jars/junit-dep-4.8.2.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.easytesting/fest-assert/jars/fest-assert-1.4.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.ivy2/cache/org.easytesting/fest-util/jars/fest-util-1.1.6.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/Users/pgaref/Documents/workspace/play2sdg/target/scala-2.11/classes_managed"/>
-	<classpathentry kind="lib" path="/Users/pgaref/.ivy2/cache/org.scala-lang/scala-library/jars/scala-library-2.11.4.jar"/>
+	<classpathentry kind="lib" path="/home/pg1712/.sbt/boot/scala-2.10.0/lib/scala-library.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

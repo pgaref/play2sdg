@@ -23,7 +23,7 @@ public class SongTest extends AbstractDBApplicationTest {
     public void testData() {
 
         // Count things
-        assertEquals(3, User.find.findRowCount());
+        assertEquals(3, RelationalUser.find.findRowCount());
         assertEquals(7, Rating.find.findRowCount());
         assertEquals(5, Song.find.findRowCount());
     }

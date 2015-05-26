@@ -26,6 +26,14 @@ create table user (
   constraint pk_user primary key (email))
 ;
 
+create table play_cassandra@cassandra_pu.users (
+  user_id                   varchar(255) not null,
+  first_name                varchar(255),
+  last_name                 varchar(255),
+  city                      varchar(255),
+  constraint pk_users primary key (user_id))
+;
+
 
 create table rating_song (
   rating_id                      bigint not null,
@@ -37,6 +45,8 @@ create sequence rating_seq;
 create sequence song_seq;
 
 create sequence user_seq;
+
+create sequence play_cassandra@cassandra_pu.users_seq;
 
 
 
@@ -57,6 +67,8 @@ drop table if exists song;
 
 drop table if exists user;
 
+drop table if exists play_cassandra@cassandra_pu.users;
+
 SET REFERENTIAL_INTEGRITY TRUE;
 
 drop sequence if exists rating_seq;
@@ -64,4 +76,6 @@ drop sequence if exists rating_seq;
 drop sequence if exists song_seq;
 
 drop sequence if exists user_seq;
+
+drop sequence if exists play_cassandra@cassandra_pu.users_seq;
 

@@ -1,7 +1,7 @@
 package controllers;
 
 import models.Rating;
-import models.User;
+import models.RelationalUser;
 import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Http.Context;
@@ -17,7 +17,7 @@ public class ProjectController extends Controller {
     public static Result add(Long Songid) {
 
       //  Rating newProject = Rating.create("New project", dynForm.bindFromRequest().get("folder"), request().username());
-    	Rating newRate = Rating.create(User.findbyEmail(request().username()),dynForm.bindFromRequest().get("folder"),Songid);
+    	Rating newRate = Rating.create(RelationalUser.findbyEmail(request().username()),dynForm.bindFromRequest().get("folder"),Songid);
         return ok(views.html.ratings.rategroup.render(newRate));
     }
 

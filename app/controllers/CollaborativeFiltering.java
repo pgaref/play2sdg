@@ -6,7 +6,7 @@ import java.util.Vector;
 
 import models.Rating;
 import models.Song;
-import models.User;
+import models.RelationalUser;
 
 public class CollaborativeFiltering {
 
@@ -15,7 +15,7 @@ public class CollaborativeFiltering {
 	
 	
 	public CollaborativeFiltering(){
-		int userSize = User.find.all().size();
+		int userSize = RelationalUser.find.all().size();
 		int songSize = Song.find.all().size();
 		
 		userItem = new Vector<>(userSize);
@@ -146,18 +146,18 @@ public class CollaborativeFiltering {
 		
 		List<Rating> stored = Rating.findInvolving(username);
 		System.out.println("Ratings for me: "+ stored.size());
-		System.out.println("User id:"+User.getUserID(username));
+		System.out.println("User id:"+RelationalUser.getUserID(username));
 		for (Rating r : stored) {
 			for (Song s : r.songs){
 				int sid = Song.getSongID(s.title);
 				System.out.println("Song id for me"+ sid);
-				this.addRating( User.getUserID(username), sid, 1);
+				this.addRating( RelationalUser.getUserID(username), sid, 1);
 			}
 		}
 	}
 
 	public List<Song> recc2Song(String username) {
-		int userId = User.getUserID(username);
+		int userId = RelationalUser.getUserID(username);
 		Vector<Integer> tmp = this.getRec(userId);
 		
 		System.out.println("Recom vector: "+ tmp);

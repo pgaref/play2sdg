@@ -1,6 +1,6 @@
 package controllers;
 
-import models.User;
+import models.RelationalUser;
 import play.data.Form;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -19,7 +19,7 @@ public class Login extends Controller {
         public String password;
 
         public String validate() {
-            if (User.authenticate(email, password) == null) {
+            if (RelationalUser.authenticate(email, password) == null) {
                 return "Invalid usermail or password";
             }
             return null;

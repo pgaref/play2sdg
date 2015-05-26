@@ -20,8 +20,8 @@ public class ProjectTest extends AbstractDBApplicationTest {
 
     @Test
     public void findProjectsInvolving() {
-        new User("bob@gmail.com", "Bob", "secret").save();
-        new User("jane@gmail.com", "Jane", "secret").save();
+        new RelationalUser("bob@gmail.com", "Bob", "secret").save();
+        new RelationalUser("jane@gmail.com", "Jane", "secret").save();
 
         Rating.create("Play 2", "play", "bob@gmail.com");
         Rating.create("Play 1", "play", "jane@gmail.com");
