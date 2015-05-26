@@ -9,13 +9,19 @@ object ApplicationBuild extends Build {
 
   val appDependencies = Seq(
     // Add your project dependencies here,
+    "com.impetus.client" % "kundera-cassandra" % "2.17",
     javaCore,
-    javaJdbc,
+//    javaJdbc,
     javaEbean
   )
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
-    // Add your own project settings here      
+      //Kundera Public repositories
+      ebeanEnabled := false,
+      resolvers += "Kundera" at "https://oss.sonatype.org/content/repositories/releases",
+      resolvers += "Riptano" at "http://mvn.riptano.com/content/repositories/public",
+      resolvers += "Kundera missing" at "http://kundera.googlecode.com/svn/maven2/maven-missing-resources",
+      resolvers += "Scale 7" at "https://github.com/s7/mvnrepo/raw/master"
   )
 
 }
