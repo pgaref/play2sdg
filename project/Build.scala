@@ -9,9 +9,9 @@ object ApplicationBuild extends Build {
 
   val appDependencies = Seq(
     // Add your project dependencies here,
-    "com.impetus.client" % "kundera-cassandra" % "2.17",
+    "com.impetus.client" % "kundera-cassandra" % "2.5",
     javaCore,
-//    javaJdbc,
+ //   javaJdbc,
     javaEbean
   )
 
