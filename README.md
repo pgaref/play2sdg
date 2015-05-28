@@ -10,3 +10,6 @@ Install [Avaje Ebean Eclipse Plugin] (http://www.avaje.org/eclipseupdate/site.xm
 After the installation, activate Ebean enhancement by right clicking on your project and selecting Enable Ebean Enhancement.
 
 ##Now working on the deployment
+
+## Packaging
+try play dist
