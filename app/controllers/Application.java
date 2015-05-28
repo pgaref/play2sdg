@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Vector;
 
-import models.Rating;
+import models.PlayList;
 import models.Song;
-import models.RelationalUser;
+import models.User;
 import play.Routes;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -17,24 +17,27 @@ public class Application extends Controller {
 
 	/*
 	 * One CF per web App instance
-	 */
+	 
 	private static CollaborativeFiltering cf = new CollaborativeFiltering();
-	
+	*/
 	
     @Security.Authenticated(Secured.class)
     public static Result index() {
     	//change to  mail validation!!
         //return ok(views.html.index.render(Rating.findInvolving(request().username()), Song.findTodoInvolving(request().username()), User.find.byId(request().username())));
-    	return ok(views.html.index.render(Rating.findInvolving(request().username()), Song.findAllSongs(), RelationalUser.find.byId(request().username())));
+    	return ok();
+    	/*return ok(views.html.index.render(PlayList.findInvolving(request().username()), Song.findAllSongs(), RelationalUser.find.byId(request().username())));*/
     }
 
     
     
     @Security.Authenticated(Secured.class)
     public static Result getUserRecommendations(){
-    	cf.loadUserRatings(request().username());
+    /*	cf.loadUserRatings(request().username());
     	List<Song> recList = cf.recc2Song(request().username());
-    	return ok(views.html.ratings.cf.render(recList ,RelationalUser.find.byId(request().username())  ));	
+    */
+    	return ok();
+    	/*return ok(views.html.ratings.cf.render(recList ,RelationalUser.find.byId(request().username())  ));*/	
     }
     
     @Security.Authenticated(Secured.class)
@@ -44,8 +47,9 @@ public class Application extends Controller {
 //    	System.out.println("Managed to get SongId: "+ name);
     	
     	System.out.println("Plain song id: "+ songtitle); 	
-    	cf.addRating(RelationalUser.getUserID(request().username()), Song.getSongID(songtitle), 1);
-    	return ok(views.html.index.render(Rating.findInvolving(request().username()), Song.findAllSongs(), RelationalUser.find.byId(request().username())));
+/*    	cf.addRating(RelationalUser.getUserID(request().username()), Song.getSongID(songtitle), 1);*/
+    	return ok();
+    	/*return ok(views.html.index.render(PlayList.findInvolving(request().username()), Song.findAllSongs(), RelationalUser.find.byId(request().username())));*/
     }
     
     public static Result logout() {

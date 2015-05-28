@@ -20,14 +20,14 @@ public class ProjectTest extends AbstractDBApplicationTest {
 
     @Test
     public void findProjectsInvolving() {
-        new RelationalUser("bob@gmail.com", "Bob", "secret").save();
-        new RelationalUser("jane@gmail.com", "Jane", "secret").save();
-
-        Rating.create("Play 2", "play", "bob@gmail.com");
-        Rating.create("Play 1", "play", "jane@gmail.com");
-
-        List<Rating> results = Rating.findInvolving("bob@gmail.com");
-        assertEquals(1, results.size());
-        assertEquals("Play 2", results.get(0).name);
+//        new User("bob@gmail.com", "Bob", "secret").save();
+//        new User("jane@gmail.com", "Jane", "secret").save();
+//
+//        PlayList.create("Play 2", "play", "bob@gmail.com");
+//        PlayList.create("Play 1", "play", "jane@gmail.com");
+//
+//        List<PlayList> results = PlayList.findInvolving("bob@gmail.com");
+//        assertEquals(1, results.size());
+//        assertEquals("Play 2", results.get(0).name);
     }
 }

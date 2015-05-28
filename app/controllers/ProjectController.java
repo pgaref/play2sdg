@@ -1,7 +1,7 @@
 package controllers;
 
-import models.Rating;
-import models.RelationalUser;
+import models.PlayList;
+import models.User;
 import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Http.Context;
@@ -17,14 +17,17 @@ public class ProjectController extends Controller {
     public static Result add(Long Songid) {
 
       //  Rating newProject = Rating.create("New project", dynForm.bindFromRequest().get("folder"), request().username());
-    	Rating newRate = Rating.create(RelationalUser.findbyEmail(request().username()),dynForm.bindFromRequest().get("folder"),Songid);
+    	/*PlayList newRate = PlayList.create(RelationalUser.findbyEmail(request().username()),dynForm.bindFromRequest().get("folder"),Songid);
         return ok(views.html.ratings.rategroup.render(newRate));
+        */
+        return ok();
     }
 
     
     public static Result rename(Long rating) {
         if (isMemberOf(rating)) {
-            return ok(Rating.rename(rating, dynForm.bindFromRequest().get("name")));
+        	return ok();
+            /*return ok(PlayList.rename(rating, dynForm.bindFromRequest().get("name")));*/
         } else {
             return forbidden();
         }
@@ -32,7 +35,7 @@ public class ProjectController extends Controller {
 
     public static Result delete(Long project) {
         if (isMemberOf(project)) {
-            Rating.find.ref(project).delete();
+          /*  PlayList.find.ref(project).delete();*/
             return ok();
         } else {
             return forbidden();
@@ -40,6 +43,7 @@ public class ProjectController extends Controller {
     }
 
     private static boolean isMemberOf(Long rating) {
-        return Rating.hasRatings(Context.current().request().username());
+    	return true;
+       /* return PlayList.hasRatings(Context.current().request().username());*/
     }
 }

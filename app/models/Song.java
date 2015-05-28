@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -17,10 +18,16 @@ import com.impetus.kundera.index.IndexCollection;
 
 @Entity
 @Table(name = "songs", schema = "play_cassandra@cassandra_pu")
+//Secondary index
 @IndexCollection(columns = { @Index(name = "title") })
-public class Song {
+public class Song implements Serializable{
 
-    @Id
+    /**
+	 * Default id
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@Id
     public UUID id;
     
     @Column(name = "title")
@@ -148,7 +155,7 @@ public class Song {
 	}
 
 	public static Song findByTitle(String title) {
-
+		return controllers.CassandraController.findbySongTitle(title);
 	}
 
 	public static List<Song> findAllSongs() {

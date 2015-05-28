@@ -30,10 +30,10 @@ GET 	/assets/*file               controllers.Assets.at(path="/public", file)
 #GET /persist controllers.UserController.persist()
 
 # List All Users Operation
-GET /listUsers controllers.UserController.listAllUsers()
+#GET /listUsers controllers.UserController.listAllUsers()
 
 # List All Songs Operation ---> NOT RECOMMENDED FOR REAL DATA!!!
-GET /listSongs controllers.UserController.listAllSongs()
+#GET /listSongs controllers.UserController.listAllSongs()
 
 # Update Operation
 #GET /update controllers.UserController.update()

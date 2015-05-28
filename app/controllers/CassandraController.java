@@ -7,6 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import models.PlayList;
 import models.Song;
 import models.User;
 import play.mvc.Controller;
@@ -153,12 +154,63 @@ public class CassandraController extends Controller {
 	/**
 	 * Playlist - Cassandra JPA
 	 * @param Playlist
+	 * 
 	 */
+	public static void persist(PlayList p) {
+		EntityManager em = getEmf().createEntityManager();
+		em.persist(p);
+		em.close();
+		System.out.println("PlayList: " + p.getId() + " record persisted using persistence unit -> cassandra_pu");
+	}
+	
+	
+	public static int getUserPlayListCount(String usermail){
+		EntityManager em = getEmf().createEntityManager();
+		Query findQuery = em
+				.createQuery("Select p from PlayList p where p.usermail = "+ usermail);
+		
+		List<PlayList> tmp = (List<PlayList>) findQuery.getResultList();
+		
+//		for(PlayList p : tmp){
+//			System.out.println("Got from retreived playlist: " +p.folder);
+//			System.out.println("song list count "+ p.songs.size());
+//			for(Song s: p.songs){
+//				System.out.println("Song: "+s);
+//			}
+//		}
+		
+		return tmp.size();
+	}
+	
+	/**
+	 * Needs seriously to be checked
+	 * @param p
+	 * @param newname
+	 */
+	public static void playlistRename(PlayList p, String newname){
+		EntityManager em = getEmf().createEntityManager();
+		Query findQuery = em
+				.createQuery("Select p from Playlists p where p.id = "+ p.id);
+		
+		List<PlayList> tmp = (List<PlayList>) findQuery.getResultList();
+		if(findQuery.getResultList().size() ==0){
+			System.out.println("Could not find any songs with title: "+ p.getFolder());
+			return;	
+		}
+		
+		for(PlayList pp : tmp){
+			if(pp.getId().equals(p.id)){
+				pp.setFolder(newname);
+				persist(pp);
+			}
+		}
+	}
 	
 	
 	private static EntityManagerFactory getEmf() {
 		if (emf == null) {
 			emf = Persistence.createEntityManagerFactory("cassandra_pu");
+			System.out.println("emf"+ emf.toString());
 		}
 		return emf;
 	}
