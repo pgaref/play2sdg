@@ -25,8 +25,8 @@ public class Application extends Controller {
     public static Result index() {
     	//change to  mail validation!!
         //return ok(views.html.index.render(Rating.findInvolving(request().username()), Song.findTodoInvolving(request().username()), User.find.byId(request().username())));
-    	return ok();
-    	/*return ok(views.html.index.render(PlayList.findInvolving(request().username()), Song.findAllSongs(), RelationalUser.find.byId(request().username())));*/
+
+    	return ok(views.html.index.render(PlayList.findExisting(request().username()), Song.findAllSongs(), User.findUser(request().username())) );
     }
 
     
@@ -48,8 +48,8 @@ public class Application extends Controller {
     	
     	System.out.println("Plain song id: "+ songtitle); 	
 /*    	cf.addRating(RelationalUser.getUserID(request().username()), Song.getSongID(songtitle), 1);*/
-    	return ok();
-    	/*return ok(views.html.index.render(PlayList.findInvolving(request().username()), Song.findAllSongs(), RelationalUser.find.byId(request().username())));*/
+    	
+    	return ok(views.html.index.render(PlayList.findExisting(request().username()), Song.findAllSongs(),  User.findUser(request().username())) );
     }
     
     public static Result logout() {

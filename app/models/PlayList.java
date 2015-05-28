@@ -43,11 +43,11 @@ public class PlayList{
     public PlayList(){}
     
     
-    public PlayList(String user, String fname) {
+    public PlayList(String usermail, String fname) {
     	
     	this.id = UUID.randomUUID();
     	this.folder = fname;
-    	this.usermail= user;
+    	this.usermail= usermail;
     	
     }
     
@@ -117,41 +117,45 @@ public class PlayList{
 				+"\n usermail: "+ this.usermail 
 				+"\n Songs: "+ this.songs.toString();
 	}
+	
+	/*
+	 * JPA Connector functionality for Easy accessibility
+	 */
     
+    public static PlayList create(User  u, String folder, UUID songid){
+    	PlayList pl = new PlayList(u.getEmail(), folder);
+    	Song listsong = controllers.CassandraController.findbySongID(songid);
+    	pl.addRatingSong(listsong);
+    	controllers.CassandraController.persist(pl);
+    	return pl;
+    }
     
-
-//    public static Model.Finder<Long, Rating> find = new Finder<Long, Rating>(Long.class, Rating.class);
-//
-//    public static Rating create(RelationalUser u, String folder, Long Songid) {
-//        Rating rating = new Rating(u.email, folder,Songid);
-//        rating.saveManyToManyAssociations("songs");
-//        rating.saveManyToManyAssociations("usermail");
-//        return rating;
-//    }
-//
-//    public static List<Rating> findInvolving(String useremail) {
-//       // return find.where().eq("usermail.email", useremail).findList();
-//       //return find.fetch("project").where().eq("done", false).eq("project.members.email", useremail).findList();
-//    	
-//    	RelationalUser current = RelationalUser.findbyEmail(useremail);
-//    	System.out.println("got"+ useremail + " found"+ current.name);
-//    	
-//    	if(hasRatings(useremail))
-//    		return find.where().eq("usermail", current.email).findList();
-//    	else
-//    		return new ArrayList<Rating>();
-//    }
-//
-//    public static boolean hasRatings(String usermail) {
-//    	
-//    	return find.where().eq("usermail", usermail).findRowCount() > 0;
-//    }
-//
-//    public static String rename(Long Id, String newName) {
-//        Rating r = find.ref(Id);
-//        r.folder = newName;
-//        r.update();
-//        return r.folder;
-//    }
+    public static void remove(UUID id){
+    	PlayList p = controllers.CassandraController.getByID(id);
+    	controllers.CassandraController.remove(p);
+    }
+    
+    public static List<PlayList> findExisting(String usermail){
+    	List<PlayList> pl = controllers.CassandraController.getUserPlayLists(usermail);
+    	if(pl == null){
+    		System.out.println("User: " + usermail + " has no playlists!!!");
+    		return null;
+    	}
+    	return pl;
+    }
+    
+    public static boolean hasPlayLists(String usermail){
+    	List<PlayList> pl = controllers.CassandraController.getUserPlayLists(usermail);
+    	
+    	if(pl == null)
+    		return false;
+    	
+    	return (pl.size() > 0);
+    }
+    
+    public static void playListRename(UUID id, String newname){
+    	PlayList p = controllers.CassandraController.getByID(id);
+    	controllers.CassandraController.playlistRename(p, newname);
+    }
 
 }

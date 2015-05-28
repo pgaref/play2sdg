@@ -1,4 +1,8 @@
-package models;
+package controllers;
+
+import models.PlayList;
+import models.Song;
+import models.User;
 
 
 
@@ -49,6 +53,7 @@ public class CassandraJPA
 
     	System.out.println("PlayList: "+ pl);
     	controllers.CassandraController.persist(pl);
+    	controllers.CassandraController.remove(pl);
     	
     	System.out.println("\n ############## User PlayList count  AFTER: "+ controllers.CassandraController.getUserPlayListCount("pgaref@example.com"));
     	

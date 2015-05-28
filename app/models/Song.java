@@ -46,17 +46,20 @@ public class Song implements Serializable{
     public Song(){}
     
     public Song(String title, String artist, String releaseDate, String link){
+    	this.id = UUID.randomUUID();
     	this.title = title;
     	this.artist = artist;
     	this.releaseDate = Song.convertDate(releaseDate);
     	this.link = link;
-    	this.id = UUID.randomUUID();
     }
-
+    /**
+     * Simple valid date converter
+     * @param dateInString
+     * @return
+     */
 
 	public static Date convertDate(String dateInString) {
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
-
 		Date date = null;
 		try {
 			date = formatter.parse(dateInString);
@@ -66,9 +69,7 @@ public class Song implements Serializable{
 			System.err.println("Error parsing Song date! ");
 			e.printStackTrace();
 		}
-
 		return date;
-
 	}
     
 	/**
@@ -149,8 +150,27 @@ public class Song implements Serializable{
 	public void setLink(String link) {
 		this.link = link;
 	}
+	
+	
+	public String toString(){
+		return "\n--------------------------------------------------"
+				+ "\nsongTitle: " + this.title
+				+ "\nsongID: "+ this.id
+				+ "\nreleaseDate: "+ this.releaseDate
+				+ "\nLink: "+ this.link;
+	}
+	
+	/*
+	 * JPA Connector functionality for Easy accessibility
+	 */
+	
+	public static Song create(String title, String artist, String released, String link){
+		Song newSong = new Song(title, artist, released, link);
+		controllers.CassandraController.persist(newSong);
+		return newSong;
+	}
 
-	public static Song findByID(String id) {
+	public static Song findByID(UUID id) {
 		return controllers.CassandraController.findbySongID(id);
 	}
 
@@ -171,49 +191,6 @@ public class Song implements Serializable{
 		}
 		return -1;
 	}
-	
-	
-	public String toString(){
-		return "\n--------------------------------------------------"
-				+ "\nsongTitle: " + this.title
-				+ "\nsongID: "+ this.id
-				+ "\nreleaseDate: "+ this.releaseDate
-				+ "\nLink: "+ this.link;
-	}
-    
-    
-    
-//    public static Song create(Song song, String title, String artist, Date released, String link) {
-//    	song.title = title;
-//    	song.artist = artist;
-//    	song.releaseDate = released;
-//    	song.link = link;
-//    	t
-//    	song.save();
-//        return song;
-//    }
-//    
-//    public static Model.Finder<Long, Song> find = new Model.Finder<Long, Song>(Long.class, Song.class);
-//
-//    public static List<Song> findAllSongs() {
-//    	return find.all();
-//    }
-//    
-//    public static Song findByTitle(String title){
-//    	return find.where().eq("title", title).findUnique();
-//    }
-//    
-//    public static Song findByID(int id){
-//    	return Song.find.all().get(id);
-//    }
-//    
-//    public static int getSongID(String title){
-//    	List<Song> l = Song.find.all();
-//    	for(int i =0 ; i < l.size(); i++){
-//    		if(l.get(i).title.equals(title))
-//    			return i;
-//    	}
-//    	return -1;
-//    }
+
 
 }

@@ -1,11 +1,15 @@
 package controllers;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import models.PlayList;
 import models.Song;
@@ -26,12 +30,24 @@ public class CassandraController extends Controller {
 	 * User - Cassandra JPA
 	 * @param user
 	 */
-
+	static Logger  logger = Logger.getLogger("controllers.CassandraController");
+	
 	public static void persist(User user) {
 		EntityManager em = getEmf().createEntityManager();
-		em.persist(user);
+		User tmp = em.find(User.class, user.getEmail());
+		if(tmp == null)
+			em.persist(user);
+		else
+			em.merge(user);
 		em.close();
-		System.out.println("User: " + user.getEmail() + " record persisted using persistence unit -> cassandra_pu");
+		logger.debug("User: " + user.getEmail() + " record persisted using persistence unit -> cassandra_pu");
+	}
+	
+	public static void remove(User user) {
+		EntityManager em = getEmf().createEntityManager();
+		em.remove(user);
+		em.close();
+		logger.debug("User: " + user.getEmail() + " record REMOVED using persistence unit -> cassandra_pu");
 	}
 
 	public static User findbyEmail(String email) {
@@ -40,7 +56,7 @@ public class CassandraController extends Controller {
 		em.close();
 		
 		String userStr =  ( user == null ? "Record not found": user.toString() );
-		System.out.println("Looking for User: " +email + " in cassandra database... got: "
+		logger.debug("Looking for User: " +email + " in cassandra database... got: "
 				+ userStr);
 		return user;
 	}
@@ -54,7 +70,7 @@ public class CassandraController extends Controller {
 		em.close();
 		
 		String userStr =  ( user == null ? "Record not found": user.toString() );
-		System.out.println("Record updated: " + userStr);
+		logger.debug("Record updated: " + userStr);
 	}
 
 	public static void deletebyEmail(String email) {
@@ -66,7 +82,7 @@ public class CassandraController extends Controller {
 		em.close();
 		
 		String userStr =  ( user == null ? "Record not found": user.toString() );
-		System.out.println("Record deleted: " + userStr);
+		logger.debug("Record deleted: " + userStr);
 	}
 
 	public static List<User> listAllUsers() {
@@ -75,9 +91,9 @@ public class CassandraController extends Controller {
 		List<User> allUsers = findQuery.getResultList();
 		em.close();
 		
-		System.out.println("-------- Listing All Users -------- ");
+		logger.debug("-------- Listing All Users -------- ");
 		for (User u : allUsers) {
-			System.out.println(" Got User: " + u);
+			logger.debug(" Got User: " + u);
 		}
 
 	/*	findQuery = em
@@ -106,19 +122,30 @@ public class CassandraController extends Controller {
 	
 	public static void persist(Song song) {
 		EntityManager em = getEmf().createEntityManager();
-		em.persist(song);
+		Song tmp = em.find(Song.class, song.getId());
+		if(tmp == null)
+			em.persist(song);
+		else
+			em.merge(song);
 		em.close();
-		System.out.println("Song: " + song.getId() + " record persisted using persistence unit -> cassandra_pu");
+		logger.debug("Song: " + song.getId() + " record persisted using persistence unit -> cassandra_pu");
+	}
+	
+	public static void remove(Song song) {
+		EntityManager em = getEmf().createEntityManager();
+		em.remove(song);
+		em.close();
+		logger.debug("Song: " + song.getId() + " record REMOVED using persistence unit -> cassandra_pu");
 	}
 	
 	
-	public static Song findbySongID(String id) {
+	public static Song findbySongID(UUID id) {
 		EntityManager em = getEmf().createEntityManager();
 		Song song = em.find(Song.class, id);
 		em.close();
 		
 		String songStr =  ( song == null ? "Record not found": song.toString() );
-		System.out.println("Looking for Song: " +id + " in cassandra database... got: "
+		logger.debug("Looking for Song: " +id + " in cassandra database... got: "
 				+ songStr);
 		return song;
 	}
@@ -130,7 +157,7 @@ public class CassandraController extends Controller {
 		
 		
 		if(findQuery.getResultList().size() ==0){
-			System.out.println("Could not find any songs with title: "+ title);
+			logger.debug("Could not find any songs with title: "+ title);
 			return null;	
 		}
 		
@@ -144,9 +171,9 @@ public class CassandraController extends Controller {
 		List<Song> allSongs = findQuery.getResultList();
 		em.close();
 		
-		System.out.println("-------- Listing All Songs -------- ");
+		logger.debug("-------- Listing All Songs -------- ");
 		for (Song s : allSongs) {
-			System.out.println(" Got Song: " + s);
+			logger.debug(" Got Song: " + s);
 		}
 		return allSongs;
 	}
@@ -158,11 +185,32 @@ public class CassandraController extends Controller {
 	 */
 	public static void persist(PlayList p) {
 		EntityManager em = getEmf().createEntityManager();
-		em.persist(p);
+		PlayList tmp = em.find(PlayList.class, p.getId());
+		if(tmp == null)
+			em.persist(p);
+		else
+			em.merge(p);
 		em.close();
-		System.out.println("PlayList: " + p.getId() + " record persisted using persistence unit -> cassandra_pu");
+		logger.debug("PlayList: " + p.getId() + " record persisted using persistence unit -> cassandra_pu");
 	}
 	
+	public static void remove(PlayList p) {
+		EntityManager em = getEmf().createEntityManager();
+		em.remove(p);
+		em.close();
+		logger.debug("PlayList: " + p.getId() + " record REMOVED using persistence unit -> cassandra_pu");
+	}
+	
+	public static PlayList getByID(UUID id){
+		EntityManager em = getEmf().createEntityManager();
+		Query findQuery = em.createQuery("Select p from PlayList p where p.id = "+ id );
+		List<PlayList> tmp = (List<PlayList>) findQuery.getResultList();
+		if(tmp == null){
+			logger.debug("PlayList: "+ id + " could not be found!!");
+			return null;
+		}
+		return tmp.get(0);
+	}
 	
 	public static int getUserPlayListCount(String usermail){
 		EntityManager em = getEmf().createEntityManager();
@@ -170,17 +218,17 @@ public class CassandraController extends Controller {
 				.createQuery("Select p from PlayList p where p.usermail = "+ usermail);
 		
 		List<PlayList> tmp = (List<PlayList>) findQuery.getResultList();
-		
-//		for(PlayList p : tmp){
-//			System.out.println("Got from retreived playlist: " +p.folder);
-//			System.out.println("song list count "+ p.songs.size());
-//			for(Song s: p.songs){
-//				System.out.println("Song: "+s);
-//			}
-//		}
-		
 		return tmp.size();
 	}
+
+	public static List<PlayList> getUserPlayLists(String usermail){
+		EntityManager em = getEmf().createEntityManager();
+		Query findQuery = em
+				.createQuery("Select p from PlayList p where p.usermail = "+ usermail);
+		List<PlayList> tmp = (List<PlayList>) findQuery.getResultList();
+		return tmp;
+	}
+	
 	
 	/**
 	 * Needs seriously to be checked
@@ -194,7 +242,7 @@ public class CassandraController extends Controller {
 		
 		List<PlayList> tmp = (List<PlayList>) findQuery.getResultList();
 		if(findQuery.getResultList().size() ==0){
-			System.out.println("Could not find any songs with title: "+ p.getFolder());
+			logger.debug("Could not find any songs with title: "+ p.getFolder());
 			return;	
 		}
 		
@@ -208,12 +256,12 @@ public class CassandraController extends Controller {
 	
 	
 	private static EntityManagerFactory getEmf() {
+		logger.setLevel(Level.DEBUG);
+		
 		if (emf == null) {
 			emf = Persistence.createEntityManagerFactory("cassandra_pu");
-			System.out.println("emf"+ emf.toString());
+			logger.debug("emf"+ emf.toString());
 		}
 		return emf;
-	}
-
-	
+	}	
 }

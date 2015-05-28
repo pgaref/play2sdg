@@ -11,27 +11,30 @@ import org.junit.Test;
 
 import base.AbstractDBApplicationTest;
 
-public class UserTest extends AbstractDBApplicationTest {
+public class UserTest {
 
     @Before
     public void setUp() {
-        start(fakeApplication(inMemoryDatabase()));
+        
+    	//start(fakeApplication());
+    	UserTest.class.getClassLoader().getResource("META-INF/persistence.xml");
     }
 
     @Test
     public void createAndRetrieveZenUser() {
-//        new User("pangaref@gmail.com", "Panagiotis", "secret").save();
-//        User pg = User.find.where().eq("email", "pangaref@gmail.com").findUnique();
-//        assertNotNull(pg);
-//        assertEquals("Panagiotis", pg.name);
+    	User.create("pangaref@gmail.com", "pgaref", "secret");
+    	
+        User pg = User.findUser("pangaref@gmail.com");
+        assertNotNull(pg);
+        assertEquals("pgaref", pg.getUsername());
     }
 
     @Test
     public void tryAuthenticateZenUser() {
-//        new User("pangaref@gmail.com", "Panagiotis", "secret").save();
-//
-//        assertNotNull(User.authenticate("pangaref@gmail.com", "secret"));
-//        assertNull(User.authenticate("pangaref@gmail.com", "badpassword"));
-//        assertNull(User.authenticate("pangaref1@gmail.com", "secret"));
+    	User.create("pangaref@gmail.com", "pgaref", "secret");
+
+        assertNotNull(User.authenticate("pangaref@gmail.com", "secret"));
+        assertNull(User.authenticate("pangaref@gmail.com", "badpassword"));
+        assertNull(User.authenticate("badname@gmail.com", "secret"));
     }
 }
