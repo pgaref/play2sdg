@@ -17,21 +17,24 @@ public class SongTest {
 //       //}
 //    }
 
-	@Test
+	
     public void testData() {
 
 		Song s1 =
-				Song.create("Wolves (Kill them with Colour Remix)", "Bon Hiver", "2014-11-11 ", "http://www.youtube.com/watch?v=5GXAL5mzmyw");
+				Song.create("Wolves (Kill them with Colour Remix)", "Bon Hiver", "2014-11-11", "http://www.youtube.com/watch?v=5GXAL5mzmyw");
 		
 		Song s2 = 
 				Song.create("Contact Us (Live at ZDF Aufnahmezustand)", "Dillon", "1986-11-04", "https://www.youtube.com/watch?v=E6WqTL2Up3Y");
         // Count things
         assertEquals("pgaref", User.findUser("pgaref@example.com").username);
         //assertEquals(1, PlayList.findExisting("pgaref@example.com"));
-        assertEquals(s1.link, Song.findByID(s1.getId()).link);
-        assertEquals(s2.artist, Song.findByID(s2.getId()).artist);
+        assertEquals(s1.artist, Song.findByTitle(s1.getTitle()).getArtist());
+        assertEquals(s2.artist, Song.findByTitle(s2.getTitle()).artist);
     }
-    
+    public static void main(String[] args) {
+    	SongTest t = new SongTest();
+    	t.testData();
+	}
 
 //    @Test
 //    public void findTodoTasksInvolving() {

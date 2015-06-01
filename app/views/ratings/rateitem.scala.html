@@ -1,7 +1,7 @@
-@(song: Song)
+@(song: String)
 
-<li data-project="@song.id">
-    <a class="name">@song.title</a>
-    <button class="delete" href="#">Delete</button>
+<li data-project="@song">
+    <a class="name">@song</a>
+    <button class="delete" href="@routes.Application.deletePlayListSong(song)">Delete</button>
     <span class="loader">Loading</span>
 </li>

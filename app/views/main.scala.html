@@ -31,7 +31,7 @@
             
             function deleteProject(item,id) {
 
-    	        jsRoutes.controllers.ProjectController.delete(id).ajax({
+    	        jsRoutes.controllers.PlayListController.delete(id).ajax({
     	        	context: this,
     	        	success:function() {
     	        		item.remove();
@@ -41,7 +41,7 @@
             
             function addProjectIntoFolder(parent,name) {
 
-    	        jsRoutes.controllers.ProjectController.add().ajax({
+    	        jsRoutes.controllers.PlayListController.add().ajax({
     	        	context: this,
     	        	data:{
     	        		folder:name
@@ -62,7 +62,9 @@
             <a href="@routes.Application.index" id="logo"><span>play</span>2<span2>sdg</span2></a>
             
             <dl id="user">
-                <dt>@user.username</dt>
+                <dt>@user.firstname</dt>
+                <dt>@user.lastname</dt>
+                <dt>(@user.username)</dt>
                 <dd>
                     <a href="@routes.Application.logout()">Logout</a>
                 </dd>
@@ -78,19 +80,25 @@
             </ul>
             
             <dl class="optionsx">
-        		<!--<dt>Options</dt>-->
+        		<dt>Options</dt>
         		</br>
         		<dd>
-            		<button class="newProject">New Rating</button>
+            		<!--<button class="newProject"  href="@routes.Application.createPlayList()" >New PlayList</button>-->
+            		<a href="@routes.Application.createPlayList()" >New PlayList</a>
         		</dd>
         		 
         		</br>
-        		</br>
-        		
         		<dl id="test">
                 <dd>
                     <a href="@routes.Application.getUserRecommendations()"> Recommendations</a>
                 </dd>
+
+                </br>   		
+        		<dl id="test">
+                <dd>
+                    <a href="@routes.Application.addSpotifySongsbyArtist("weezer")"> Add Spotify Songs</a>
+                </dd>
+                
             </dl>
         		
     	 	</dl>

@@ -174,7 +174,7 @@ class Project extends Backbone.View
             onChange: @renameProject
     renameProject: (name) ->
         @loading(true)
-        r = jsRoutes.controllers.Projects.rename(@id)
+        r = jsRoutes.controllers.Project.rename(@id)
         $.ajax
             url: r.url
             type: r.type
@@ -190,7 +190,7 @@ class Project extends Backbone.View
     deleteProject: (e) ->
         e.preventDefault()
         @loading(true)
-        r = jsRoutes.controllers.Projects.delete(@id)
+        r = jsRoutes.controllers.Project.delete(@id)
         $.ajax
             url: r.url
             type: r.type

@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.persistence.Column;
+import javax.persistence.Embeddable;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -19,7 +20,7 @@ import com.impetus.kundera.index.IndexCollection;
 @Entity
 @Table(name = "songs", schema = "play_cassandra@cassandra_pu")
 //Secondary index
-@IndexCollection(columns = { @Index(name = "title") })
+//@IndexCollection(columns = { @Index(name = "title") })
 public class Song implements Serializable{
 
     /**
@@ -27,9 +28,10 @@ public class Song implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	@Id
-    public UUID id;
+	
+   // public UUID id;
     
+    @Id
     @Column(name = "title")
     public String title;
     
@@ -46,7 +48,7 @@ public class Song implements Serializable{
     public Song(){}
     
     public Song(String title, String artist, String releaseDate, String link){
-    	this.id = UUID.randomUUID();
+    	//this.id = UUID.randomUUID();
     	this.title = title;
     	this.artist = artist;
     	this.releaseDate = Song.convertDate(releaseDate);
@@ -72,21 +74,6 @@ public class Song implements Serializable{
 		return date;
 	}
     
-	/**
-	 * @return the id
-	 */
-	public UUID getId() {
-		return id;
-	}
-
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(UUID id) {
-		this.id = id;
-	}
-
 
 	/**
 	 * @return the title
@@ -155,7 +142,6 @@ public class Song implements Serializable{
 	public String toString(){
 		return "\n--------------------------------------------------"
 				+ "\nsongTitle: " + this.title
-				+ "\nsongID: "+ this.id
 				+ "\nreleaseDate: "+ this.releaseDate
 				+ "\nLink: "+ this.link;
 	}
@@ -170,12 +156,17 @@ public class Song implements Serializable{
 		return newSong;
 	}
 
-	public static Song findByID(UUID id) {
-		return controllers.CassandraController.findbySongID(id);
-	}
-
 	public static Song findByTitle(String title) {
-		return controllers.CassandraController.findbySongTitle(title);
+		return controllers.CassandraController.findSongbyTitle(title);
+	}
+	
+	public static Song findByID(int id){
+		List<Song> l = Song.findAllSongs();
+		if(id > l.size()){
+			System.out.println("ID Cannot be greater than size!!");
+			return null;
+		}
+		return l.get(id);
 	}
 
 	public static List<Song> findAllSongs() {

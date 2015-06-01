@@ -21,10 +21,10 @@ public class User {
 	private String password;
 
 	@Column(name = "first_name")
-	private String fistname;
+	public String firstname;
 
 	@Column(name = "last_name")
-	private String lastname;	
+	public String lastname;	
 	
 	//default constructor
 	public User(){
@@ -40,7 +40,7 @@ public class User {
 		this.email = email;
 		this.username = username;
 		this.password = password;
-		this.fistname = fname;
+		this.firstname = fname;
 		this.lastname = lname;
 	}
 
@@ -87,17 +87,17 @@ public class User {
 	}
 
 	/**
-	 * @return the fistname
+	 * @return the firstname
 	 */
 	public String getFistname() {
-		return fistname;
+		return firstname;
 	}
 
 	/**
-	 * @param fistname the fistname to set
+	 * @param firstname the firstname to set
 	 */
 	public void setFistname(String fistname) {
-		this.fistname = fistname;
+		this.firstname = fistname;
 	}
 
 	/**

@@ -12,9 +12,16 @@ GET     /logout                 controllers.Application.logout()
 GET 	/recommend				controllers.Application.getUserRecommendations()
 GET		/rate					controllers.Application.rate(String)
 
-POST	/project/:playlistid       controllers.ProjectController.add(playlistid: java.util.UUID)
-DELETE 	/project/:playlistid       controllers.ProjectController.delete(playlistid: java.util.UUID)
-PUT 	/project/:playlistid       controllers.ProjectController.rename(playlistid: java.util.UUID)
+GET		/addsongs/:artist		   controllers.Application.addSpotifySongsbyArtist(artist: String)
+
+GET		/project/create       	   controllers.Application.createPlayList()
+GET		/project/delete/:song	   controllers.Application.deletePlayListSong(song :String) 
+
+POST	/project/:playlistid       controllers.PlayListController.add(playlistid: String)
+DELETE 	/project/:playlistid       controllers.PlayListController.delete(playlistid: java.util.UUID)
+PUT 	/project/:playlistid       controllers.PlayListController.rename(playlistid: java.util.UUID)
+
+
 
 # JS ROUTES
 GET 	/public/javascript/routes          controllers.Application.javascriptRoutes()

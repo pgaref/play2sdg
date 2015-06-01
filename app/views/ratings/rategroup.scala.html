@@ -1,8 +1,8 @@
-@(rate: PlayList)
+@(playlist: PlayList)
 
-<li data-group="@rate.folder">
+<li data-group="@playlist.folder">
     <span class="toggle"></span>
-    <h4 class="groupName">@rate.folder</h4>
+    <h4 class="groupName">@playlist.folder</h4>
     <span class="loader">Loading</span>
      <!--<dl class="optionsx">
         <dt>Options</dt>
@@ -11,7 +11,7 @@
         </dd> 
     </dl>-->
     <ul>
-        @rate.songs.map { song =>
+        @playlist.titles.map { song =>
             @views.html.ratings.rateitem(song)
         }
     </ul>

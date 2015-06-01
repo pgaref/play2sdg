@@ -10,9 +10,7 @@ object ApplicationBuild extends Build {
   val appDependencies = Seq(
     // Add your project dependencies here,
     "com.impetus.client" % "kundera-cassandra" % "2.5",
-    javaCore,
- //   javaJdbc,
-    javaEbean
+    javaCore
   )
 
   val main = play.Project(appName, appVersion, appDependencies).settings(

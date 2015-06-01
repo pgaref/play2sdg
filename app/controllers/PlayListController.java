@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.UUID;
 
 import models.PlayList;
+import models.User;
 import play.data.DynamicForm;
 import play.mvc.Controller;
 import play.mvc.Http.Context;
@@ -12,17 +13,14 @@ import play.mvc.Security;
 
 
 @Security.Authenticated(Secured.class)
-public class ProjectController extends Controller {
+public class PlayListController extends Controller {
 
     private static final DynamicForm dynForm = play.data.Form.form();
-
-    public static Result add(UUID Songid) {
-
-      //  Rating newProject = Rating.create("New project", dynForm.bindFromRequest().get("folder"), request().username());
-    	/*PlayList newRate = PlayList.create(RelationalUser.findbyEmail(request().username()),dynForm.bindFromRequest().get("folder"),Songid);
-        return ok(views.html.ratings.rategroup.render(newRate));
-        */
-        return ok();
+    
+    
+    public static Result add(String SongTitle) {
+    	PlayList newPlay = PlayList.create(User.findUser(request().username()), dynForm.bindFromRequest().get("folder"));
+    	return ok(views.html.ratings.rategroup.render(newPlay));
     }
 
     

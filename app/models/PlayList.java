@@ -1,19 +1,19 @@
 package models;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 import com.impetus.kundera.index.Index;
 import com.impetus.kundera.index.IndexCollection;
@@ -35,10 +35,8 @@ public class PlayList{
     public String usermail;
     
     
-    @Column(name = "songs")
-//    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name="songs")
-    public Set<Song> songs = new HashSet<Song>();
+    @Column(name = "song-titles")
+    public List<String> titles = new ArrayList<String>();
     
     public PlayList(){}
     
@@ -52,7 +50,7 @@ public class PlayList{
     }
     
     public void addRatingSong(Song s){
-    	this.songs.add(s);
+    	this.titles.add(s.getTitle());
     }
 
 	/**
@@ -100,32 +98,39 @@ public class PlayList{
 	/**
 	 * @return the songs
 	 */
-	public Set<Song> getSongs() {
-		return songs;
+	public List<String> getSongs() {
+		return titles;
 	}
 
 	/**
 	 * @param songs the songs to set
 	 */
-	public void setSongs(Set<Song> songs) {
-		this.songs = songs;
+	public void setSongs(List<String> songs) {
+		this.titles = songs;
 	}
 	
 	public String toString(){
 		return "\n--------------------------------------------------"
 				+ "\n Playlist: "+this.folder
 				+"\n usermail: "+ this.usermail 
-				+"\n Songs: "+ this.songs.toString();
+				+"\n Songs: "+ this.titles.toString();
 	}
 	
 	/*
 	 * JPA Connector functionality for Easy accessibility
 	 */
     
-    public static PlayList create(User  u, String folder, UUID songid){
+	//PlayList with one song
+    public static PlayList create(User  u, String folder, String songTitle){
     	PlayList pl = new PlayList(u.getEmail(), folder);
-    	Song listsong = controllers.CassandraController.findbySongID(songid);
+    	Song listsong = controllers.CassandraController.findSongbyTitle(songTitle);
     	pl.addRatingSong(listsong);
+    	controllers.CassandraController.persist(pl);
+    	return pl;
+    }
+    // Empty PlayList
+    public static PlayList create(User  u, String folder){
+    	PlayList pl = new PlayList(u.getEmail(), folder);
     	controllers.CassandraController.persist(pl);
     	return pl;
     }
@@ -151,6 +156,12 @@ public class PlayList{
     		return false;
     	
     	return (pl.size() > 0);
+    }
+    
+    public static void addSong(String usermail, Song song){
+    	PlayList p = controllers.CassandraController.getUserPlayLists(usermail).get(0);
+    	p.addRatingSong(song);
+    	controllers.CassandraController.persist(p);
     }
     
     public static void playListRename(UUID id, String newname){
