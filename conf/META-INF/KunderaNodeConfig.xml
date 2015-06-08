@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<clientProperties>
+  <datastores>
+   <dataStore>
+    <name>cassandra</name>
+    <connection>
+     <servers>
+     
+     <server>
+       <host>wombat26.doc.res.ic.ac.uk</host>
+       <port>9160</port>
+       <properties>
+        <property name="testonborrow" value="true"></property>
+        <property name="testwhileidle" value="true"></property>
+        <property name="testonconnect" value="true"></property>
+        <property name="testonreturn" value="true"></property>
+        <property name="socket.timeout" value="120000"></property>
+        <property name="failover.policy" value="on.fail.try.one.next.available"></property>
+        <property name="retry" value="true"></property>
+        <property name="kundera.pool.size.max.active" value="50"></property>
+     </properties>
+    </server>
+    
+      <server>
+       <host>wombat27.doc.res.ic.ac.uk</host>
+       <port>9160</port>
+       <properties>
+        <property name="testonborrow" value="true"></property>
+        <property name="testwhileidle" value="true"></property>
+        <property name="testonconnect" value="true"></property>
+        <property name="testonreturn" value="true"></property>
+        <property name="socket.timeout" value="120000"></property>
+        <property name="failover.policy" value="on.fail.try.one.next.available"></property>
+        <property name="retry" value="true"></property>
+        <property name="kundera.pool.size.max.active" value="50"></property>
+     </properties>
+    </server>
+
+    <server>
+      <host>wombat28.doc.res.ic.ac.uk</host>
+      <port>9160</port>
+      <properties>
+         <property name="testonborrow" value="true"></property>
+         <property name="testwhileidle" value="true"></property>
+         <property name="testonconnect" value="true"></property>
+         <property name="testonreturn" value="true"></property>
+         <property name="socket.timeout" value="120000"></property>
+         <property name="failover.policy" value="on.fail.try.one.next.available"></property>
+         <property name="retry" value="true"></property>
+         <property name="kundera.pool.size.max.active" value="50"></property>
+     </properties>
+    </server>
+       
+    </servers>
+     <!-- Load balancing specific configuration -->
+    <properties>
+    <property name="loadbalancing.policy" value="roundrobin"></property>
+        <property name="retry" value="true"></property>
+        <property name="retry.delay" value="1"></property>
+        <property name="max.wait" value="3000"></property> 
+    </properties>
+ </connection>
+</dataStore>
+</datastores>
+</clientProperties>
