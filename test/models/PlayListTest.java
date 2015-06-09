@@ -19,7 +19,7 @@ public class PlayListTest{
 	
 	
 	public void fillUp(){
-		Song tmp=  Song.findByTitle("Contact Us (Live at ZDF Aufnahmezustand)");
+		Track tmp=  Track.findByTitle("Contact Us (Live at ZDF Aufnahmezustand)");
 		List<PlayList> l = controllers.CassandraController.getUserPlayLists("pgaref@example.com");
     	for(PlayList pp : l ){
     		pp.addRatingSong(tmp);
@@ -29,8 +29,8 @@ public class PlayListTest{
     public void findProjectsInvolving() {
     	List<PlayList> l = controllers.CassandraController.getUserPlayLists("pgaref@example.com");
     	for(PlayList pp : l ){
-    		System.out.println("pl name "+ pp.getFolder() + " song size: "+ pp.getSongs().size());
-    		for(String s :pp.getSongs() )
+    		System.out.println("pl name "+ pp.getFolder() + " song size: "+ pp.getTracks().size());
+    		for(String s :pp.getTracks() )
     			System.out.println("SONGGGG: "+ s);	
     	}
     }
