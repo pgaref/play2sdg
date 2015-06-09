@@ -139,6 +139,9 @@ public class CassandraController extends Controller {
 	
 	public static void persist(Track song) {
 		EntityManager em = getEmf().createEntityManager();
+		/*
+		 * TODO CHANGE QUERY!!!!!!!!!!!
+		 */
 		Track tmp = em.find(Track.class, song.getTrack_id());
 		if(tmp == null){
 			em.persist(song);
