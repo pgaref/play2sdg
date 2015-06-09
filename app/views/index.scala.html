@@ -1,4 +1,4 @@
-@(ratings: List[PlayList], songs: List[Song], user: User)
+@(ratings: List[PlayList], songs: List[Track], user: User, totalTracks : Integer)
 
 @main(ratings, user) {
 
@@ -13,7 +13,7 @@
         
                 <div class="folder" data-folder-id="Songs List">
                     <header>
-                        <h3>All Songs List</h3>
+                        <h3>Most Recent Tracks List  -  Total Tracks (@totalTracks) </h3>
                     </header>
                     <ul class="list">
                         @songs.map { song =>

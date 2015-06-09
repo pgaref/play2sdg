@@ -6,8 +6,9 @@ import com.echonest.api.v4.EchoNestAPI;
 import com.echonest.api.v4.EchoNestException;
 import com.echonest.api.v4.SongParams;
 
+import models.Counter;
 import models.PlayList;
-import models.Song;
+import models.Track;
 import models.User;
 import play.Routes;
 import play.mvc.Controller;
@@ -19,7 +20,7 @@ public class Application extends Controller {
 	/*
 	 * One CF per web App instance
 	*/ 
-	private static CollaborativeFiltering cf = new CollaborativeFiltering();
+	private static CollaborativeFiltering cf = new CollaborativeFiltering();;
 	
 	private static EchoNestAPI en;
 	
@@ -31,9 +32,13 @@ public class Application extends Controller {
     	//List<PlayList> tmp = PlayList.findExisting(request().username());
     	for(PlayList p : tmp ){
     		System.out.println("Listing PL : "+ p.folder);
-    		System.out.println("PL songs:  "+ p.getSongs() + " #### size: "+ p.getSongs().size());
+    		if(p.getTracks()!= null)
+    			System.out.println("PL songs:  "+ p.getTracks() + " #### size: "+ p.getTracks().size());
+    		else
+    			System.out.println("PL songs:  empty ");
     	}
-    	return ok(views.html.index.render(PlayList.findExisting(request().username()), Song.findAllSongs(), User.findUser(request().username())) );
+    	System.out.println("Logged in as User: "+ request().username() );
+    	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.getTracksPage(0), Login.findUser(request().username()), CassandraController.getCounterValue("tracks") ) );
     }
 
     
@@ -41,31 +46,31 @@ public class Application extends Controller {
     @Security.Authenticated(Secured.class)
     public static Result getUserRecommendations(){
     	cf.loadUserRatings(request().username());
-    	List<Song> recList = cf.recc2Song(request().username());
+    	List<Track> recList = cf.recc2Song(request().username());
     	
     	return ok(views.html.ratings.cf.render(recList ,controllers.CassandraController.findbyEmail(request().username())  ));	
     }
     
     @Security.Authenticated(Secured.class)
-    public static Result rate(String songtitle){
+    public static Result rate(String track_id){
 //    	final Map<String, String[]> values = request().body().asFormUrlEncoded();
 //    	final String name = values.get("java_songid")[0];
 //    	System.out.println("Managed to get SongId: "+ name);
+    	Track found =  PlayListController.findByTrackID(track_id);
+    	System.out.println("\n\n\n ---> ############ Plain track id:  "+ track_id + " - Found Title "+ found.getTitle()); 
     	
-    	System.out.println("\n\n\n ---> ############ Plain song id:  "+ songtitle); 	
-    	cf.addRating( User.getUserID(request().username()), Song.getSongID(songtitle), 1);
-
-    	Song found =  Song.findByTitle(songtitle);
-    	System.out.println("FOUND: "+ found);
-    	PlayList.addSong(request().username(), found);
-    	return ok(views.html.index.render(PlayList.findExisting(request().username()), Song.findAllSongs(),  User.findUser(request().username())) );
+    	cf.addRating( Login.getUserID(request().username()), PlayListController.getSongID(found.getTitle()), 1);
+    	
+    	PlayListController.addSong(request().username(), found);
+    	
+    	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.findAllSongs(),  Login.findUser(request().username()), CassandraController.getCounterValue("tracks") ) );
     }
     
     @Security.Authenticated(Secured.class)
     public static Result createPlayList(){
-    	PlayList newPlay = PlayList.create(User.findUser(request().username()), "tmpList");
-    	System.out.println("Just create Playlist "+ newPlay);
-    	return ok(views.html.index.render(PlayList.findExisting(request().username()), Song.findAllSongs(),  User.findUser(request().username())) );
+    	PlayList newPlay = PlayListController.create(Login.findUser(request().username()), "tmpList");
+    	System.out.println("Just create Playlist "+ newPlay.toString());
+    	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.findAllSongs(),  Login.findUser(request().username()), CassandraController.getCounterValue("tracks") ) );
     }
     
     public static Result deletePlayListSong(String song){
@@ -87,7 +92,7 @@ public class Application extends Controller {
     public static void dumpSong(com.echonest.api.v4.Song song) throws EchoNestException {
     	
     	System.out.println("Receiced track: "+ song.getTitle() + " from "+ song.getArtistName());
-    	Song mySong = new Song(song.getTitle(), song.getArtistName(), "2014-11-11", song.getAnalysisURL());
+    	Track mySong = new Track(song.getID(), song.getTitle(), song.getArtistName(), "2014-11-11");
         controllers.CassandraController.persist(mySong);
     }
     
@@ -121,7 +126,7 @@ public class Application extends Controller {
 			e.printStackTrace();
 		}
         
-		return ok(views.html.index.render(PlayList.findExisting(request().username()), Song.findAllSongs(),  User.findUser(request().username())) );
+		return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.findAllSongs(),  Login.findUser(request().username()), CassandraController.getCounterValue("tracks") ) );
     }
     
     

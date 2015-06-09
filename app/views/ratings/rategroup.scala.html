@@ -11,7 +11,7 @@
         </dd> 
     </dl>-->
     <ul>
-        @playlist.titles.map { song =>
+        @playlist.tracks.map { song =>
             @views.html.ratings.rateitem(song)
         }
     </ul>

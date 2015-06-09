@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name = "counters", schema = "play_cassandra@cassandra_pu")
 public class Counter {
@@ -17,7 +18,6 @@ public class Counter {
 	private int counter;
 	
 	public Counter() {
-		// TODO Auto-generated constructor stub
 		this.counter=0;
 	}
 	
@@ -68,5 +68,14 @@ public class Counter {
 	public void decrementCounter(){
 		this.counter--;
 	}
+	
+	/*
+	 * JPA Connector functionality for Easy accessibility
+	 
+	
+	public static int getTracksCounter(){
+		return CassandraController.getCounterValue("tracks");
+	}
+	*/
 
 }

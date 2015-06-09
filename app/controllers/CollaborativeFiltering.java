@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Vector;
 
 import models.PlayList;
-import models.Song;
+import models.Track;
 
 public class CollaborativeFiltering {
 
@@ -15,7 +15,7 @@ public class CollaborativeFiltering {
 	
 	public CollaborativeFiltering(){
 		int userSize = controllers.CassandraController.listAllUsers().size();;
-		int songSize = controllers.CassandraController.getCounterValue("songs");
+		int songSize = controllers.CassandraController.getCounterValue("tracks");
 		
 		userItem = new Vector<>(userSize);
 		coOcc = new Integer [songSize][songSize];
@@ -148,24 +148,24 @@ public class CollaborativeFiltering {
 		int uid = controllers.CassandraController.getUserID(username);
 		System.out.println("User id:"+uid);
 		for (PlayList r : stored) {
-			for (String s : r.titles){
-				int sid = Song.getSongID(s);
-				System.out.println("Song id for me"+ sid);
+			for (String s : r.tracks){
+				int sid = PlayListController.getSongID(s);
+				System.out.println("Track id for me"+ sid);
 				this.addRating( uid, sid, 1);
 			}
 		}
 	}
 
-	public List<Song> recc2Song(String username) {
+	public List<Track> recc2Song(String username) {
 		int userId = controllers.CassandraController.getUserID(username);
 		Vector<Integer> tmp = this.getRec(userId);
 		
 		System.out.println("Recom vector: "+ tmp);
 
-		List<Song> newRec = new ArrayList<Song>();
+		List<Track> newRec = new ArrayList<Track>();
 		for (int i = 0; i < tmp.size(); i++) {
 			if (tmp.get(i) > 0)
-				newRec.add(Song.findByID(i));
+				newRec.add(PlayListController.findByID(i));
 		}
 		return newRec;
 

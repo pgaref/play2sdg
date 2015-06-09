@@ -14,20 +14,17 @@ import javax.persistence.Table;
 import com.impetus.kundera.index.Index;
 import com.impetus.kundera.index.IndexCollection;
 
-
-
 @Entity
 @Table(name = "tracks", schema = "play_cassandra@cassandra_pu")
 //Secondary index
 @IndexCollection(columns = { @Index(name = "title") })
-
 public class Track implements Serializable{
 
 
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column(name = "track_id")
+	@Column(name = "key")
 	public String track_id;
 	
 	@Column(name = "title")
@@ -139,46 +136,6 @@ public class Track implements Serializable{
 				+ "\n title: " + this.title
 				+ "\n releaseDate: "+ this.releaseDate
 				;
-	}
-	
-	/*
-	 * JPA Connector functionality for Easy accessibility
-	 */
-	
-	public static Track create(String id, String title, String artist, String released){
-		Track newSong = new Track(id, title, artist, released);
-		controllers.CassandraController.persist(newSong);
-		return newSong;
-	}
-
-	public static Track findByTitle(String title) {
-		return controllers.CassandraController.findTrackbyTitle(title);
-	}
-	
-	public static Track findByID(int id){
-		List<Track> l = Track.findAllSongs();
-		if(id > l.size()){
-			System.out.println("ID Cannot be greater than size!!");
-			return null;
-		}
-		return l.get(id);
-	}
-
-	public static List<Track> findAllSongs() {
-		return controllers.CassandraController.listAllTracks();
-	}
-	
-	public static List<Track> getTracksPage(int PageNo){
-		return controllers.CassandraController.getTracksPage(PageNo, 50);
-	}
-	
-	public static int getSongID(String title) {
-		List<Track> l = Track.findAllSongs();
-		for (int i = 0; i < l.size(); i++) {
-			if (l.get(i).title.equals(title))
-				return i;
-		}
-		return -1;
 	}
 
 }

@@ -1,6 +1,9 @@
 package controllers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 import javax.persistence.EntityManager;
@@ -8,14 +11,17 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import models.Counter;
+import models.PlayList;
+import models.Track;
+import models.User;
+
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import models.Counter;
-import models.PlayList;
-import models.Song;
-import models.User;
 import play.mvc.Controller;
+
+import com.impetus.client.cassandra.common.CassandraConstants;
 
 /**
  * User Controller for Apache Cassandra back-end
@@ -39,6 +45,7 @@ public class CassandraController extends Controller {
 	public static void persist(User user) {
 		EntityManager em = getEmf().createEntityManager();
 		User tmp = em.find(User.class, user.getEmail());
+		
 		if(tmp == null){
 			em.persist(user);
 			increment(userCounter, "user");
@@ -58,13 +65,17 @@ public class CassandraController extends Controller {
 
 	public static User findbyEmail(String email) {
 		EntityManager em = getEmf().createEntityManager();
-		User user = em.find(User.class, email);
+		Query q = em.createNativeQuery("SELECT * FROM \"users\" WHERE \"key\"='"+email+"';", User.class);
+		q.setMaxResults(1);
+		@SuppressWarnings("unchecked")
+		List<User> userl = q.getResultList();
+		//User user = em.find(User.class, email);
 		em.close();
 		
-		boolean userStr =  ( user == null ? false : true );
+		boolean userStr =  ( userl == null ? false : true );
 		logger.debug("\n Looking for User: " +email + " in cassandra database... found: "
 				+ userStr);
-		return user;
+		return userl.get(0);
 	}
 
 	public static void updatePassword(String email, String newPass) {
@@ -93,6 +104,7 @@ public class CassandraController extends Controller {
 	public static List<User> listAllUsers() {
 		EntityManager em = getEmf().createEntityManager();
 		Query findQuery = em.createQuery("Select p from User p", User.class);
+		@SuppressWarnings("unchecked")
 		List<User> allUsers = findQuery.getResultList();
 		em.close();
 		
@@ -121,72 +133,99 @@ public class CassandraController extends Controller {
 	
 	
 	/**
-	 * Song - Cassandra JPA
-	 * @param Song
+	 * Track - Cassandra JPA
+	 * @param Track
 	 */
 	
-	public static void persist(Song song) {
+	public static void persist(Track song) {
 		EntityManager em = getEmf().createEntityManager();
-		Song tmp = em.find(Song.class, song.getTitle());
+		Track tmp = em.find(Track.class, song.getTrack_id());
 		if(tmp == null){
 			em.persist(song);
-			increment(songCounter, "songs");
-			logger.debug("\n Song: " + song.getTitle() + " record persisted using persistence unit -> cassandra_pu");
+			increment(songCounter, "tracks");
+			logger.debug("\n Track: " + song.getTitle() + " record persisted using persistence unit -> " + getEmf().getProperties());
 		}
 		else{
 			em.merge(song);
-			logger.debug("\n Song: " + song.getTitle() + " record merged using persistence unit -> cassandra_pu");
+			logger.debug("\n Track: " + song.getTitle() + " record merged using persistence unit ->" +getEmf().getProperties());
 		}
 		em.close();
 		
 	}
 	
-	public static void remove(Song song) {
+	public static void remove(Track song) {
 		EntityManager em = getEmf().createEntityManager();
 		em.remove(song);
-		decrement(songCounter, "songs");
+		decrement(songCounter, "tracks");
 		em.close();
-		logger.debug("\n Song: " + song.getTitle() + " record REMOVED using persistence unit -> cassandra_pu");
+		logger.debug("\n Track: " + song.getTitle() + " record REMOVED using persistence unit ->" +getEmf().getProperties());
 	}
 	
-	
-	public static Song findSongbyTitle(String title) {
+	public static Track findByTrackID(String id){
 		EntityManager em = getEmf().createEntityManager();
-		Song song = em.find(Song.class, title);
-		em.close();
+		//Track t = em.find(Track.class, id);
+		Query q = em.createNativeQuery("SELECT * FROM \"tracks\" WHERE \"key\"='"+id+"';", Track.class);
+		q.setMaxResults(1);
+		List<Track> t = q.getResultList();
+		if(t == null)
+			logger.debug("Tack "+ id +" not found in the database!");
+		return t.get(0);
 		
-		String songStr =  ( song == null ? "Record not found": song.toString() );
-		logger.debug("\n Looking for Song: " +title + " in cassandra database... got: "
-				+ songStr);
-		return song;
 	}
-	/*
-	public static Song findbySongTitle(String title) {
-		EntityManager em = getEmf().createEntityManager();
+	public static Track findTrackbyTitle(String title) {
+		
+		/*
+		 * Use NativeQuery to avoid Strings being used as cassandra keywords!
+		 * https://github.com/impetus-opensource/Kundera/issues/151
+		 * Incompatible with CQL2 !!
+		 */
+		Map<String, String> propertyMap = new HashMap<String, String>();
+        propertyMap.put(CassandraConstants.CQL_VERSION, CassandraConstants.CQL_VERSION_3_0);
+        EntityManagerFactory tmp = Persistence.createEntityManagerFactory("cassandra_pu", propertyMap);
+        EntityManager em  = tmp.createEntityManager();
+        
 		Query findQuery = em
-				.createQuery("Select p from Song p where p.title = "+ title);
-		
-		
-		if(findQuery.getResultList().size() ==0){
-			logger.debug("Could not find any songs with title: "+ title);
+				.createNativeQuery("SELECT * FROM tracks WHERE title = '"+ title+"';", Track.class);
+		findQuery.setMaxResults(1);
+		if(findQuery.getResultList().size() == 0){
+			logger.debug("Could not find any Tracks with title: "+ title);
 			return null;	
 		}
-		
-		return (Song) findQuery.getResultList().get(0);
-	}*/
+		if(findQuery.getResultList().size() >1 )
+			logger.warn("Query Returned more than one Tracks with title: "+ title);
+		return (Track) findQuery.getResultList().get(0);
+	}
 
 	
-	public static List<Song> listAllSongs() {
+	public static List<Track> listAllTracks() {
 		EntityManager em = getEmf().createEntityManager();
-		Query findQuery = em.createQuery("Select s from Song s", Song.class);
-		List<Song> allSongs = findQuery.getResultList();
+		Query findQuery = em.createQuery("Select s from Track s", Track.class);
+		@SuppressWarnings("unchecked")
+		List<Track> allSongs = (List<Track>) findQuery. getResultList();
 		em.close();
 		
-		logger.debug("\n ##############  Listing All Songs, Total Size:" + allSongs.size() +" ############## \n ");
+		logger.debug("\n ##############  Listing All Track, Total Size:" + allSongs.size() +" ############## \n ");
 //		for (Song s : allSongs) {
 //			logger.debug("\n Got Song: \n" + s);
 //		}
 		return allSongs;
+	}
+	
+	/* TODO Check alternative
+	 * Cassandra pagination Alternative: select * from tracks where token(key)> token('TRAQUFS12903CF9F32') limit 10;
+	 */
+	
+	public static List<Track> getTracksPage(int pageNo, int resultsNo) {
+		EntityManager em = getEmf().createEntityManager();
+		Query findQuery = em.createQuery("Select s from Track s", Track.class);
+		findQuery.setMaxResults(CassandraController.getCounterValue("tracks"));
+		@SuppressWarnings("unchecked")
+		List<Track> allSongs = findQuery. getResultList();
+		em.close();
+		
+		logger.debug("\n ##############  Listing Track page: " +pageNo + " ResultsNo: "+ resultsNo +" Total Size:" + allSongs.size() +" ############## \n ");
+		logger.debug("\n ##############  Returning Tracks From: " + (pageNo*resultsNo) + " To: "+ ((pageNo+1)*resultsNo-1) +" ############## \n ");
+		return allSongs.subList((pageNo*resultsNo), ((pageNo+1)*resultsNo-1));
 	}
 	
 	/**
@@ -236,13 +275,18 @@ public class CassandraController extends Controller {
 	
 	public static int getCounterValue(String id){
 		EntityManager em = getEmf().createEntityManager();
-		Counter tmp = em.find(Counter.class, id);
+		//SELECT * FROM "counters" WHERE "id"='tracks'
+		Query q = em.createNativeQuery("SELECT * FROM \"counters\" WHERE \"key\"='"+id+"';", Counter.class);
+		q.setMaxResults(1);
+		//Counter tmp = em.find(Counter.class, id);
+		@SuppressWarnings("unchecked")
+		List<Counter> tmp = q.getResultList();
 		if(tmp == null){
 			logger.debug("\n Counter: "+ id +" NOT FOUND!!!");
 			return 0;
 		}
 		else{
-			return tmp.getCounter();
+			return tmp.get(0).getCounter();
 		}
 
 	}
@@ -277,6 +321,7 @@ public class CassandraController extends Controller {
 	public static PlayList getByID(UUID id){
 		EntityManager em = getEmf().createEntityManager();
 		Query findQuery = em.createQuery("Select p from PlayList p where p.id = "+ id );
+		@SuppressWarnings("unchecked")
 		List<PlayList> tmp = (List<PlayList>) findQuery.getResultList();
 		if(tmp == null){
 			logger.debug("\n PlayList: "+ id + " could not be found!!");
@@ -288,6 +333,7 @@ public class CassandraController extends Controller {
 	public static List<PlayList> listAllPlaylists(){
 		EntityManager em = getEmf().createEntityManager();
 		Query findQuery = em.createQuery("Select p from PlayList p", PlayList.class);
+		@SuppressWarnings("unchecked")
 		List<PlayList> allPlaylists= findQuery.getResultList();
 		em.close();
 		return allPlaylists;
@@ -299,9 +345,16 @@ public class CassandraController extends Controller {
 		EntityManager em = getEmf().createEntityManager();
 		Query findQuery = em
 				.createQuery("Select p from PlayList p");
+		@SuppressWarnings("unchecked")
 		List<PlayList> tmp =  (List<PlayList>) findQuery.getResultList();
+		//Avoid null saved playlists - scala Option is another alternative to catch null pointers
+		for(PlayList p : tmp ){
+			if(p.getTracks() == null)
+				p.setTracks(new ArrayList<String>());
+		}
 		System.out.println("\n\n---->>>QUery returned: "+ tmp) ;
-		return (List<PlayList>) findQuery.getResultList();
+		
+		return tmp;
 	}
 	
 	public static int getUserPlayListCount(String usermail){
@@ -320,6 +373,7 @@ public class CassandraController extends Controller {
 		Query findQuery = em
 				.createQuery("Select p from PlayList p where p.id = "+ p.id);
 		
+		@SuppressWarnings("unchecked")
 		List<PlayList> tmp = (List<PlayList>) findQuery.getResultList();
 		if(findQuery.getResultList().size() ==0){
 			logger.debug("\n Could not find any songs with title: "+ p.getFolder());
@@ -334,12 +388,36 @@ public class CassandraController extends Controller {
 		}
 	}
 	
+	/** 
+	 * TODO - REFACTOR!
+	 
+	private void createColumnFamily() {
+		try {
+			CassandraCli.executeCqlQuery("USE \"KunderaExamples\"");
+			CassandraCli
+					.executeCqlQuery("CREATE TABLE blog_posts (post_id int PRIMARY KEY, body text, tags set<text>, liked_by list<int>, comments map<int, text>)");
+			CassandraCli.executeCqlQuery("CREATE INDEX ON blog_posts(body)");
+		} catch (Exception e) {
+		}
+	}
+
+	private void createKeyspace() {
+		try {
+			CassandraCli
+					.executeCqlQuery("CREATE KEYSPACE \"KunderaExamples\" WITH replication = {'class':'SimpleStrategy','replication_factor':3}");
+		} catch (Exception e) {
+
+		}
+	}
+	*/
 	
 	private static EntityManagerFactory getEmf() {
 		logger.setLevel(Level.DEBUG);
 		
 		if (emf == null) {
-			emf = Persistence.createEntityManagerFactory("cassandra_pu");
+			Map<String, String> propertyMap = new HashMap<String, String> ();
+	        propertyMap.put(CassandraConstants.CQL_VERSION, CassandraConstants.CQL_VERSION_3_0);
+			emf = Persistence.createEntityManagerFactory("cassandra_pu", propertyMap);
 			logger.debug("\n emf"+ emf.toString());
 		}
 		return emf;

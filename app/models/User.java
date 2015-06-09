@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -7,11 +8,16 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+
 @Entity
 @Table(name = "users", schema = "play_cassandra@cassandra_pu")
 //create column family users with comparator=UTF8Type and default_validation_class=UTF8Type and key_validation_class=UTF8Type;
-public class User {
+public class User implements Serializable{
+	
+	private static final long serialVersionUID = 2L;
+	
 	@Id
+	@Column(name = "key")
 	private String email;
 
 	@Column(name = "username")
@@ -20,10 +26,10 @@ public class User {
 	@Column(name = "password")
 	private String password;
 
-	@Column(name = "first_name")
+	@Column(name = "firstname")
 	public String firstname;
 
-	@Column(name = "last_name")
+	@Column(name = "lastname")
 	public String lastname;	
 	
 	//default constructor
@@ -120,51 +126,6 @@ public class User {
 				+ "\nfirstName:" + this.getFistname() + "\nlastName: " + this.getLastname()
 				+ "\npass: " + this.password;
 	}
-	
-	/*
-	 * JPA Connector functionality for Easy accessibility
-	 */
-	
-	public static User create(String email, String username, String password) {
-		User newUser = new User(email, username, password);
-		controllers.CassandraController.persist(newUser);
-		return newUser;
-	}
-	
-	public static User create(String email, String username, String password, String fname, String lname) {
-		User newUser = new User(email, username, password, fname, lname);
-		controllers.CassandraController.persist(newUser);
-		return newUser;
-	}
-	
-	public static User authenticate(String email, String password){
-		User tmp = controllers.CassandraController.findbyEmail(email);
-		
-		if(tmp == null){
-			System.out.println("User: " + email + " does not exist!!!");
-			return null;
-		}
-		
-		if(tmp.getPassword().compareTo(password) == 0)
-			return tmp;
-		else{
-			System.out.println("User: " + email + " password does not match!!!");
-			return null;
-		}
-	}
-	
-	public static User findUser(String email){
-		return controllers.CassandraController.findbyEmail(email);
-	}
-	
-	public static int getUserID(String email){
-    	List<User> l = controllers.CassandraController.listAllUsers();
-    	for(int i =0 ; i < l.size(); i++){
-    		if(l.get(i).email.equals(email))
-    			return i;
-    	}
-    	return -1;
-    }
 
 	
 }

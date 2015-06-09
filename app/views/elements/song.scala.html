@@ -1,16 +1,16 @@
-@(song: Song)
+@(song: Track)
 
 
 <li data-task-id="@song.title">
     
     <h4>@song.title</h4>
-    <span class="assignToList"><a href=@song.link>      Link</a></span>
+    <span class="assignToList"> ( @song.track_id ) </span>
     
-    @if(song.link != null) {
+    @if(song.track_id != null) {
         <span class="assignedTo">@song.artist</span>
     }
     
-    <span class="thumbsUp"><a href='@routes.Application.rate(song.title)'>      Thumbs UP</a></span>
+    <span class="thumbsUp"><a href='@routes.Application.rate(song.track_id)'>      Thumbs UP</a></span>
     
     
     
