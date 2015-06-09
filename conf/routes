@@ -4,13 +4,13 @@
 
 
 #PAGES
-GET     /                       controllers.Application.index()
-GET     /login                  controllers.Login.index()
-POST    /login                  controllers.Login.authenticate()
-GET     /logout                 controllers.Application.logout()
+GET     /                       	controllers.Application.index()
+GET     /login                 		controllers.Login.index()
+POST    /login                  	controllers.Login.authenticate()
+GET     /logout                 	controllers.Application.logout()
 
-GET 	/recommend				controllers.Application.getUserRecommendations()
-GET		/rate					controllers.Application.rate(String)
+GET 	/recommend					controllers.Application.getUserRecommendations()
+GET		/rate						controllers.Application.rate(String)
 
 GET		/addsongs/:artist		   controllers.Application.addSpotifySongsbyArtist(artist: String)
 
