@@ -1,4 +1,4 @@
-@(songs: List[Track], user: User)
+@(songsRec: Recommendation, jobStats: Stats, user: User)
 
 <!DOCTYPE html>
 <html>
@@ -45,7 +45,7 @@
         	<header>
         		<hgroup>
             		<h1>Dashboard</h1>
-            		<h2>Recommendations</h2>
+            		<h2>User Recommendations</h2>
         		</hgroup>
     		</header>
          
@@ -56,8 +56,19 @@
                         <h3>Generated Recommendations</h3>
                     </header>
                     <ul class="list">
-                        @songs.map { song =>
-                            @views.html.elements.song(song)
+                        @songsRec.recMap.map { song =>
+                        	<h2> @song </h2>
+                        }
+                    </ul>
+                </div>
+                
+                <div class="folder" data-folder-id="CF Job Stats">
+                    <header>
+                        <h3>Collaborative filtering job Stats</h3>
+                    </header>
+                    <ul class="list">
+                        @jobStats.getStatsMap().map { stats =>
+                        	<h2> @stats </h2>
                         }
                     </ul>
                 </div>

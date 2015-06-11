@@ -1,10 +1,16 @@
 package controllers;
 
 import java.util.ArrayList;
+
+import play.mvc.Controller;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -13,13 +19,13 @@ import javax.persistence.Query;
 
 import models.Counter;
 import models.PlayList;
+import models.Recommendation;
+import models.Stats;
 import models.Track;
 import models.User;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
 
-import play.mvc.Controller;
+
 
 import com.impetus.client.cassandra.common.CassandraConstants;
 
@@ -44,9 +50,12 @@ public class CassandraController extends Controller {
 	
 	public static void persist(User user) {
 		EntityManager em = getEmf().createEntityManager();
-		User tmp = em.find(User.class, user.getEmail());
+		//User tmp = em.find(User.class, user.getEmail());
+		Query q = em.createNativeQuery("SELECT * FROM \"users\" WHERE \"key\"='"+user.getEmail()+"';", User.class);
+		q.setMaxResults(1);
 		
-		if(tmp == null){
+		List<User> userList = q.getResultList();
+		if(userList.isEmpty()){
 			em.persist(user);
 			increment(userCounter, "user");
 		}
@@ -59,6 +68,7 @@ public class CassandraController extends Controller {
 	public static void remove(User user) {
 		EntityManager em = getEmf().createEntityManager();
 		em.remove(user);
+		decrement(userCounter, "user");
 		em.close();
 		logger.debug("\n User: " + user.getEmail() + " record REMOVED using persistence unit -> cassandra_pu");
 	}
@@ -72,7 +82,7 @@ public class CassandraController extends Controller {
 		//User user = em.find(User.class, email);
 		em.close();
 		
-		boolean userStr =  ( userl == null ? false : true );
+		boolean userStr =  ( userl.isEmpty() ? false : true );
 		logger.debug("\n Looking for User: " +email + " in cassandra database... found: "
 				+ userStr);
 		return userl.get(0);
@@ -347,16 +357,22 @@ public class CassandraController extends Controller {
 	public static List<PlayList> getUserPlayLists(String usermail){
 		EntityManager em = getEmf().createEntityManager();
 		Query findQuery = em
-				.createQuery("Select p from PlayList p");
+				.createQuery("Select p from PlayList p where p.usermail = " +usermail );
 		@SuppressWarnings("unchecked")
 		List<PlayList> tmp =  (List<PlayList>) findQuery.getResultList();
+		
 		//Avoid null saved playlists - scala Option is another alternative to catch null pointers
+		if(tmp == null){
+			logger.debug("User: "+ usermail + " has NO playlists!");
+			return null;
+		}
+		
+		//Avoid null pointers in SCALA viewsongs!
 		for(PlayList p : tmp ){
 			if(p.getTracks() == null)
 				p.setTracks(new ArrayList<String>());
 		}
-		System.out.println("\n\n---->>>QUery returned: "+ tmp) ;
-		
+		logger.debug("\n\n---->>> getUserPlayLists QUery returned: "+ tmp) ;
 		return tmp;
 	}
 	
@@ -413,6 +429,116 @@ public class CassandraController extends Controller {
 		}
 	}
 	*/
+	/**
+	 * Recommendation - Cassandra JPA
+	 * @param Recommendation
+	 * 
+	 */
+	public static void persist(Recommendation r) {
+		EntityManager em = getEm();
+		Recommendation tmp = em.find(Recommendation.class, r.getEmail());
+		if(tmp == null){
+			em.persist(r);
+			System.out.println("\n Recommendation for : " + r.getEmail() + " record persisted using persistence unit -> cassandra_pu");
+		}
+		else{
+			r.getRecList().putAll(tmp.getRecList());
+			em.merge(r);
+			System.out.println("\n Recommendation for : " + r.getEmail() + " record merged using persistence unit -> cassandra_pu");
+		}
+		em.close();	
+	}
+	
+	public static List<Recommendation> listAllRecommendations(){
+		EntityManager em = getEm();
+		Query findQuery = em.createQuery("Select r from Recommendation r", Recommendation.class);
+		findQuery.setMaxResults(Integer.MAX_VALUE);
+		List<Recommendation> allRec = findQuery.getResultList();
+		em.close();
+		
+		logger.debug("\n ##############  Listing All Recommendations, Total Size:" + allRec.size() +" ############## \n ");
+		return allRec;
+	}
+	
+	public static Recommendation getUserRecc(String usermail){
+		EntityManager em = getEmf().createEntityManager();
+//		Query q = em.createNativeQuery("SELECT * FROM \"recommendations\" WHERE \"email\"='"+usermail+"';", Recommendation.class);
+//		q.setMaxResults(1);
+//		@SuppressWarnings("unchecked")
+//		List<Recommendation> tmp = q.getResultList();
+		
+		Recommendation found = em.find(Recommendation.class, usermail);
+
+		if(found == null){
+			logger.debug("\n Recommendations for user : "+ usermail +" NOT FOUND!!!");
+			return null;
+		}
+		else{
+			return found;
+		}
+
+	}
+	
+	/**
+	 * Stats - Cassandra JPA
+	 * @param Stats
+	 * 
+	 */
+	public static void persist(Stats s) {
+		EntityManager em = getEm();
+		Stats tmp = em.find(Stats.class, s.getId());
+		if(tmp == null){
+			em.persist(s);
+			System.out.println("\n Recommendation for : " + s.getId() + " record persisted using persistence unit -> cassandra_pu");
+		}
+		else{
+			s.getStatsMap().putAll(tmp.getStatsMap());
+			em.merge(s);
+			System.out.println("\n Recommendation for : " + s.getId() + " record merged using persistence unit -> cassandra_pu");
+		}
+		em.close();	
+	}
+	
+	public static List<Stats> getAllStats(){
+		EntityManager em = getEm();
+		Query findQuery = em.createQuery("Select s from Stats s", Stats.class);
+		findQuery.setMaxResults(Integer.MAX_VALUE);
+		List<Stats> allStats = findQuery.getResultList();
+		em.close();
+		
+		logger.debug("\n ##############  Listing All Stats, Total Size:" + allStats.size() +" ############## \n ");
+		return allStats;
+	}
+	
+	public static Stats getSparkJobStats(){
+		EntityManager em = getEm();
+		Query findQuery = em.createQuery("Select s from Stats s WHERE s.id= 'sparkCF'");
+		findQuery.setMaxResults(1);
+		List<Stats> cfStats = findQuery.getResultList();
+		em.close();
+		
+		logger.debug("\n ##############  Listing All Stats, Total Size:" + cfStats.size() +" ############## \n ");
+		return cfStats.get(0);
+	}
+	
+	
+	/**
+	 * Entity Manager Factory and Wrapper
+	 * @return
+	 */
+	
+	private static EntityManager getEm() {
+		logger.setLevel(Level.INFO);	
+		if (emf == null) {
+			EntityManager em = getEmf().createEntityManager();
+			em.setProperty("cql.version", "3.0.0");
+			logger.debug("\n emf"+ emf.toString());
+		}
+		emf =  getEmf();
+		EntityManager em = emf.createEntityManager();
+		em.setProperty("cql.version", "3.0.0");
+		return em;
+	}
 	
 	private static EntityManagerFactory getEmf() {
 		logger.setLevel(Level.DEBUG);

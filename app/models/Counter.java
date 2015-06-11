@@ -11,6 +11,7 @@ import javax.persistence.Table;
 public class Counter {
 
 	@Id
+	@Column(name = "key")
 	private String id;
 	
 	

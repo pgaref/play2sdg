@@ -15,14 +15,14 @@ import models.User;
  */
 public class CassandraJPA {
 	public static void testCassandraUser() {
-		User user = new User("pgaref@example.com", "pgaref", "secret",
-				"Panagiotis", "Garefalakis");
+		User user = new User("test@example.com", "test", "secret",
+				"TestFname", "TestLname");
 
 		controllers.CassandraController.persist(user);
 		System.out.println("Insert User Query finished");
 
 		controllers.CassandraController.findbyEmail("pgaeref@example.com");
-		controllers.CassandraController.findbyEmail("pgaref@example.com");
+		controllers.CassandraController.findbyEmail("test@example.com");
 		System.out.println("Find User Query finished");
 
 		controllers.CassandraController.listAllUsers();
@@ -96,7 +96,7 @@ public class CassandraJPA {
 
 	public static void main(String[] args) {
 
-//		testCassandraUser();
+		testCassandraUser();
 //		testCassandraSong();
 //		testCassandraPlayList();
 

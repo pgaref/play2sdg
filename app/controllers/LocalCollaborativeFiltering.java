@@ -7,13 +7,13 @@ import java.util.Vector;
 import models.PlayList;
 import models.Track;
 
-public class CollaborativeFiltering {
+public class LocalCollaborativeFiltering {
 
 	public static Vector<Vector<Integer>> userItem ;
 	public static Integer [][] coOcc ;
 	
 	
-	public CollaborativeFiltering(){
+	public LocalCollaborativeFiltering(){
 		int userSize = controllers.CassandraController.listAllUsers().size();;
 		int songSize = controllers.CassandraController.getCounterValue("tracks");
 		

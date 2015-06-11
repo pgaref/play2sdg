@@ -2,3 +2,66 @@ This is your new Play 2.0 application
 =====================================
 
 This file will be packaged with your application, when using `play dist`.
+
+
+Wombat Dependencies Installation
+============================================
+1)HDFS Installation
+wget http://archive.cloudera.com/cdh4/one-click-install/precise/amd64/cdh4-repository_1.0_all.deb
+sudo dpkg -i cdh4-repository_1.0_all.deb
+sudo apt-get update; sudo apt-get install hadoop-hdfs-datanode
+sudo service hadoop-hdfs-datanode stop
+sudo apt-get install hadoop-client
+
+sudo mkdir -p /data/1/dfs/dn /data/2/dfs/dn /data/3/dfs/dn /data/4/dfs/dn
+sudo chown -R hdfs:hdfs /data/1/dfs/nn /nfsmount/dfs/nn /data/1/dfs/dn /data/2/dfs/dn /data/3/dfs/dn /data/4/dfs/dn
+
+From an existing data-node: scp -r /etc/hadoop/conf.mesos/ pg1712@wombat28.doc.res.ic.ac.uk:~/
+sudo mv conf.mesos/ /etc/hadoop/
+sudo chown -R root:hadoop /etc/hadoop/conf.mesos
+
+sudo update-alternatives --install /etc/hadoop/conf hadoop-conf /etc/hadoop/conf.mesos 50
+sudo update-alternatives --set hadoop-conf /etc/hadoop/conf.mesos
+sudo service hadoop-hdfs-datanode start
+
+
+2)Mesos Worker
+From another working node: scp -r mesos-0.22.1 pg1712@wombat28.doc.res.ic.ac.uk:~/
+sudo apt-get install scala
+-> export SCALA_HOME=/usr/share/java
+export JAVA_HOME=/usr/lib/jvm/java-7-openjdk-amd64
+cd mesos-0.22.1/build/
+sudo sh my-mesos-slave.sh 
+
+
+3)Spark Driver
+Current working spark version: spark-1.1.0
+On the master: 
+hadoop version
+SPARK_HADOOP_VERSION=2.0.0-cdh4.7.0 sbt/sbt clean assembly
+./make-distribution.sh --tgz -Dhadoop.version=2.0.0-cdh4.7.0
+sudo -u hdfs hadoop fs -put spark-1.1.0-bin-2.0.0-cdh4.7.0.tgz /
+sudo -u hdfs hadoop fs -chmod 755 /spark-1.1.0-bin-2.0.0-cdh4.7.0.tgz
+sudo -u hdfs hadoop fs -chown pg1712:pg1712 /spark-1.1.0-bin-2.0.0-cdh4.7.0.tgz
+Testing functionality:
+./bin/spark-submit --class org.apache.spark.examples.SparkPi ./dist/lib/spark-examples-1.1.0-hadoop2.0.0-cdh4.7.0.jar 100000
+
+##Mesos Dependencies
+sudo apt-get install build-essential
+sudo apt-get install python-dev python-boto
+sudo apt-get install libcurl4-nss-dev
+sudo apt-get install libsasl2-dev
+sudo apt-get install maven
+sudo apt-get install libapr1-dev
+sudo apt-get install libsvn-dev
+
+##Building 
+mkdir build
+cd build
+../configure
+make
+make check
+
+
+##LibCurl error fix: sudo apt-get install libcurl3; sudo ln -s /usr/lib/libcurl.so.3.0.0 /usr/lib/libcurl.so.3
+sudo apt-get install libcurl4-gnutls-dev

@@ -2,9 +2,8 @@ package models;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.ByteArrayInputStream;
-
-import org.junit.Test;
+import controllers.Login;
+import controllers.PlayListController;
 
 public class TrackTest {
 
@@ -21,15 +20,15 @@ public class TrackTest {
     public void testData() {
 
     	Track s1 =
-    			Track.create("UUID123123","Wolves (Kill them with Colour Remix)", "Bon Hiver", "2014-11-11");
+    			PlayListController.create("UUID123123","Wolves (Kill them with Colour Remix)", "Bon Hiver", "2014-11-11");
 		
     	Track s2 = 
-    			Track.create("UUID0234234", "Contact Us (Live at ZDF Aufnahmezustand)", "Dillon", "1986-11-04");
+    			PlayListController.create("UUID0234234", "Contact Us (Live at ZDF Aufnahmezustand)", "Dillon", "1986-11-04");
         // Count things
-        assertEquals("pgaref", User.findUser("pgaref@example.com").username);
+        assertEquals("pgaref", Login.findUser("pgaref@example.com").username);
         //assertEquals(1, PlayList.findExisting("pgaref@example.com"));
-        assertEquals(s1.artist, Track.findByTitle(s1.getTitle()).getArtist());
-        assertEquals(s2.artist, Track.findByTitle(s2.getTitle()).artist);
+        assertEquals(s1.artist, PlayListController.findByTitle(s1.getTitle()).getArtist());
+        assertEquals(s2.artist, PlayListController.findByTitle(s2.getTitle()).artist);
     }
     public static void main(String[] args) {
     	TrackTest t = new TrackTest();

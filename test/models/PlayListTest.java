@@ -9,6 +9,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 
+import controllers.PlayListController;
 import base.AbstractDBApplicationTest;
 
 public class PlayListTest{
@@ -19,7 +20,7 @@ public class PlayListTest{
 	
 	
 	public void fillUp(){
-		Track tmp=  Track.findByTitle("Contact Us (Live at ZDF Aufnahmezustand)");
+		Track tmp=  PlayListController.findByTitle("Contact Us (Live at ZDF Aufnahmezustand)");
 		List<PlayList> l = controllers.CassandraController.getUserPlayLists("pgaref@example.com");
     	for(PlayList pp : l ){
     		pp.addRatingSong(tmp);

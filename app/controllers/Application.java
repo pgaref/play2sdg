@@ -8,6 +8,8 @@ import com.echonest.api.v4.SongParams;
 
 import models.Counter;
 import models.PlayList;
+import models.Recommendation;
+import models.Stats;
 import models.Track;
 import models.User;
 import play.Routes;
@@ -17,11 +19,11 @@ import play.mvc.Security;
 
 public class Application extends Controller {
 
-	/*
-	 * One CF per web App instance
-	*/ 
-	private static CollaborativeFiltering cf = new CollaborativeFiltering();;
-	
+	/* TODO -> for sdg Version
+	 * One CF per web App instance -- For SDG use only! 
+	 *
+	 private static LocalCollaborativeFiltering cf = new LocalCollaborativeFiltering();;
+	*/
 	private static EchoNestAPI en;
 	
     @Security.Authenticated(Secured.class)
@@ -45,10 +47,12 @@ public class Application extends Controller {
     
     @Security.Authenticated(Secured.class)
     public static Result getUserRecommendations(){
-    	cf.loadUserRatings(request().username());
-    	List<Track> recList = cf.recc2Song(request().username());
+    	//cf.loadUserRatings(request().username());
+    	//List<Track> recList = cf.recc2Song(request().username());
+    	Recommendation userRec = CassandraController.getUserRecc(request().username());
+    	Stats jobStats = CassandraController.getSparkJobStats();
     	
-    	return ok(views.html.ratings.cf.render(recList ,controllers.CassandraController.findbyEmail(request().username())  ));	
+    	return ok(views.html.ratings.cf.render(userRec, jobStats,controllers.CassandraController.findbyEmail(request().username())  ));	
     }
     
     @Security.Authenticated(Secured.class)
@@ -59,7 +63,9 @@ public class Application extends Controller {
     	Track found =  PlayListController.findByTrackID(track_id);
     	System.out.println("\n\n\n ---> ############ Plain track id:  "+ track_id + " - Found Title "+ found.getTitle()); 
     	
-    	cf.addRating( Login.getUserID(request().username()), PlayListController.getSongID(found.getTitle()), 1);
+    	/* Switched to period job
+    		cf.addRating( Login.getUserID(request().username()), PlayListController.getSongID(found.getTitle()), 1);
+    	*/
     	
     	PlayListController.addSong(request().username(), found);
     	
