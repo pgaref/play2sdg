@@ -56,8 +56,11 @@
                         <h3>Generated Recommendations</h3>
                     </header>
                     <ul class="list">
-                        @songsRec.recMap.map { song =>
-                        	<h2> @song </h2>
+                        @songsRec.recMap.map { case (song,score) =>
+                        <li data-task-id="@song">
+                        	<h4> <b> Song: </b> @song <b> Score: </b> </h4>
+                        	<span class="stats">  @score </span>
+                        </li>
                         }
                     </ul>
                 </div>
@@ -67,10 +70,16 @@
                         <h3>Collaborative filtering job Stats</h3>
                     </header>
                     <ul class="list">
-                        @jobStats.getStatsMap().map { stats =>
-                        	<h2> @stats </h2>
+                        @jobStats.getStatsMap().map { case (statkey, statvalue) =>
+                        	<li data-task-id="@statkey">
+    							<h4>@statkey</h4>
+    							<span class="stats">  @statvalue </span>
+                        	</li>
                         }
                     </ul>
+                    <li data-task-id="@jobStats.getTimestamp()">
+                    	<h2> <center><i> Last Job Run :</i> @jobStats.getTimestamp().format("MMM dd yyyy h:m:s") </center> </h2>
+                    </li>
                 </div>
             
       

@@ -101,6 +101,8 @@ public class PlayList{
 	 * @return the tracks
 	 */
 	public List<String> getTracks() {
+		if(tracks == null)
+			this.tracks = new ArrayList<String>();
 		return tracks;
 	}
 

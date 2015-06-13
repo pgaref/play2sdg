@@ -191,11 +191,12 @@ public class CassandraController extends Controller {
 		 * Use NativeQuery to avoid Strings being used as cassandra keywords!
 		 * https://github.com/impetus-opensource/Kundera/issues/151
 		 * Incompatible with CQL2 !!
-		 */
-		Map<String, String> propertyMap = new HashMap<String, String>();
-        propertyMap.put(CassandraConstants.CQL_VERSION, CassandraConstants.CQL_VERSION_3_0);
-        EntityManagerFactory tmp = Persistence.createEntityManagerFactory("cassandra_pu", propertyMap);
-        EntityManager em  = tmp.createEntityManager();
+		 * 
+			Map<String, String> propertyMap = new HashMap<String, String>();
+        	propertyMap.put(CassandraConstants.CQL_VERSION, CassandraConstants.CQL_VERSION_3_0);
+        	EntityManagerFactory tmp = Persistence.createEntityManagerFactory("cassandra_pu", propertyMap);
+        */
+        EntityManager em  = getEmf().createEntityManager();
         
 		Query findQuery = em
 				.createNativeQuery("SELECT * FROM tracks WHERE title = '"+ title+"';", Track.class);
@@ -231,7 +232,9 @@ public class CassandraController extends Controller {
 	public static List<Track> getTracksPage(int pageNo, int resultsNo) {
 		EntityManager em = getEmf().createEntityManager();
 		Query findQuery = em.createQuery("Select s from Track s", Track.class);
-		findQuery.setMaxResults(CassandraController.getCounterValue("tracks"));
+		
+		//Possible Timeout Exception 
+		//findQuery.setMaxResults(CassandraController.getCounterValue("tracks"));
 		@SuppressWarnings("unchecked")
 		List<Track> allSongs = findQuery. getResultList();
 		em.close();
@@ -239,6 +242,29 @@ public class CassandraController extends Controller {
 		logger.debug("\n ##############  Listing Track page: " +pageNo + " ResultsNo: "+ resultsNo +" Total Size:" + allSongs.size() +" ############## \n ");
 		logger.debug("\n ##############  Returning Tracks From: " + (pageNo*resultsNo) + " To: "+ ((pageNo+1)*resultsNo-1) +" ############## \n ");
 		return allSongs.subList((pageNo*resultsNo), ((pageNo+1)*resultsNo-1));
+	}
+	
+	public static List<Track> getNextTracksPage(String lastcurrentPageTrack){
+		EntityManager em = getEmf().createEntityManager();
+		
+		if(lastcurrentPageTrack != null){
+			Query findQuery = em
+				.createNativeQuery("SELECT * FROM tracks WHERE token(key) > token('"+ lastcurrentPageTrack +"') LIMIT 100;", Track.class);
+			@SuppressWarnings("unchecked")
+			List<Track> nextPageTracks = findQuery. getResultList();
+			em.close();
+			logger.debug("\n ##############  Listing Next Track page:  After TrackID: "+ lastcurrentPageTrack +" ############## \n ");
+			return nextPageTracks;
+		} else{
+			//Initial Page Case
+			Query findQuery = em.createQuery("Select s from Track s", Track.class);
+			findQuery.setMaxResults(100);
+			@SuppressWarnings("unchecked")
+			List<Track> nextPageTracks = findQuery. getResultList();
+			em.close();
+			logger.debug("\n ##############  Listing First Track page ############## \n ");
+			return nextPageTracks;
+		}
 	}
 	
 	/**
@@ -518,6 +544,9 @@ public class CassandraController extends Controller {
 		em.close();
 		
 		logger.debug("\n ##############  Listing All Stats, Total Size:" + cfStats.size() +" ############## \n ");
+		
+		if(cfStats.isEmpty())
+			return new Stats();
 		return cfStats.get(0);
 	}
 	

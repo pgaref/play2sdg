@@ -143,6 +143,11 @@ public class PlayListController extends Controller {
 		return CassandraController.getTracksPage(PageNo, 50);
 	}
 	
+	public static List<Track> getnextTracksPage(String lastcurrentPageTrack){
+		return CassandraController.getNextTracksPage(lastcurrentPageTrack);
+	}
+	
+	
 	public static int getSongID(String title) {
 		List<Track> l = PlayListController.findAllSongs();
 		for (int i = 0; i < l.size(); i++) {

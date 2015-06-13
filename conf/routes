@@ -5,6 +5,7 @@
 
 #PAGES
 GET     /                       	controllers.Application.index()
+GET		/nextPage:track				controllers.Application.getNextPage(track: String)
 GET     /login                 		controllers.Login.index()
 POST    /login                  	controllers.Login.authenticate()
 GET     /logout                 	controllers.Application.logout()

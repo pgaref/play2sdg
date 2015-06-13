@@ -43,6 +43,10 @@ public class Application extends Controller {
     	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.getTracksPage(0), Login.findUser(request().username()), CassandraController.getCounterValue("tracks") ) );
     }
 
+    @Security.Authenticated(Secured.class)
+    public static Result getNextPage(String lastcurrentPageTrack){
+    	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.getnextTracksPage(lastcurrentPageTrack), Login.findUser(request().username()), CassandraController.getCounterValue("tracks") ) );
+    }
     
     
     @Security.Authenticated(Secured.class)
