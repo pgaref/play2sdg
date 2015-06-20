@@ -27,6 +27,7 @@ import models.User;
 
 
 
+
 import com.impetus.client.cassandra.common.CassandraConstants;
 
 /**
@@ -400,6 +401,23 @@ public class CassandraController extends Controller {
 		}
 		logger.debug("\n\n---->>> getUserPlayLists QUery returned: "+ tmp) ;
 		return tmp;
+	}
+	
+	
+	public static boolean deleteUserPlayListSong(UUID playlistid, String song){
+		EntityManager em = getEm();
+		Query findQuery = em.createNativeQuery("Select * from playlists  where token(id) = token("+ playlistid + ");", PlayList.class );
+		@SuppressWarnings("unchecked")
+		List<PlayList> p = findQuery.getResultList();
+		assert(p.size() != 1);
+		for(int i =0 ; i < p.get(0).getTracks().size(); i++){
+			if(p.get(0).getTracks().get(i).compareTo(song) == 0){
+				p.get(0).getTracks().remove(i);
+				em.merge(p.get(0));
+				return true;
+			}
+		}			
+		return false;
 	}
 	
 	public static int getUserPlayListCount(String usermail){

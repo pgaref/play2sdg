@@ -84,11 +84,13 @@ public class Application extends Controller {
     	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.findAllSongs(),  Login.findUser(request().username()), CassandraController.getCounterValue("tracks") ) );
     }
     
-    public static Result deletePlayListSong(UUID playListName, String song){
+    @Security.Authenticated(Secured.class)
+    public static Result deletePlayListSong(UUID playListID, String song){
     	
-    	System.out.println("\n -----Delete request: "+ playListName + " - " + song);
-    	return ok();
-    	//return ok(views.html.index.render(PlayList.findExisting(request().username()), Song.findAllSongs(),  User.findUser(request().username())) );
+    	System.out.println("\n -----Delete request: "+ playListID + " - " + song);
+    	CassandraController.deleteUserPlayListSong(playListID, song);
+    	//return ok();	
+    	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.findAllSongs(),  Login.findUser(request().username()), CassandraController.getCounterValue("tracks") ) );
     }
     
     
