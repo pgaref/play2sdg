@@ -15,8 +15,8 @@ GET		/rate						controllers.Application.rate(String)
 
 GET		/addsongs/:artist		   controllers.Application.addSpotifySongsbyArtist(artist: String)
 
-GET		/project/create       	   controllers.Application.createPlayList()
-GET		/project/delete/:song	   controllers.Application.deletePlayListSong(song :String) 
+GET			/project/create       	   controllers.Application.createPlayList()
+DELETE		/project/delete/:playlistid/:song	   controllers.Application.deletePlayListSong(playlistid: java.util.UUID, song :String) 
 
 POST	/project/:playlistid       controllers.PlayListController.add(playlistid: String)
 DELETE 	/project/:playlistid       controllers.PlayListController.delete(playlistid: java.util.UUID)

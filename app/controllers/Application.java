@@ -1,6 +1,7 @@
 package controllers;
 
 import java.util.List;
+import java.util.UUID;
 
 import com.echonest.api.v4.EchoNestAPI;
 import com.echonest.api.v4.EchoNestException;
@@ -83,9 +84,9 @@ public class Application extends Controller {
     	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.findAllSongs(),  Login.findUser(request().username()), CassandraController.getCounterValue("tracks") ) );
     }
     
-    public static Result deletePlayListSong(String song){
+    public static Result deletePlayListSong(UUID playListName, String song){
     	
-    	System.out.println("\n -----Delete request: "+ song);
+    	System.out.println("\n -----Delete request: "+ playListName + " - " + song);
     	return ok();
     	//return ok(views.html.index.render(PlayList.findExisting(request().username()), Song.findAllSongs(),  User.findUser(request().username())) );
     }
@@ -143,6 +144,7 @@ public class Application extends Controller {
     public static Result javascriptRoutes() {
         response().setContentType("text/javascript");
         return ok(Routes.javascriptRouter("jsRoutes",
+        		controllers.routes.javascript.Application.deletePlayListSong(),
                 controllers.routes.javascript.PlayListController.add(),
                 controllers.routes.javascript.PlayListController.delete(),
                 controllers.routes.javascript.PlayListController.rename()
