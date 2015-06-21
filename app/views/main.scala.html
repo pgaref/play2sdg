@@ -3,13 +3,19 @@
 <html>
     <head>
         <title>play2SDG</title>
-        <link rel="stylesheet" type="text/css" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
-        <script type="text/javascript" src="/public/javascripts/jquery-1.9.0.min.js"></script>
+        <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
         <script type="text/javascript" src="@routes.Application.javascriptRoutes()"></script>
         
         <script type="text/javascript">
             $(function(){
 
+				var _songName = null;
+				var _playListId = null;
+				var _nodeToDelete = null;
+            	
                 $(".newProject").bind('click',function() {
                 	var folder = $(this).closest("li");
                 	var folderName =  folder.attr("data-group") ;
@@ -19,106 +25,98 @@
                 $(".delete").each(function(index) {
                     bindDelete($(this));
                 });
-            	
-            })
-            
-            function bindDelete(e){
-                e.bind('click',function() {
-	                var songName = $(this).parent().attr("data-project");
-	                var playListId = $(this).parent().parent().parent().attr("data-group");
-	                console.log(playListId);
-	                console.log(songName);
-	                deletePlaylistSong($(this).parent(), playListId, songName);
-                });	
-            }
 
-            function deletePlaylistSong(item, playListId, songId){
-            	jsRoutes.controllers.Application.deletePlayListSong(playListId, songId).ajax({
-    	        	context: this,
-    	        	success:function() {
-    	        		item.remove();
-    	        	}
-    	        });
-            }
+                $(".delete_song_ok").bind('click' , function(){
+	                console.log(_playListId);
+	                console.log(_songName);
+	                deletePlaylistSong(_nodeToDelete, _playListId, _songName);
+                	$('#delete').modal('hide');
+                });
 
-            /*
-            function deleteProject(item,id) {
+                function bindDelete(e){
+                    e.bind('click',function() {
+                    	_songName = $(this).attr("data-songname");
+                    	_playListId = $(this).attr("data-playlistid");
+                    	
+                    	$("#delete_message").html(
+                            	"<span class=\"glyphicon glyphicon-warning-sign\"></span> Are you sure you want to delete " + 
+                            	_songName +
+                            	" of playlist " + 
+                            	$(this).attr("data-playlistname") +
+                            	"?"
+                            	);
+                    	_nodeToDelete = $(this).parent().parent().parent().parent();
+                    });	
+                }
 
-    	        jsRoutes.controllers.PlayListController.delete(id).ajax({
-    	        	context: this,
-    	        	success:function() {
-    	        		item.remove();
-    	        	}
-    	        });
-            }*/
-            
-            function addProjectIntoFolder(parent,name) {
+                function deletePlaylistSong(item, playListId, songId){
+                	jsRoutes.controllers.Application.deletePlayListSong(playListId, songId).ajax({
+        	        	context: this,
+        	        	success:function() {
+        	        		item.remove();
+        	        	}
+        	        });
+                }
 
-    	        jsRoutes.controllers.PlayListController.add().ajax({
-    	        	context: this,
-    	        	data:{
-    	        		folder:name
-    	        	},
-    	        	success:function(data, textStatus, jqXHR) {
-    	        		parent.prepend(data);
-    	        		bindDelete($(".delete:first",parent));
-    	        	}
-    	        });
-            }
- 
+                /*
+                function deleteProject(item,id) {
+
+        	        jsRoutes.controllers.PlayListController.delete(id).ajax({
+        	        	context: this,
+        	        	success:function() {
+        	        		item.remove();
+        	        	}
+        	        });
+                }*/
+                
+                function addProjectIntoFolder(parent,name) {
+
+        	        jsRoutes.controllers.PlayListController.add().ajax({
+        	        	context: this,
+        	        	data:{
+        	        		folder:name
+        	        	},
+        	        	success:function(data, textStatus, jqXHR) {
+        	        		parent.prepend(data);
+        	        		bindDelete($(".delete:first",parent));
+        	        	}
+        	        });
+                }
+            });
 		</script>
 	               
 	</head>
     <body>
-    	<!--  Header User logout -->
-        <header>
-            <a href="@routes.Application.index" id="logo"><span>play</span>2<span2>sdg</span2></a>
-            
-            <dl id="user">
-                <dt>@user.firstname</dt>
-                <dt>@user.lastname</dt>
-                <dt>(@user.username)</dt>
-                <dd>
-                    <a href="@routes.Application.logout()">Logout</a>
-                </dd>
-            </dl>
-        </header>
-        
-        <nav>
-            <h4 class="dashboard"><a href="#/">User Profile</a></h4>
-            <ul id="projects">
-                @ratings.map { rate =>
-                        @views.html.ratings.rategroup(rate)
-                }
-            </ul>
-            
-            <dl class="optionsx">
-        		<dt>Options</dt>
-        		</br>
-        		<dd>
-            		<!--<button class="newProject"  href="@routes.Application.createPlayList()" >New PlayList</button>-->
-            		<a href="@routes.Application.createPlayList()" >New PlayList</a>
-        		</dd>
-        		 
-        		</br>
-        		<dl id="test">
-                <dd>
-                    <a href="@routes.Application.getUserRecommendations()"> Recommendations</a>
-                </dd>
-                </dl>
-
-                </br>   		
-        		<dl id="test">
-                <dd>
-                    <a href="@routes.Application.addSpotifySongsbyArtist("weezer")"> Add Spotify Songs</a>
-                </dd>      
-            	</dl>
-        		
-    	 	</dl>
-            
-        </nav>
-        <section id="main">
-            @body
-        </section>
-    </body>
+    	<div class="container-fluid">
+		  <div class="row">
+			  <div class="col-md-3">
+			    <div id="menu">
+			  		<div class="panel list-group" id="projects"> @ratings.map { rate => @views.html.ratings.rategroup(rate)  } </div>
+			  	</div>
+			  </div>
+			  <div class="col-md-9">
+			  	.test
+			  </div>
+		  </div>
+		</div>
+		
+		
+		    <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+		      <div class="modal-dialog">
+		    <div class="modal-content">
+		          <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+		        <h4 class="modal-title custom_align" id="Heading">Delete this song</h4>
+		      </div>
+		          <div class="modal-body">
+		       
+		       <div class="alert alert-danger" id="delete_message"></div>
+		       
+		      </div>
+		        <div class="modal-footer ">
+		        <button type="button" class="delete_song_ok" class="btn btn-success" ><span class="glyphicon glyphicon-ok-sign"></span> Yes</button>
+		        <button type="button" class="delete_song_cancel" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> No</button>
+		      </div>
+        </div>
+    </body> 
 </html>

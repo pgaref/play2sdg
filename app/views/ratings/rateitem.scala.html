@@ -1,7 +1,14 @@
-@(song: String)
+@(song: String, playlistid : java.util.UUID, playlistName: String)
 
-<li data-project="@song">
-    <a class="name">@song</a>
-    <button class="delete">Delete</button>
-    <span class="loader">Loading</span>
+<li class="list-group-item">
+<div class="row">
+  <div class="col-md-10"><h5 class="name">@song<h5></div>
+  <div class="col-md-2" style="text-align:right">
+   <p data-placement="top" data-toggle="tooltip" title="Delete">
+	  <button data-songname="@song" data-playlistname="@playlistName" data-playlistid="@playlistid" class="btn btn-danger btn-xs delete" data-title="Delete" data-toggle="modal" data-target="#delete" >
+	  	<span class="glyphicon glyphicon-trash"></span>
+  	  </button>
+   </p>
+  </div>
+</div>
 </li>
