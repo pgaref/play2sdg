@@ -97,10 +97,9 @@ public class PlayListController extends Controller {
     	return (pl.size() > 0);
     }
     
-    public static void addSong(String usermail, Track song){
-    	PlayList p = CassandraController.getUserPlayLists(usermail).get(0);
-    	p.addRatingSong(song);
-    	CassandraController.persist(p);
+    public static void addSong(PlayList playlist, Track song){
+    	playlist.addRatingSong(song);
+    	CassandraController.persist(playlist);
     }
     
     public static void playListRename(UUID id, String newname){
@@ -122,7 +121,7 @@ public class PlayListController extends Controller {
 		return CassandraController.findTrackbyTitle(title);
 	}
 	
-	public static Track findByTrackID(String id){
+	public static Track findBytTrackID(String id){
 		return CassandraController.findByTrackID(id);
 	}
 	

@@ -7,6 +7,7 @@
     	<script src="http://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
         <script type="text/javascript" src="@routes.Application.javascriptRoutes()"></script>
         
         <script type="text/javascript">
@@ -15,6 +16,8 @@
 				var _songName = null;
 				var _playListId = null;
 				var _nodeToDelete = null;
+
+				var _openplaylist = null;
             	
                 $(".newProject").bind('click',function() {
                 	var folder = $(this).closest("li");
@@ -33,6 +36,33 @@
                 	$('#delete').modal('hide');
                 });
 
+                $('.playlistopen').bind('click', function(){
+                    var openedPlaylist = $(this).attr("data-group");
+                    if(openedPlaylist === _openplaylist){
+                    	_openplaylist = null;
+                    }
+                    else{
+                        _openplaylist = openedPlaylist;
+                    }
+
+                    console.log("opened is : " + _openplaylist);
+                });
+
+
+				$(".likesong").bind('click', function(){
+					if(_openplaylist == null){ return; }
+					var songId = $(this).attr("data-like-songid");
+					console.log("thumbs up for : "+ songId);
+					jsRoutes.controllers.Application.rate(_openplaylist, songId).ajax({
+        	        	context: this,
+        	        	success:function(data) {
+        	        		console.log(data);
+        	        		var playL = $(".list-group[data-pl-id='" + _openplaylist + "']");
+        	        		playL.append(data);
+        	        	}
+        	        });
+				});
+                
                 function bindDelete(e){
                     e.bind('click',function() {
                     	_songName = $(this).attr("data-songname");
@@ -58,7 +88,6 @@
         	        });
                 }
 
-                /*
                 function deleteProject(item,id) {
 
         	        jsRoutes.controllers.PlayListController.delete(id).ajax({
@@ -67,7 +96,7 @@
         	        		item.remove();
         	        	}
         	        });
-                }*/
+                }
                 
                 function addProjectIntoFolder(parent,name) {
 
@@ -88,6 +117,15 @@
 	</head>
     <body>
     	<div class="container-fluid">
+    	<div class="row">
+			  <div class="col-md-3">
+			    <h2>Playlists</h2>
+			  </div>
+			  <div class="col-md-9">
+			  	<h2>Songs</h2>
+			  </div>
+		  </div>
+    	
 		  <div class="row">
 			  <div class="col-md-3">
 			    <div id="menu">
@@ -95,7 +133,7 @@
 			  	</div>
 			  </div>
 			  <div class="col-md-9">
-			  	.test
+			  	@body
 			  </div>
 		  </div>
 		</div>

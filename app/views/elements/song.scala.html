@@ -1,23 +1,26 @@
 @(song: Track)
 
 
-<li data-task-id="@song.title">
+<tr data-task-id="@song.title">
     
-    <h4>@song.title</h4>
-    <span class="assignToList"> ( @song.track_id ) </span>
+    <td><h4>@song.title</h4></td>
+    <td><span class="assignToList"> ( @song.track_id ) </span></td>
     
+    <td>
     @if(song.track_id != null) {
         <span class="assignedTo">@song.artist</span>
     }
-    
-    <span class="thumbsUp"><a href='@routes.Application.rate(song.track_id)'>      Thumbs UP</a></span>
-    
-    
-    
+    </td>
+   
+    <td>
     @if(song.releaseDate != null) { 
         <time datetime="@song.releaseDate">
             @song.releaseDate.format("MMM dd yyyy")</time>
-    }
-
+    	}
+	</td>
+	
+	<td>
+		<i data-like-songid="@song.track_id" class="fa fa-thumbs-up fa-2x likesong"></i>
+	</td>
     
-</li>
+</tr>

@@ -1,6 +1,6 @@
 @(playlist: PlayList)
 
-<a style="font-size: 20px;font-weight: bold;color: #12A5F4;" data-group="@playlist.id" href="#" class="list-group-item" data-toggle="collapse" data-target="#@playlist.id" data-parent="#menu">@playlist.folder</a>
+<a style="font-size: 20px;font-weight: bold;color: #12A5F4;" data-group="@playlist.id" href="#" class="list-group-item playlistopen" data-toggle="collapse" data-target="#@playlist.id" data-parent="#menu">@playlist.folder</a>
 <div id="@playlist.id" class="sublinks collapse">
-    <ul class="list-group"> @playlist.tracks.map { song => @views.html.ratings.rateitem(song, playlist.id, playlist.folder) } </ul>
+    <ul class="list-group" data-pl-id="@playlist.id"> @playlist.tracks.map { song => @views.html.ratings.rateitem(song, playlist.id, playlist.folder) } </ul>
 </div>

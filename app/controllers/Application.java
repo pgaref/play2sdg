@@ -61,20 +61,13 @@ public class Application extends Controller {
     }
     
     @Security.Authenticated(Secured.class)
-    public static Result rate(String track_id){
-//    	final Map<String, String[]> values = request().body().asFormUrlEncoded();
-//    	final String name = values.get("java_songid")[0];
-//    	System.out.println("Managed to get SongId: "+ name);
-    	Track found =  PlayListController.findByTrackID(track_id);
+    public static Result rate(UUID playListID, String track_id){
+
+    	Track found =  PlayListController.findBytTrackID(track_id);
     	System.out.println("\n\n\n ---> ############ Plain track id:  "+ track_id + " - Found Title "+ found.getTitle()); 
-    	
-    	/* Switched to period job
-    		cf.addRating( Login.getUserID(request().username()), PlayListController.getSongID(found.getTitle()), 1);
-    	*/
-    	
-    	PlayListController.addSong(request().username(), found);
-    	
-    	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.findAllSongs(),  Login.findUser(request().username()), CassandraController.getCounterValue("tracks") ) );
+    	PlayList p = CassandraController.getByID(playListID);
+    	PlayListController.addSong(p, found);
+    	return ok(views.html.ratings.rateitem.render(found.title, p.id, p.folder));
     }
     
     @Security.Authenticated(Secured.class)
@@ -147,6 +140,7 @@ public class Application extends Controller {
         response().setContentType("text/javascript");
         return ok(Routes.javascriptRouter("jsRoutes",
         		controllers.routes.javascript.Application.deletePlayListSong(),
+        		controllers.routes.javascript.Application.rate(),
                 controllers.routes.javascript.PlayListController.add(),
                 controllers.routes.javascript.PlayListController.delete(),
                 controllers.routes.javascript.PlayListController.rename()
