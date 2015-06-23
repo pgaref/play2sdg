@@ -29,6 +29,7 @@
                     bindDelete($(this));
                 });
 
+
                 $(".delete_song_ok").bind('click' , function(){
 	                console.log(_playListId);
 	                console.log(_songName);
@@ -56,9 +57,11 @@
 					jsRoutes.controllers.Application.rate(_openplaylist, songId).ajax({
         	        	context: this,
         	        	success:function(data) {
-        	        		console.log(data);
         	        		var playL = $(".list-group[data-pl-id='" + _openplaylist + "']");
         	        		playL.append(data);
+        	        		$(".delete").each(function(index) {
+        	                    bindDelete($(this));
+        	                });
         	        	}
         	        });
 				});
