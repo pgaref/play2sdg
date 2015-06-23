@@ -11,6 +11,9 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.codehaus.jackson.annotate.JsonCreator;
+import org.codehaus.jackson.annotate.JsonProperty;
+
 import com.impetus.kundera.index.Index;
 import com.impetus.kundera.index.IndexCollection;
 
@@ -40,7 +43,8 @@ public class Track implements Serializable{
     	
     }
     
-    public Track(String id, String title, String artist, String releaseDate){
+    @JsonCreator
+    public Track(@JsonProperty("id") String id, @JsonProperty("title") String title, @JsonProperty("artist")  String artist, @JsonProperty("releaseDate")  String releaseDate){
     	
     	this.track_id = id;
     	this.title = title;

@@ -8,17 +8,53 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+		
+		<link rel="stylesheet" type="text/css" href="/public/plugin/css/style.css">
+	    <link rel="stylesheet" type="text/css" href="/public/css/demo.css">
+	    <script type="text/javascript" src="/public/plugin/jquery-jplayer/jquery.jplayer.js"></script>
+	    <script type="text/javascript" src="/public/plugin/ttw-music-player.js"></script>
+	    <script type="text/javascript" src="/public/javascripts/myplaylist.js"></script>
+	    
         <script type="text/javascript" src="@routes.Application.javascriptRoutes()"></script>
         
         <script type="text/javascript">
-            $(function(){
+        $(document).ready(function(){
 
 				var _songName = null;
 				var _playListId = null;
 				var _nodeToDelete = null;
 
 				var _openplaylist = null;
-            	
+
+	            var currentNextTrack = null;
+
+	            jsRoutes.controllers.Application.getNextTracks(currentNextTrack).ajax({
+    	        	context: this,
+    	        	success:function(tracks) {
+        	        	var playList = new Array();
+   	        			for (var i in tracks) {
+   	   	        			//tracks[i]
+   	        				playList.push({
+   	     	                mp3:'http://www.noiseaddicts.com/samples_1w72b820/39.mp3',
+	   	 	                oga:'/public/mix/1.ogg',
+	   	 	                title: tracks[i].title,
+	   	 	                artist: tracks[i].artist,
+	   	 	                rating:4,
+	   	 	                duration:'0:30',
+	   	 	                cover:'/public/images/1.png'
+	   	 	            	});
+   	        			}
+
+   	        			$('#player').ttwMusicPlayer(playList, {
+	   	 	                autoPlay:false, 
+	   	 	                description:"",
+	   	 	                jPlayer:{
+	   	 	                    swfPath:'/public/plugin/jquery-jplayer'
+	   	 	                }
+   	 	            	});
+    	        	}
+    	        });
+          	
                 $(".newProject").bind('click',function() {
                 	var folder = $(this).closest("li");
                 	var folderName =  folder.attr("data-group") ;
@@ -55,8 +91,8 @@
 					var songId = $(this).attr("data-like-songid");
 					console.log("thumbs up for : "+ songId);
 					jsRoutes.controllers.Application.rate(_openplaylist, songId).ajax({
-        	        	context: this,
-        	        	success:function(data) {
+       					context: this,
+		    	        	success:function(data) {
         	        		var playL = $(".list-group[data-pl-id='" + _openplaylist + "']");
         	        		playL.append(data);
         	        		$(".delete").each(function(index) {
@@ -120,8 +156,8 @@
 	</head>
     <body>
     	<div class="container-fluid">
-    	<div class="row">
-			  <div class="col-md-3">
+    	<div class="row" style="color: red;">
+			  <div class="col-md-3" >
 			    <h2>Playlists</h2>
 			  </div>
 			  <div class="col-md-9">
@@ -132,11 +168,13 @@
 		  <div class="row">
 			  <div class="col-md-3">
 			    <div id="menu">
-			  		<div class="panel list-group" id="projects"> @ratings.map { rate => @views.html.ratings.rategroup(rate)  } </div>
+			  		<div class="panel list-group" id="projects"> @ratings.map { rate => @views.html.ratings.rategroup(rate)  } </div>			  		
 			  	</div>
 			  </div>
 			  <div class="col-md-9">
-			  	@body
+			  	<div id="player" class="row" style="color: red;">
+					&nbsp;
+			  	</div>
 			  </div>
 		  </div>
 		</div>

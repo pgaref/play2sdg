@@ -3,6 +3,10 @@ package controllers;
 import java.util.List;
 import java.util.UUID;
 
+import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.node.ObjectNode;
+
 import com.echonest.api.v4.EchoNestAPI;
 import com.echonest.api.v4.EchoNestException;
 import com.echonest.api.v4.SongParams;
@@ -14,6 +18,7 @@ import models.Stats;
 import models.Track;
 import models.User;
 import play.Routes;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
 import play.mvc.Security;
@@ -42,6 +47,11 @@ public class Application extends Controller {
     	}
     	System.out.println("Logged in as User: "+ request().username() );
     	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.getTracksPage(0), Login.findUser(request().username()), CassandraController.getCounterValue("tracks") ) );
+    }
+    
+    @Security.Authenticated(Secured.class)
+    public static Result getNextTracks(String lastcurrentPageTrack){
+    	return ok(new ObjectMapper().convertValue(PlayListController.getnextTracksPage(lastcurrentPageTrack), JsonNode.class));
     }
 
     @Security.Authenticated(Secured.class)
@@ -134,13 +144,14 @@ public class Application extends Controller {
         
 		return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.findAllSongs(),  Login.findUser(request().username()), CassandraController.getCounterValue("tracks") ) );
     }
-    
+   
     
     public static Result javascriptRoutes() {
         response().setContentType("text/javascript");
         return ok(Routes.javascriptRouter("jsRoutes",
         		controllers.routes.javascript.Application.deletePlayListSong(),
         		controllers.routes.javascript.Application.rate(),
+        		controllers.routes.javascript.Application.getNextTracks(),
                 controllers.routes.javascript.PlayListController.add(),
                 controllers.routes.javascript.PlayListController.delete(),
                 controllers.routes.javascript.PlayListController.rename()
