@@ -9,8 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import play.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -23,6 +22,8 @@ import models.Recommendation;
 import models.Stats;
 import models.Track;
 import models.User;
+
+
 
 
 
@@ -47,7 +48,7 @@ public class CassandraController extends Controller {
 	 * User - Cassandra JPA
 	 * @param user
 	 */
-	static Logger  logger = Logger.getLogger("controllers.CassandraController");
+	final static Logger.ALogger logger = Logger.of("cassandracontroller");
 	
 	public static void persist(User user) {
 		EntityManager em = getEmf().createEntityManager();
@@ -536,9 +537,14 @@ public class CassandraController extends Controller {
 			System.out.println("\n Recommendation for : " + s.getId() + " record persisted using persistence unit -> cassandra_pu");
 		}
 		else{
-			s.getStatsMap().putAll(tmp.getStatsMap());
-			em.merge(s);
-			System.out.println("\n Recommendation for : " + s.getId() + " record merged using persistence unit -> cassandra_pu");
+			/*
+			 * Update the existing Stat object with fresh values
+			 * The other way round would cause old stats data to remain untouched!!
+			 */
+			tmp.setTimestamp(s.getTimestamp());
+			tmp.getStatsMap().putAll(s.getStatsMap());
+			em.merge(tmp);
+			System.out.println("\n Recommendation for : " + tmp.getId() + " record merged using persistence unit -> cassandra_pu");
 		}
 		em.close();	
 	}
@@ -574,8 +580,7 @@ public class CassandraController extends Controller {
 	 * @return
 	 */
 	
-	private static EntityManager getEm() {
-		logger.setLevel(Level.INFO);	
+	private static EntityManager getEm() {	
 		if (emf == null) {
 			EntityManager em = getEmf().createEntityManager();
 			em.setProperty("cql.version", "3.0.0");
@@ -588,7 +593,6 @@ public class CassandraController extends Controller {
 	}
 	
 	private static EntityManagerFactory getEmf() {
-		logger.setLevel(Level.DEBUG);
 		
 		if (emf == null) {
 			Map<String, String> propertyMap = new HashMap<String, String> ();
