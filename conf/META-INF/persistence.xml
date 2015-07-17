@@ -17,14 +17,16 @@
  	<property name="strategy.class" value="SimpleStrategy" />
  	<property name="replcation.factor" value="3" />
  	<!--<property name="kundera.ddl.auto.prepare" value="validate" />-->
- 	<property name="kundera.nodes" value="localhost"/>
- 	<!-- <property name="kundera.nodes" value="wombat26.doc.res.ic.ac.uk,wombat27.doc.res.ic.ac.uk,wombat28.doc.res.ic.ac.uk"/> -->
+ 	<!--<property name="kundera.nodes" value="localhost"/>-->
+ 	<property name="kundera.nodes" value="wombat27.doc.res.ic.ac.uk"/>
  	<property name="kundera.port" value="9160"/>
  	<property name="kundera.keyspace" value="play_cassandra"/>
  	<property name="kundera.dialect" value="cassandra"/>
  	<property name="kundera.client.lookup.class" value="com.impetus.client.cassandra.thrift.ThriftClientFactory" />
  	<property name="kundera.cache.provider.class" value="com.impetus.kundera.cache.ehcache.EhCacheProvider"/>
  	<property name="kundera.cache.config.resource" value="/ehcache-test.xml"/>
+ 	<property name="kundera.pool.size.max.active" value="50" />
+	<property name="kundera.pool.size.max.total" value="50" />
  	<!-- Load Balancing Configuration-->
  	<!--<property name="kundera.client.property" value="conf/META-INF/KunderaLoadConfig.xml" />--> 
  </properties>
