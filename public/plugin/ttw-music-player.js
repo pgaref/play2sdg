@@ -13,7 +13,7 @@
 (function($) {
     $.fn.ttwMusicPlayer = function(playlist, userOptions) {
         var $self = this, defaultOptions, options, cssSelector, appMgr, playlistMgr, interfaceMgr, ratingsMgr, playlist,
-                layout, ratings, myPlaylist, current;
+                layout, ratings, myPlaylist, current, myPlaylists;
 
         cssSelector = {
             jPlayer: "#jquery_jplayer",
@@ -39,22 +39,21 @@
             artistOuter:'.artist-outer',
             albumCover:'.img',
             description:'.description',
-            descriptionShowing:'.showing'
+            descriptionShowing:'.showing',
+            addtopl: '.addtoplaylist'
         };
 
         defaultOptions = {
             ratingCallback:null,
             currencySymbol:'$',
             buyText:'BUY',
-            tracksToShow:5,
+            tracksToShow:25,
             autoPlay:false,
             jPlayer:{}
         };
 
         options = $.extend(true, {}, defaultOptions, userOptions);
-
         myPlaylist = playlist;
-
         current = 0;
 
         appMgr = function() {
@@ -80,9 +79,12 @@
 
             markup = {
                 listItem:'<li class="track">' +
-                            '<span class="title"></span>' +
-                            '<span class="duration"></span>' +
-                            '<span class="rating"></span>' +
+                			'<div class=row>' +
+                            	'<div class="col-md-4"><span class="title"></span></div>' +
+                            	'<div class="col-md-2"><span class="duration"></span></div>' +
+                            	'<div class="col-md-4"><span class="rating"></span></div>' +
+                            	'<div class="col-md-2" style="text-align:right"><button class="addtoplaylist" style="border: 0; background: transparent"><img style="width:30px;height:30px" src="/public/images/pladd.png"></div></button>' +
+                        	'</div>' + 
                         '</li>',
                 ratingBar:'<span class="rating-level rating-bar"></span>'
             };
@@ -221,14 +223,13 @@
 
                 for (var j = 0; j < myPlaylist.length; j++) {
                     var $track = $(markup.listItem);
-
+					
                     //since $ratings refers to a specific object, if we just use .html($ratings) we would be moving the $rating object from one list item to the next
                     $track.find(cssSelector.rating).html($ratings.clone());
 
                     $track.find(cssSelector.title).html(trackName(j));
-
                     $track.find(cssSelector.duration).html(duration(j));
-
+					$track.find(cssSelector.addtopl).attr("trackid", trackId(j));					                    
                     setRating('track', $track, j);
 
                     $track.data('index', j);
@@ -466,6 +467,12 @@
 
         };
 
+
+		function trackId(index){
+			if (!isUndefined(myPlaylist[index].songid))
+                return myPlaylist[index].songid;
+		}
+		
         /** Common Functions **/
         function trackName(index) {
             if (!isUndefined(myPlaylist[index].title))

@@ -36,7 +36,7 @@ public class Application extends Controller {
     public static Result index() {
     	//change to  mail validation!!
         //return ok(views.html.index.render(Rating.findInvolving(request().username()), Song.findTodoInvolving(request().username()), User.find.byId(request().username())));
-    	List<PlayList> tmp = controllers.CassandraController.getUserPlayLists("pgaref@example.com");
+    	/*List<PlayList> tmp = controllers.CassandraController.getUserPlayLists("pgaref@example.com");
     	//List<PlayList> tmp = PlayList.findExisting(request().username());
     	for(PlayList p : tmp ){
     		System.out.println("Listing PL : "+ p.folder);
@@ -44,10 +44,11 @@ public class Application extends Controller {
     			System.out.println("PL songs:  "+ p.getTracks() + " #### size: "+ p.getTracks().size());
     		else
     			System.out.println("PL songs:  empty ");
-    	}
+    	}*/
     	System.out.println("Logged in as User: "+ request().username() );
     	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.getTracksPage(0), Login.findUser(request().username()), CassandraController.getCounterValue("tracks") ) );
     }
+   
     
     @Security.Authenticated(Secured.class)
     public static Result getNextTracks(String lastcurrentPageTrack){
@@ -144,7 +145,11 @@ public class Application extends Controller {
         
 		return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.findAllSongs(),  Login.findUser(request().username()), CassandraController.getCounterValue("tracks") ) );
     }
-   
+    
+    public static Result getPlaylists(){
+    	List<PlayList> tmp = controllers.CassandraController.getUserPlayLists("pgaref@example.com");
+    	return ok(new ObjectMapper().convertValue(tmp, JsonNode.class));
+    }
     
     public static Result javascriptRoutes() {
         response().setContentType("text/javascript");
@@ -152,6 +157,7 @@ public class Application extends Controller {
         		controllers.routes.javascript.Application.deletePlayListSong(),
         		controllers.routes.javascript.Application.rate(),
         		controllers.routes.javascript.Application.getNextTracks(),
+                controllers.routes.javascript.Application.getPlaylists(),
                 controllers.routes.javascript.PlayListController.add(),
                 controllers.routes.javascript.PlayListController.delete(),
                 controllers.routes.javascript.PlayListController.rename()

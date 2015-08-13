@@ -12,9 +12,7 @@
 		<link rel="stylesheet" type="text/css" href="/public/plugin/css/style.css">
 	    <link rel="stylesheet" type="text/css" href="/public/css/demo.css">
 	    <script type="text/javascript" src="/public/plugin/jquery-jplayer/jquery.jplayer.js"></script>
-	    <script type="text/javascript" src="/public/plugin/ttw-music-player.js"></script>
-	    <script type="text/javascript" src="/public/javascripts/myplaylist.js"></script>
-	    
+	    <script type="text/javascript" src="/public/plugin/ttw-music-player.js"></script>	    
         <script type="text/javascript" src="@routes.Application.javascriptRoutes()"></script>
         
         <script type="text/javascript">
@@ -32,9 +30,10 @@
     	        	context: this,
     	        	success:function(tracks) {
         	        	var playList = new Array();
+        	        	
    	        			for (var i in tracks) {
-   	   	        			//tracks[i]
    	        				playList.push({
+   	        				songid : tracks[i].track_id,
    	     	                mp3:'http://www.noiseaddicts.com/samples_1w72b820/39.mp3',
 	   	 	                oga:'/public/mix/1.ogg',
 	   	 	                title: tracks[i].title,
@@ -55,6 +54,23 @@
     	        	}
     	        });
           	
+          		$( document ).on( "click", ".addtoplaylist", function() {
+				  	var trackName = $(this).attr("trackid"); 
+				  	console.log(_openplaylist + " " + trackName);
+					if(_openplaylist == null){ return; }
+					console.log("thumbs up for : "+ trackName);
+					jsRoutes.controllers.Application.rate(_openplaylist, trackName).ajax({
+       					context: this,
+		    	        	success:function(data) {
+        	        		var playL = $(".list-group[data-pl-id='" + _openplaylist + "']");
+        	        		playL.append(data);
+        	        		$(".delete").each(function(index) {
+        	                    bindDelete($(this));
+        	                });
+        	        	}
+        	      	});
+				});
+          	
                 $(".newProject").bind('click',function() {
                 	var folder = $(this).closest("li");
                 	var folderName =  folder.attr("data-group") ;
@@ -64,7 +80,6 @@
                 $(".delete").each(function(index) {
                     bindDelete($(this));
                 });
-
 
                 $(".delete_song_ok").bind('click' , function(){
 	                console.log(_playListId);
@@ -85,22 +100,6 @@
                     console.log("opened is : " + _openplaylist);
                 });
 
-
-				$(".likesong").bind('click', function(){
-					if(_openplaylist == null){ return; }
-					var songId = $(this).attr("data-like-songid");
-					console.log("thumbs up for : "+ songId);
-					jsRoutes.controllers.Application.rate(_openplaylist, songId).ajax({
-       					context: this,
-		    	        	success:function(data) {
-        	        		var playL = $(".list-group[data-pl-id='" + _openplaylist + "']");
-        	        		playL.append(data);
-        	        		$(".delete").each(function(index) {
-        	                    bindDelete($(this));
-        	                });
-        	        	}
-        	        });
-				});
                 
                 function bindDelete(e){
                     e.bind('click',function() {
@@ -156,12 +155,12 @@
 	</head>
     <body>
     	<div class="container-fluid">
-    	<div class="row" style="color: red;">
+    	<div class="row" style="color: white;">
 			  <div class="col-md-3" >
-			    <h2>Playlists</h2>
+			    <h4>Playlists</h4>
 			  </div>
 			  <div class="col-md-9">
-			  	<h2>Songs</h2>
+				&nbsp;
 			  </div>
 		  </div>
     	
@@ -172,7 +171,7 @@
 			  	</div>
 			  </div>
 			  <div class="col-md-9">
-			  	<div id="player" class="row" style="color: red;">
+			  	<div id="player" class="row" style="color: white;">
 					&nbsp;
 			  	</div>
 			  </div>

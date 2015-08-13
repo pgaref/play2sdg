@@ -4,6 +4,10 @@ body {
     background: #444 url(/public/images/bg.jpg) repeat 0 0 scroll;
 }
 
+.list-group-item {
+	background: #444;
+}
+
 #title{
     background:transparent url(/public/images/title.png) 0 0 scroll;
     position:absolute;

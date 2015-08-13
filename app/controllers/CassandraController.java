@@ -598,4 +598,16 @@ public class CassandraController extends Controller {
 		}
 		return emf;
 	}	
+	
+	
+	
+	public static void main(String[] args) {
+		System.out.println("Here");
+		
+		User t = new User("pgaref@example.com", "pgaref", "secret");
+		CassandraController.persist(t);
+		
+		
+		
+	}
 }
