@@ -51,9 +51,26 @@
 	   	 	                    swfPath:'/public/plugin/jquery-jplayer'
 	   	 	                }
    	 	            	});
+   	 	            	
+   	 	            	jsRoutes.controllers.Application.allSongs().ajax({
+   	 	            		context : this,
+   	 	            		success: function(tracksCount){
+   	 	            			var pages = tracksCount / 50;
+   	 	            			console.log("we have " + pages +" pages!");
+   	 	            			
+   	 	            			for(var i = 0; i < pages; i++)
+   	 	            			{
+   	 	            				$("#pages").append('<button style="background:transparent" type="button" class="btn btn-primary nextpage">'+ (i+1) +'</button>');
+   	 	            			}
+   	 	            		}
+   	 	            	});
     	        	}
     	        });
           	
+          		$(document).on("click", ".nextpage", function(){
+          			console.log("Fetching page " + $(this).text()); 
+          		});
+          		
           		$( document ).on( "click", ".addtoplaylist", function() {
 				  	var trackName = $(this).attr("trackid"); 
 				  	console.log(_openplaylist + " " + trackName);

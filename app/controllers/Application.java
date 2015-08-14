@@ -146,6 +146,10 @@ public class Application extends Controller {
 		return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.findAllSongs(),  Login.findUser(request().username()), CassandraController.getCounterValue("tracks") ) );
     }
     
+    public static Result allSongs(){
+    	return ok(new ObjectMapper().convertValue(PlayListController.findAllSongs().size(), JsonNode.class));
+    }
+    
     public static Result getPlaylists(){
     	List<PlayList> tmp = controllers.CassandraController.getUserPlayLists("pgaref@example.com");
     	return ok(new ObjectMapper().convertValue(tmp, JsonNode.class));
@@ -158,6 +162,7 @@ public class Application extends Controller {
         		controllers.routes.javascript.Application.rate(),
         		controllers.routes.javascript.Application.getNextTracks(),
                 controllers.routes.javascript.Application.getPlaylists(),
+                controllers.routes.javascript.Application.allSongs(),
                 controllers.routes.javascript.PlayListController.add(),
                 controllers.routes.javascript.PlayListController.delete(),
                 controllers.routes.javascript.PlayListController.rename()

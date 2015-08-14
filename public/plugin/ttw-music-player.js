@@ -417,6 +417,10 @@
                         '        </div>' +
                         '    </div>' +
                         '    <p class="description"></p>' +
+                        '<div class="btn-toolbar" role="toolbar"> ' + 
+						'	<div class="btn-group" id="pages">' + 
+				        '	</div>' +
+						'</div>' +
                         '    <div class="tracklist">' +
                         '        <ol class="tracks"> </ol>' +
                         '        <div class="more">View More...</div>' +

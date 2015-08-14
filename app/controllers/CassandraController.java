@@ -250,7 +250,7 @@ public class CassandraController extends Controller {
 		
 		if(lastcurrentPageTrack != null){
 			Query findQuery = em
-				.createNativeQuery("SELECT * FROM tracks WHERE token(key) > token('"+ lastcurrentPageTrack +"') LIMIT 100;", Track.class);
+				.createNativeQuery("SELECT * FROM tracks WHERE token(key) > token('"+ lastcurrentPageTrack +"') LIMIT 50;", Track.class);
 			@SuppressWarnings("unchecked")
 			List<Track> nextPageTracks = findQuery. getResultList();
 			em.close();
@@ -259,7 +259,7 @@ public class CassandraController extends Controller {
 		} else{
 			//Initial Page Case
 			Query findQuery = em.createQuery("Select s from Track s", Track.class);
-			findQuery.setMaxResults(100);
+			findQuery.setMaxResults(50);
 			@SuppressWarnings("unchecked")
 			List<Track> nextPageTracks = findQuery. getResultList();
 			em.close();
