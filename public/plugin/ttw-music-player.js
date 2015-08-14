@@ -80,10 +80,10 @@
             markup = {
                 listItem:'<li class="track">' +
                 			'<div class=row>' +
-                            	'<div class="col-md-4"><span class="title"></span></div>' +
-                            	'<div class="col-md-2"><span class="duration"></span></div>' +
+                            	'<div class="col-md-6"><span class="title"></span></div>' +
+                            	'<div class="col-md-1"><span class="duration"></span></div>' +
                             	'<div class="col-md-4"><span class="rating"></span></div>' +
-                            	'<div class="col-md-2" style="text-align:right"><button class="addtoplaylist" style="border: 0; background: transparent"><img style="width:30px;height:30px" src="/public/images/pladd.png"></div></button>' +
+                            	'<div class="col-md-1" style="text-align:right"><button class="addtoplaylist" style="border: 0; background: transparent"><img style="width:30px;height:30px" src="/public/images/pladd.png"></div></button>' +
                         	'</div>' + 
                         '</li>',
                 ratingBar:'<span class="rating-level rating-bar"></span>'

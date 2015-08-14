@@ -1,7 +1,7 @@
 
 
 .ttw-music-player {
-    width: 600px;
+    width: 95%;
     margin: 0px auto;
     font-family: 'Lato', arial, sans-serif;
 }
@@ -32,7 +32,6 @@
 .ttw-music-player .album-cover .highlight {
     background: transparent url(../images/album-cover-highlight.png) no-repeat 0 0 scroll;
     opacity: 1;
-
 }
 
 .ttw-music-player .album-cover:hover .highlight {
@@ -111,7 +110,7 @@
 
 /** Player **/
 .ttw-music-player .player-controls {
-    width: 215px;
+    width: 415px;
     height: 30px;
     border-radius: 6px;
     -moz-border-radius: 6px;
@@ -164,7 +163,7 @@
 
 .ttw-music-player .progress-wrapper {
     height: 9px;
-    width: 135px;
+    width: 335px;
     float: left;
     background: transparent url(../images/player-progress.png) repeat-x 0 0 scroll;
     margin: 11px 10px 10px 0;
@@ -217,7 +216,7 @@
     -webkit-border-radius: 6px;
     background: transparent url(../images/tracklist-bg.png) repeat 0 0 scroll;
     color: #999;
-    font-size: 12px;
+    font-size: 16px;
 }
 
 .ttw-music-player .tracklist ol {
@@ -230,7 +229,6 @@
     text-shadow: 0 1px 1px rgba(0, 0, 0, .6);
     background: transparent url(../images/tracklist-item-bg.png) repeat-x bottom left scroll;
     padding: 10px 0 10px 0;
-    list-style-position: inside;
     position: relative;
 }
 
@@ -249,7 +247,7 @@
 
 
 .ttw-music-player .tracklist .title {
-    width: 164px;
+    width: 100%;
     display: inline-block;
     padding: 0 0 0 14px;
     cursor: pointer;
@@ -265,27 +263,24 @@
 }
 
 .ttw-music-player .tracklist .rating {
-    margin-left: 10px;
-    width: 30px;
+    margin: 0px auto;
+    width: 150px;
     display: block;
-    position: absolute;
-    right: 72px;
-    top: 12.5px;
 }
 
 .ttw-music-player .rating-bar {
-    height: 10px;
-    width: 3px;
+    width: 15px;
+    height: 16px;
     display: block;
     float: left;
+    background: transparent url(../images/rating-off.png) no-repeat center center scroll;
     cursor: pointer;
-    background: transparent url(../images/rating-bar.png) no-repeat 0 0 scroll;
 }
 
 .ttw-music-player .rating-bar.on,
 .ttw-music-player .rating-bar:hover,
 .ttw-music-player .rating-bar.hover {
-    background: transparent url(../images/rating-bar-on.png) no-repeat 0 0 scroll;
+		background: transparent url(../images/rating-on.png) no-repeat center center scroll;
 }
 
 .ttw-music-player .buy {
