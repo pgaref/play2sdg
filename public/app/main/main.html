@@ -1,0 +1,210 @@
+<script type="text/javascript">
+$(document).ready(function(){
+
+		var _songName = null;
+		var _playListId = null;
+		var _nodeToDelete = null;
+
+		var _openplaylist = null;
+
+        var currentNextTrack = null;
+
+        jsRoutes.controllers.Application.getNextTracks(currentNextTrack).ajax({
+        	context: this,
+        	success:function(tracks) {
+	        	var playList = new Array();
+	        	
+    			for (var i in tracks) {
+    				playList.push({
+    				songid : tracks[i].track_id,
+ 	                mp3:'http://www.noiseaddicts.com/samples_1w72b820/39.mp3',
+ 	                oga:'/public/mix/1.ogg',
+ 	                title: tracks[i].title,
+ 	                artist: tracks[i].artist,
+ 	                rating:4,
+ 	                duration:'0:30',
+ 	                cover:'/public/images/1.png'
+ 	            	});
+    			}
+
+    			$('#player').ttwMusicPlayer(playList, {
+ 	                autoPlay:false, 
+ 	                description:"",
+ 	                jPlayer:{
+ 	                    swfPath:'/public/plugin/jquery-jplayer'
+ 	                }
+            	});
+            	
+            	jsRoutes.controllers.Application.allSongs().ajax({
+            		context : this,
+            		success: function(tracksCount){
+            			var pages = tracksCount / 50;
+            			console.log("we have " + pages +" pages!");
+            			
+            			for(var i = 0; i < pages; i++)
+            			{
+            				$("#pages").append('<button style="background:transparent" type="button" class="btn btn-primary nextpage">'+ (i+1) +'</button>');
+            			}
+            		}
+            	});
+        	}
+        });
+  	
+  		$(document).on("click", ".nextpage", function(){
+  			console.log("Fetching page " + $(this).text()); 
+  		});
+  		
+  		$( document ).on( "click", ".addtoplaylist", function() {
+		  	var trackName = $(this).attr("trackid"); 
+		  	console.log(_openplaylist + " " + trackName);
+			if(_openplaylist == null){ return; }
+			console.log("thumbs up for : "+ trackName);
+			jsRoutes.controllers.Application.rate(_openplaylist, trackName).ajax({
+				context: this,
+    	        	success:function(data) {
+	        		var playL = $(".list-group[data-pl-id='" + _openplaylist + "']");
+	        		playL.append(data);
+	        	}
+	      	});
+		});
+  	
+        $(".newProject").bind('click',function() {
+        	var folder = $(this).closest("li");
+        	var folderName =  folder.attr("data-group") ;
+        	addProjectIntoFolder(folder.children("ul:first"),folderName);
+        });
+        
+
+        $(".delete_song_ok").bind('click' , function(){
+            console.log(_playListId);
+            console.log(_songName);
+            deletePlaylistSong(_nodeToDelete, _playListId, _songName);
+        	$('#delete').modal('hide');
+        });
+
+        $( document ).on('click', '.playlistopen', function(){
+            var openedPlaylist = $(this).attr("data-group");
+            if(openedPlaylist === _openplaylist){
+            	_openplaylist = null;
+            }
+            else{
+                _openplaylist = openedPlaylist;
+            }
+
+            console.log("opened is : " + _openplaylist);
+        });
+        
+        $( document ).on("click", ".delete", function() {
+            	_songName = $(this).attr("data-songname");
+            	_playListId = $(this).attr("data-playlistid");
+            
+            	
+            	$("#delete_message").html(
+                    	"<span class=\"glyphicon glyphicon-warning-sign\"></span> Are you sure you want to delete " + 
+                    	_songName +
+                    	" of playlist " + 
+                    	$(this).attr("data-playlistname") +
+                    	"?"
+                    	);
+            	_nodeToDelete = $(this).parent().parent().parent().parent();
+        });
+
+        function deletePlaylistSong(item, playListId, songId){
+        	jsRoutes.controllers.Application.deletePlayListSong(playListId, songId).ajax({
+	        	context: this,
+	        	success:function() {
+	        		item.remove();
+	        	}
+	        });
+        }
+
+        function deleteProject(item,id) {
+
+	        jsRoutes.controllers.PlayListController.delete(id).ajax({
+	        	context: this,
+	        	success:function() {
+	        		item.remove();
+	        	}
+	        });
+        }
+        
+        function addProjectIntoFolder(parent,name) {
+
+	        jsRoutes.controllers.PlayListController.add().ajax({
+	        	context: this,
+	        	data:{
+	        		folder:name
+	        	},
+	        	success:function(data, textStatus, jqXHR) {
+	        		parent.prepend(data);
+	        		bindDelete($(".delete:first",parent));
+	        	}
+	        });
+        }
+       	
+    });
+</script>
+
+<div class="row" style="color: white;">
+	  <div class="col-md-4" >
+	    <h4>Playlists</h4>
+	  </div>
+	  <div class="col-md-8">
+		&nbsp;
+	  </div>
+  </div>
+    	
+  <div class="row">
+	  <div class="col-md-4">
+	    <div id="menu" style="background-color:inherit">
+	  		<div class="panel list-group" id="projects"> 
+	  			<div ng-repeat="playlist in playlists">
+		  			<a style="font-size:14px; color: black;" data-group="{{playlist.id}}" class="list-group-item playlistopen" style="background: #444 url(/public/images/bg.jpg) repeat 0 0 scroll" data-toggle="collapse" data-target="#{{playlist.id}}" data-parent="#menu">{{playlist.folder}}</a>
+					<div id="{{playlist.id}}" class="sublinks collapse">
+					    <ul class="list-group" data-pl-id="{{playlist.id}}">
+					    	<li class="list-group-item" ng-repeat="track in playlist.tracks">
+							<div class="row">
+							  <div class="col-md-10"><h8 class="name" style="color : white">{{track}}</h8></div>
+							  <div class="col-md-2" style="text-align:right">
+							   <p data-placement="top" data-toggle="tooltip" title="Delete">
+								  <button data-songname="{{track}}" data-playlistname="{{playlist.folder}}" 
+								  		data-playlistid="{{playlist.id}}" class="btn btn-danger btn-xs delete" 
+								  		data-title="Delete" data-toggle="modal" data-target="#delete" >
+								  	<span class="glyphicon glyphicon-trash"></span>
+							  	  </button>
+							   </p>
+							  </div>
+							</div>
+							</li>
+					    </ul>
+					</div>	
+				</div>	
+	  		</div>			  		
+	  	</div>
+	  </div>
+	  <div class="col-md-8">
+	  	<div id="player" class="row" style="color: white;">
+			&nbsp;
+	  	</div>
+	  </div>
+  </div>
+</div>
+		
+		
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
+  <div class="modal-dialog">
+<div class="modal-content">
+      <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
+    <h4 class="modal-title custom_align" id="Heading">Delete this song</h4>
+  </div>
+      <div class="modal-body">
+   
+   <div class="alert alert-danger" id="delete_message"></div>
+   
+  </div>
+    <div class="modal-footer ">
+    <button type="button" class="delete_song_ok" class="btn btn-success" ><span class="glyphicon glyphicon-ok-sign"></span> Yes</button>
+    <button type="button" class="delete_song_cancel" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> No</button>
+  </div>
+        

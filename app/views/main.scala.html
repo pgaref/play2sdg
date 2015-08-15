@@ -1,5 +1,9 @@
 @(ratings: List[PlayList], user: User)(body: Html)
 <!DOCTYPE html>
+<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
 <html>
     <head>
         <title>play2SDG</title>
@@ -15,159 +19,9 @@
 	    <script type="text/javascript" src="/public/plugin/ttw-music-player.js"></script>	    
         <script type="text/javascript" src="@routes.Application.javascriptRoutes()"></script>
         
-        <script type="text/javascript">
+       <script type="text/javascript">
         $(document).ready(function(){
-
-				var _songName = null;
-				var _playListId = null;
-				var _nodeToDelete = null;
-
-				var _openplaylist = null;
-
-	            var currentNextTrack = null;
-
-	            jsRoutes.controllers.Application.getNextTracks(currentNextTrack).ajax({
-    	        	context: this,
-    	        	success:function(tracks) {
-        	        	var playList = new Array();
-        	        	
-   	        			for (var i in tracks) {
-   	        				playList.push({
-   	        				songid : tracks[i].track_id,
-   	     	                mp3:'http://www.noiseaddicts.com/samples_1w72b820/39.mp3',
-	   	 	                oga:'/public/mix/1.ogg',
-	   	 	                title: tracks[i].title,
-	   	 	                artist: tracks[i].artist,
-	   	 	                rating:4,
-	   	 	                duration:'0:30',
-	   	 	                cover:'/public/images/1.png'
-	   	 	            	});
-   	        			}
-
-   	        			$('#player').ttwMusicPlayer(playList, {
-	   	 	                autoPlay:false, 
-	   	 	                description:"",
-	   	 	                jPlayer:{
-	   	 	                    swfPath:'/public/plugin/jquery-jplayer'
-	   	 	                }
-   	 	            	});
-   	 	            	
-   	 	            	jsRoutes.controllers.Application.allSongs().ajax({
-   	 	            		context : this,
-   	 	            		success: function(tracksCount){
-   	 	            			var pages = tracksCount / 50;
-   	 	            			console.log("we have " + pages +" pages!");
-   	 	            			
-   	 	            			for(var i = 0; i < pages; i++)
-   	 	            			{
-   	 	            				$("#pages").append('<button style="background:transparent" type="button" class="btn btn-primary nextpage">'+ (i+1) +'</button>');
-   	 	            			}
-   	 	            		}
-   	 	            	});
-    	        	}
-    	        });
-          	
-          		$(document).on("click", ".nextpage", function(){
-          			console.log("Fetching page " + $(this).text()); 
-          		});
-          		
-          		$( document ).on( "click", ".addtoplaylist", function() {
-				  	var trackName = $(this).attr("trackid"); 
-				  	console.log(_openplaylist + " " + trackName);
-					if(_openplaylist == null){ return; }
-					console.log("thumbs up for : "+ trackName);
-					jsRoutes.controllers.Application.rate(_openplaylist, trackName).ajax({
-       					context: this,
-		    	        	success:function(data) {
-        	        		var playL = $(".list-group[data-pl-id='" + _openplaylist + "']");
-        	        		playL.append(data);
-        	        		$(".delete").each(function(index) {
-        	                    bindDelete($(this));
-        	                });
-        	        	}
-        	      	});
-				});
-          	
-                $(".newProject").bind('click',function() {
-                	var folder = $(this).closest("li");
-                	var folderName =  folder.attr("data-group") ;
-                	addProjectIntoFolder(folder.children("ul:first"),folderName);
-                });
-                
-                $(".delete").each(function(index) {
-                    bindDelete($(this));
-                });
-
-                $(".delete_song_ok").bind('click' , function(){
-	                console.log(_playListId);
-	                console.log(_songName);
-	                deletePlaylistSong(_nodeToDelete, _playListId, _songName);
-                	$('#delete').modal('hide');
-                });
-
-                $('.playlistopen').bind('click', function(){
-                    var openedPlaylist = $(this).attr("data-group");
-                    if(openedPlaylist === _openplaylist){
-                    	_openplaylist = null;
-                    }
-                    else{
-                        _openplaylist = openedPlaylist;
-                    }
-
-                    console.log("opened is : " + _openplaylist);
-                });
-
-                
-                function bindDelete(e){
-                    e.bind('click',function() {
-                    	_songName = $(this).attr("data-songname");
-                    	_playListId = $(this).attr("data-playlistid");
-                    	
-                    	$("#delete_message").html(
-                            	"<span class=\"glyphicon glyphicon-warning-sign\"></span> Are you sure you want to delete " + 
-                            	_songName +
-                            	" of playlist " + 
-                            	$(this).attr("data-playlistname") +
-                            	"?"
-                            	);
-                    	_nodeToDelete = $(this).parent().parent().parent().parent();
-                    });	
-                }
-
-                function deletePlaylistSong(item, playListId, songId){
-                	jsRoutes.controllers.Application.deletePlayListSong(playListId, songId).ajax({
-        	        	context: this,
-        	        	success:function() {
-        	        		item.remove();
-        	        	}
-        	        });
-                }
-
-                function deleteProject(item,id) {
-
-        	        jsRoutes.controllers.PlayListController.delete(id).ajax({
-        	        	context: this,
-        	        	success:function() {
-        	        		item.remove();
-        	        	}
-        	        });
-                }
-                
-                function addProjectIntoFolder(parent,name) {
-
-        	        jsRoutes.controllers.PlayListController.add().ajax({
-        	        	context: this,
-        	        	data:{
-        	        		folder:name
-        	        	},
-        	        	success:function(data, textStatus, jqXHR) {
-        	        		parent.prepend(data);
-        	        		bindDelete($(".delete:first",parent));
-        	        	}
-        	        });
-                }
-                
-                
+        /*for the navbar */
                 jsRoutes.controllers.Application.getUserName().ajax({
             		context : this,
             		success: function(userName){$("#username").html(userName);}
@@ -175,29 +29,32 @@
    	 	       	
             });
 		</script>
-	     <!-- navbar -->
+        
+	    <!-- navbar -->
     	<div class="bs-example bs-navbar-top-example" data-example-id="navbar-fixed-to-top">
 		    <nav class="navbar  navbar-inverse navbar-fixed-top">
 		      <div class="container-fluid">
 		        <div class="navbar-header">
-		        	<a class="navbar-brand" href="#">
+		        	<a class="navbar-brand" href="#/main">
 			        <span><img alt="Brand" src="/public/images/myicon.gif" width=30 height=30 /></span>
 			        Play2SDG
 			      	</a>
 		      	</div>
 		      	<div class="collapse navbar-collapse">
 		      		<ul class="nav navbar-nav navbar-right">
-			        <li><a href="#">Link</a></li>
+			        <li><a href="#/statistics">Statistics</a></li>
+			        <li><a href="#/findmusic">Find Music</a></li>
+			        <li><a href="#/newplaylist">New Playlist</a></li>
 			        <li class="dropdown">
-			          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+			          <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
 			          		<span class="glyphicon glyphicon-user" aria-hidden="true"></span>
 			          		<span id="username"></span>
 			          		<span class="caret"></span>
 			          </a>
 			          <ul class="dropdown-menu">
-			            <li><a href="#">&nbsp;<span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
-			            <li><a href="#">&nbsp;<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Inbox</a></li>
-			            <li><a href="#">&nbsp;<span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</a></li>
+			            <li><a>&nbsp;<span class="glyphicon glyphicon-user" aria-hidden="true"></span> Profile</a></li>
+			            <li><a>&nbsp;<span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> Inbox</a></li>
+			            <li><a>&nbsp;<span class="glyphicon glyphicon-cog" aria-hidden="true"></span> Settings</a></li>
 			            <li role="separator" class="divider"></li>
 			            <li><a href="@routes.Application.logout()">&nbsp;<span class="glyphicon glyphicon-off" aria-hidden="true"></span> Logout</a></li>
 			          </ul>
@@ -208,50 +65,22 @@
   		</div>
   <!-- navbar end-->
 	</head>
+	
     <body style="padding-top: 70px;">
 
     	
-    	<div class="container-fluid">
-    	<div class="row" style="color: white;">
-			  <div class="col-md-4" >
-			    <h4>Playlists</h4>
-			  </div>
-			  <div class="col-md-8">
-				&nbsp;
-			  </div>
-		  </div>
-    	
-		  <div class="row">
-			  <div class="col-md-4">
-			    <div id="menu">
-			  		<div class="panel list-group" id="projects"> @ratings.map { rate => @views.html.ratings.rategroup(rate)  } </div>			  		
-			  	</div>
-			  </div>
-			  <div class="col-md-8">
-			  	<div id="player" class="row" style="color: white;">
-					&nbsp;
-			  	</div>
-			  </div>
-		  </div>
-		</div>
-		
-		
-		    <div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="edit" aria-hidden="true">
-		      <div class="modal-dialog">
-		    <div class="modal-content">
-		          <div class="modal-header">
-		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></button>
-		        <h4 class="modal-title custom_align" id="Heading">Delete this song</h4>
-		      </div>
-		          <div class="modal-body">
-		       
-		       <div class="alert alert-danger" id="delete_message"></div>
-		       
-		      </div>
-		        <div class="modal-footer ">
-		        <button type="button" class="delete_song_ok" class="btn btn-success" ><span class="glyphicon glyphicon-ok-sign"></span> Yes</button>
-		        <button type="button" class="delete_song_cancel" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-remove"></span> No</button>
-		      </div>
-        </div>
+    	<div class="container-fluid" ng-view>
+    	</div>
+        
+        
+	      <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.4/angular.min.js"></script>
+		  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.4/angular-route.min.js"></script>
+		  <script src="/public/app/app.js"></script>
+		  <script src="/public/app/main/main.js"></script>
+		  <script src="/public/app/view2/view2.js"></script>
+		  <script src="/public/app/components/version/version.js"></script>
+		  <script src="/public/app/components/version/version-directive.js"></script>
+		  <script src="/public/app/components/version/interpolate-filter.js"></script>
+	        
     </body> 
 </html>
