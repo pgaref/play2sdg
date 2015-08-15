@@ -12,6 +12,7 @@ GET     /login                 		controllers.Login.index()
 POST    /login                  	controllers.Login.authenticate()
 GET     /logout                 	controllers.Application.logout()
 GET 	/allsongs					controllers.Application.allSongs()
+GET 	/username					controllers.Application.getUserName()
 
 GET 	/recommend					controllers.Application.getUserRecommendations()
 GET		/rate/:playlistid/:songid	controllers.Application.rate(playlistid: java.util.UUID , songid: String)

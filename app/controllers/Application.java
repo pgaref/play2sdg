@@ -32,6 +32,8 @@ public class Application extends Controller {
 	*/
 	private static EchoNestAPI en;
 	
+	private static String userName;
+	
     @Security.Authenticated(Secured.class)
     public static Result index() {
     	//change to  mail validation!!
@@ -45,6 +47,7 @@ public class Application extends Controller {
     		else
     			System.out.println("PL songs:  empty ");
     	}*/
+    	userName = request().username();
     	System.out.println("Logged in as User: "+ request().username() );
     	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.getTracksPage(0), Login.findUser(request().username()), CassandraController.getCounterValue("tracks") ) );
     }
@@ -150,8 +153,12 @@ public class Application extends Controller {
     	return ok(new ObjectMapper().convertValue(PlayListController.findAllSongs().size(), JsonNode.class));
     }
     
+    public static Result getUserName(){
+    	return ok(new ObjectMapper().convertValue(userName, JsonNode.class));
+    }
+    
     public static Result getPlaylists(){
-    	List<PlayList> tmp = controllers.CassandraController.getUserPlayLists("pgaref@example.com");
+    	List<PlayList> tmp = controllers.CassandraController.getUserPlayLists(userName);
     	return ok(new ObjectMapper().convertValue(tmp, JsonNode.class));
     }
     
@@ -163,6 +170,7 @@ public class Application extends Controller {
         		controllers.routes.javascript.Application.getNextTracks(),
                 controllers.routes.javascript.Application.getPlaylists(),
                 controllers.routes.javascript.Application.allSongs(),
+                controllers.routes.javascript.Application.getUserName(),
                 controllers.routes.javascript.PlayListController.add(),
                 controllers.routes.javascript.PlayListController.delete(),
                 controllers.routes.javascript.PlayListController.rename()
