@@ -4,9 +4,9 @@
 angular.module('myApp', [
   'ngRoute',
   'myApp.main',
-  'myApp.view2',
-  'myApp.version'
-]).
+  'myApp.statistics',
+  'myApp.findmusic'
+ ]).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.otherwise({redirectTo: '/main'});
 }]);
