@@ -13,7 +13,6 @@ angular.module('myApp.main', ['ngRoute'])
 	$http.get('/playlists').
     success(function(data, status, headers, config) {
       	$scope.playlists = data;
-      	console.log(data);
     }).
     error(function(data, status, headers, config) {
       console.error(status);
