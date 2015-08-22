@@ -36,17 +36,6 @@ public class Application extends Controller {
 	
     @Security.Authenticated(Secured.class)
     public static Result index() {
-    	//change to  mail validation!!
-        //return ok(views.html.index.render(Rating.findInvolving(request().username()), Song.findTodoInvolving(request().username()), User.find.byId(request().username())));
-    	/*List<PlayList> tmp = controllers.CassandraController.getUserPlayLists("pgaref@example.com");
-    	//List<PlayList> tmp = PlayList.findExisting(request().username());
-    	for(PlayList p : tmp ){
-    		System.out.println("Listing PL : "+ p.folder);
-    		if(p.getTracks()!= null)
-    			System.out.println("PL songs:  "+ p.getTracks() + " #### size: "+ p.getTracks().size());
-    		else
-    			System.out.println("PL songs:  empty ");
-    	}*/
     	userName = request().username();
     	System.out.println("Logged in as User: "+ request().username() );
     	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.getTracksPage(0), Login.findUser(request().username()), CassandraController.getCounterValue("tracks") ) );
@@ -66,12 +55,15 @@ public class Application extends Controller {
     
     @Security.Authenticated(Secured.class)
     public static Result getUserRecommendations(){
-    	//cf.loadUserRatings(request().username());
-    	//List<Track> recList = cf.recc2Song(request().username());
     	Recommendation userRec = CassandraController.getUserRecc(request().username());
     	Stats jobStats = CassandraController.getSparkJobStats();
-    	
-    	return ok(views.html.ratings.cf.render(userRec, jobStats,controllers.CassandraController.findbyEmail(request().username())  ));	
+    	return ok(new ObjectMapper().convertValue(userRec, JsonNode.class));
+    }
+    
+    @Security.Authenticated(Secured.class)
+    public static Result getJobStats(){
+    	Stats jobStats = CassandraController.getSparkJobStats();
+    	return ok(new ObjectMapper().convertValue(jobStats, JsonNode.class));
     }
     
     @Security.Authenticated(Secured.class)

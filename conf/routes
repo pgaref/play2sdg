@@ -15,6 +15,7 @@ GET 	/allsongs					controllers.Application.allSongs()
 GET 	/username					controllers.Application.getUserName()
 
 GET 	/recommend					controllers.Application.getUserRecommendations()
+GET 	/jobstats					controllers.Application.getJobStats()
 GET		/rate/:playlistid/:songid	controllers.Application.rate(playlistid: java.util.UUID , songid: String)
 
 GET		/addsongs/:artist		   controllers.Application.addSpotifySongsbyArtist(artist: String)

@@ -9,5 +9,22 @@ angular.module('myApp.findmusic', ['ngRoute'])
   });
 }])
 
-.controller('FindMusicCtrl', ['$scope', '$http', function($scope, $http) {
+.controller('FindMusicCtrl', ['$scope', '$http', function($scope, $http) {1
+	
+		$http.get('/recommend').
+		success(function(data, status, headers, config) {
+		  	$scope.songs = data.recMap;
+		}).
+		error(function(data, status, headers, config) {
+		  console.error(status);
+		});
+		
+		
+		$http.get('/jobstats').
+		success(function(data, status, headers, config) {
+			$scope.jobData = data;
+		}).
+		error(function(data, status, headers, config) {
+		  console.error(status);
+		});
 }]);
