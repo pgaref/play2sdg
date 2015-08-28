@@ -21,8 +21,11 @@ import models.Counter;
 import models.PlayList;
 import models.Recommendation;
 import models.Stats;
+import models.StatsTimeseries;
 import models.Track;
 import models.User;
+
+
 
 
 
@@ -568,6 +571,33 @@ public class CassandraController extends Controller {
 		return cfStats.get(0);
 	}
 	
+	/**
+	 * TimeSeries Stats - Cassandra JPA
+	 * @param Stats
+	 * 
+	 */
+	public static void persist(StatsTimeseries s) {
+		EntityManager em = getEm();
+
+		em.merge(s);
+		logger.debug("\n StatsTimeseries for : " + s.getId()
+				+ " record persisted using persistence unit -> cassandra_pu");
+		em.close();
+	}
+	
+	
+	public static List<StatsTimeseries> getTimeseriesStats(String statsID){
+		
+		EntityManager em = getEm();
+		Query findQuery = em.createNativeQuery("SELECT * FROM \"statseries\" WHERE \"id\"='"+statsID+"';", StatsTimeseries.class);
+		//Query findQuery = em.createQuery("Select s from StatsTimeseries s", StatsTimeseries.class);
+		findQuery.setMaxResults(Integer.MAX_VALUE);
+		List<StatsTimeseries> allStats = findQuery.getResultList();
+		em.close();
+		
+		logger.debug("\n ##############  Listing All StatsTimeseries, Total Size:" + allStats.size() +" ############## \n ");
+		return allStats;
+	}
 	
 	/**
 	 * Entity Manager Factory and Wrapper
