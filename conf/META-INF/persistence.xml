@@ -12,12 +12,13 @@
  <class>models.User</class>
  <class>models.Track</class>
  <class>models.Stats</class>
+ <class>models.StatsTimeseries</class>
 
  <properties>
  	<property name="strategy.class" value="SimpleStrategy" />
  	<property name="replcation.factor" value="3" />
  	<!--<property name="kundera.ddl.auto.prepare" value="validate" />-->
- 	<property name="kundera.nodes" value="localhost"/>
+ 	<property name="kundera.nodes" value="139.91.70.117"/>
  	<!-- <property name="kundera.nodes" value="wombat26.doc.res.ic.ac.uk,wombat27.doc.res.ic.ac.uk,wombat28.doc.res.ic.ac.uk"/> -->
  	<property name="kundera.port" value="9160"/>
  	<property name="kundera.keyspace" value="play_cassandra"/>
