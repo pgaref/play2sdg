@@ -1,1 +1,45 @@
-<h1> STATISTICS </h1>
+
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Job(s) : {{job1name}}, {{job2name}}</h3>
+    </div>
+    <div class="panel-body">
+        <div class="row">
+            <ul class="nav nav-pills">
+                <li role="presentation" class="{{activeJb}}"><a href="" ng-click="refreshDiagrams('Job time(s)')">Job time(s)</a></li>
+                <li role="presentation" class="{{activeMse}}"><a href="" ng-click="refreshDiagrams('Mean Squared Error')">Mean Squared Error</a></li>
+            </ul>
+        </div>
+        <div class="row">
+            <!--left column -->
+            <div class="col-md-8">
+                <h4 id="stat"></h4>
+                <div class="row"><div id="chart_div_1"></div></div>
+                <div class="row"><div id="chart_div_2"></div></div>
+            </div>
+
+            <!--right column -->
+            <div class="col-md-4">
+                <h4> Average job stats </h4>
+                <div ng-repeat="stat in graphsData" on-last-repeat>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h6 class="panel-title">{{stat[0].id}}</h6>
+                        </div>
+                    </div>
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div id="{{stat[0].id}}gauge1" style="width: 120px; margin:0 auto;"></div>
+                            </div>
+                            <div class="col-md-6" style="text-align:center">
+                                <div id="{{stat[0].id}}gauge2" style="width: 120px; margin:0 auto;"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

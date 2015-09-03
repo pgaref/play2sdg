@@ -70,7 +70,7 @@ public class Application extends Controller {
     public static Result rate(UUID playListID, String track_id){
 
     	Track found =  PlayListController.findBytTrackID(track_id);
-    	System.out.println("\n\n\n ---> ############ Plain track id:  "+ track_id + " - Found Title "+ found.getTitle()); 
+    	System.out.println("\n\n\n ---> ############ Plain track id:  " + track_id + " - Found Title " + found.getTitle());
     	PlayList p = CassandraController.getByID(playListID);
     	PlayListController.addSong(p, found);
     	return ok(views.html.ratings.rateitem.render(found.title, p.id, p.folder));
@@ -91,7 +91,11 @@ public class Application extends Controller {
     	//return ok();	
     	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.findAllSongs(),  Login.findUser(request().username()), CassandraController.getCounterValue("tracks") ) );
     }
-    
+
+
+    public static Result getTimeseriesStats(String statsID){
+        return ok(new ObjectMapper().convertValue(CassandraController.getTimeseriesStats(statsID), JsonNode.class));
+    }
     
     public static Result logout() {
         session().clear();

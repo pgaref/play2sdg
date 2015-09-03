@@ -1,9 +1,6 @@
 @(ratings: List[PlayList], user: User)(body: Html)
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html lang="en" ng-app="myApp" class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]><!--> <html lang="en" ng-app="myApp" class="no-js"> <!--<![endif]-->
+
 <html>
     <head>
         <title>play2SDG</title>
@@ -12,7 +9,6 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
 		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-		
 		<link rel="stylesheet" type="text/css" href="/public/plugin/css/style.css">
 	    <link rel="stylesheet" type="text/css" href="/public/css/demo.css">
 	    <script type="text/javascript" src="/public/plugin/jquery-jplayer/jquery.jplayer.js"></script>
@@ -60,7 +56,8 @@
 			        </li>
 			      </ul>
 		      	</div>
-		    </nav>
+			</div>
+			</nav>
   		</div>
   <!-- navbar end-->
 	</head>
@@ -70,17 +67,17 @@
     	
     	<div class="container-fluid" ng-view>
     	</div>
-        
-        
-	      <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.4/angular.min.js"></script>
-		  <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.4/angular-route.min.js"></script>
-		  <script src="/public/app/app.js"></script>
-		  <script src="/public/app/main/main.js"></script>
-		  <script src="/public/app/findmusic/findmusic.js"></script>
-		  <script src="/public/app/statistics/statistics.js"></script>
-		  <script src="/public/app/components/version/version.js"></script>
-		  <script src="/public/app/components/version/version-directive.js"></script>
-		  <script src="/public/app/components/version/interpolate-filter.js"></script>
-	        
-    </body> 
+
+		<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.4/angular.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.4/angular-route.min.js"></script>
+		<script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-0.13.3.js"></script>
+		<script src="/public/app/app.js"></script>
+		<script src="/public/app/main/main.js"></script>
+		<script src="/public/app/findmusic/findmusic.js"></script>
+		<script src="/public/app/statistics/statistics.js"></script>
+		<script src="/public/app/components/version/version.js"></script>
+		<script src="/public/app/components/version/version-directive.js"></script>
+		<script src="/public/app/components/version/interpolate-filter.js"></script>
+	</body>
 </html>
