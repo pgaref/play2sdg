@@ -1,32 +1,21 @@
 package models;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import org.codehaus.jackson.annotate.JsonCreator;
-import org.codehaus.jackson.annotate.JsonProperty;
-
-import com.impetus.kundera.index.Index;
-import com.impetus.kundera.index.IndexCollection;
-
-@Entity
-@Table(name = "tracks", schema = "play_cassandra@cassandra_pu")
-//Secondary index
-@IndexCollection(columns = { @Index(name = "title") })
-public class Track implements Serializable{
+import com.datastax.driver.mapping.annotations.Column;
+import com.datastax.driver.mapping.annotations.PartitionKey;
+import com.datastax.driver.mapping.annotations.Table;
 
 
-	private static final long serialVersionUID = 1L;
-	
-	@Id
+@Table(keyspace="play_cassandra", name = "tracks")
+public class Track{
+
+	@PartitionKey
 	@Column(name = "key")
 	public String track_id;
 	
@@ -38,13 +27,16 @@ public class Track implements Serializable{
 	
 	@Column(name = "releaseDate")
 	public 	Date releaseDate;
+	
+	@Column(name = "tags")
+	public List<String> tags;
+	
+	@Column(name = "similars")
+	public List<String> similars;
     
-    public Track(){
-    	
-    }
+    public Track(){}
     
-    @JsonCreator
-    public Track(@JsonProperty("id") String id, @JsonProperty("title") String title, @JsonProperty("artist")  String artist, @JsonProperty("releaseDate")  String releaseDate){
+    public Track(String id, String title, String artist, String releaseDate){
     	
     	this.track_id = id;
     	this.title = title;
@@ -133,12 +125,50 @@ public class Track implements Serializable{
 		this.track_id = track_id;
 	}
 	
+	/**
+	 * @return the tags
+	 */
+	public List<String> getTags() {
+		if(tags == null)
+			tags = new LinkedList<String>();
+		return tags;
+	}
+
+	/**
+	 * @param tags the tags to set
+	 */
+	public void setTags(List<String> tags) {
+		this.tags = tags;
+	}
+	
+	/**
+	 * @return the similars
+	 */
+	public List<String> getSimilars() {
+		if(similars == null)
+			similars = new LinkedList<String>();
+		return similars;
+	}
+
+	/**
+	 * @param similars the similars to set
+	 */
+	public void setSimilars(List<String> similars) {
+		this.similars = similars;
+	}
+	
+	@Override
+	public int hashCode(){
+		return Objects.hashCode(this.track_id);
+	}
+	
+	@Override
 	public String toString(){
 		return "\n-------------------- Track -----------------------------"
-				+ "\n track_id: " + this.track_id
-				+ "\n artist: "+ this.artist
-				+ "\n title: " + this.title
-				+ "\n releaseDate: "+ this.releaseDate
+				+ "\n\t track_id: " + this.track_id
+				+ "\n\t artist: "+ this.artist
+				+ "\n\t title: " + this.title
+				+ "\n\t releaseDate: "+ this.releaseDate
 				;
 	}
 

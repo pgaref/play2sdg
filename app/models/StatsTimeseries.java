@@ -1,110 +1,91 @@
 package models;
 
-import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import com.datastax.driver.mapping.annotations.ClusteringColumn;
+import com.datastax.driver.mapping.annotations.Column;
+import com.datastax.driver.mapping.annotations.PartitionKey;
+import com.datastax.driver.mapping.annotations.Table;
 
 
-
-@Entity
-@Table(name = "statseries", schema = "play_cassandra@cassandra_pu")
+@Table(keyspace="play_cassandra", name = "statseries")
 public class StatsTimeseries {
 	
-	@EmbeddedId
-	private StatsCompoundKey key;
+	//partition key
+	@PartitionKey
+	@Column(name = "id")
+    private String id;            
+    //cluster/ remaining key
+    @ClusteringColumn
+    @Column(name = "timestamp")
+	private java.util.Date timestamp;
 	
-	@Column(name = "doubleVal")
-	private Map<String, String> statsMap;
+	@Column(name = "metrics-map")
+	private Map<String, String> metricsMap;
 	
-	public StatsTimeseries(){
-		
-	}
+	public StatsTimeseries(){}
 	
 	public StatsTimeseries(String id){
-		StatsCompoundKey k  = new StatsCompoundKey();
-		this.key = k;
-		this.key.setId(id);
-		this.key.setTimestamp(new Date());
-		this.statsMap = new HashMap<String, String>();
+		this.id = id;
+		this.timestamp = new Date();
+		this.metricsMap = new HashMap<String, String>();
 	}
 	
 	/**
 	 * @return the id
 	 */
 	public String getId() {
-		return this.key.getId();
+		return id;
 	}
 
 	/**
 	 * @param id the id to set
 	 */
 	public void setId(String id) {
-		this.key.setId(id);
+		this.id = id;
 	}
 
 	/**
 	 * @return the timestamp
 	 */
 	public java.util.Date getTimestamp() {
-		return this.key.getTimestamp();
+		return timestamp;
 	}
 
 	/**
 	 * @param timestamp the timestamp to set
 	 */
 	public void setTimestamp(java.util.Date timestamp) {
-		this.key.setTimestamp(timestamp);
+		this.timestamp = timestamp;
 	}
 
 	/**
-	 * @return the statsMap
+	 * @return the metricsMap
 	 */
-	public Map<String, String> getStatsMap() {
-		if(statsMap == null)
-			statsMap = new HashMap<String, String>();
-		return statsMap;
+	public Map<String, String> getMetricsMap() {
+		return metricsMap;
 	}
 
 	/**
-	 * @param statsMap the statsMap to set
+	 * @param metricsMap the metricsMap to set
 	 */
-	public void setStatsMap(Map<String, String> statsMap) {
-		this.statsMap = statsMap;
-	}
-
-	/**
-	 * @return the key
-	 */
-	public StatsCompoundKey getKey() {
-		return key;
-	}
-
-	/**
-	 * @param key the key to set
-	 */
-	public void setKey(StatsCompoundKey key) {
-		this.key = key;
+	public void setMetricsMap(Map<String, String> metricsMap) {
+		this.metricsMap = metricsMap;
 	}
 
 	
 	public String toString(){
 		StringBuffer toret = new StringBuffer();
-		for(String k :this.getStatsMap().keySet() )
-			toret.append( "K: "+ k + " V: "+ this.getStatsMap().get(k) );
+		for(String k :this.getMetricsMap().keySet() )
+			toret.append( "K: "+ k + " V: "+ this.getMetricsMap().get(k) );
 		
 		return "D: "+ this.getTimestamp() +
 				"ID: "+ this.getId() +
 				"["+toret.toString()+"]";
 	}
+
+
 
 }

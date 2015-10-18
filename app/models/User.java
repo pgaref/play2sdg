@@ -1,30 +1,24 @@
 package models;
 
-import java.io.Serializable;
-import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.datastax.driver.mapping.annotations.Column;
+import com.datastax.driver.mapping.annotations.PartitionKey;
+import com.datastax.driver.mapping.annotations.Table;
+import com.google.common.base.Objects;
 
 
-@Entity
-@Table(name = "users", schema = "play_cassandra@cassandra_pu")
-//create column family users with comparator=UTF8Type and default_validation_class=UTF8Type and key_validation_class=UTF8Type;
-public class User implements Serializable{
+@Table(keyspace="play_cassandra", name = "users")
+public class User{
 	
-	private static final long serialVersionUID = 2L;
-	
-	@Id
+	@PartitionKey
 	@Column(name = "key")
-	private String email;
+	public String email;
 
 	@Column(name = "username")
 	public String username;
 
 	@Column(name = "password")
-	private String password;
+	public String password;
 
 	@Column(name = "firstname")
 	public String firstname;
@@ -33,8 +27,7 @@ public class User implements Serializable{
 	public String lastname;	
 	
 	//default constructor
-	public User(){
-	}
+	public User(){}
 	
 	public User(String email, String username, String password) {
 		this.email = email;
@@ -120,12 +113,31 @@ public class User implements Serializable{
 		this.lastname = lastname;
 	}
 	
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(this.email);
+	}
+	
 	public String toString() {
 		return "\n--------------------------------------------------"
-				+ "\nuserEmail: " + this.getEmail() + "\nusername: "+ this.getUsername()
-				+ "\nfirstName:" + this.getFistname() + "\nlastName: " + this.getLastname()
-				+ "\npass: " + this.password;
+				+ "\n\t userEmail: " + this.getEmail() + "\nusername: "+ this.getUsername()
+				+ "\n\t firstName:" + this.getFistname() + "\nlastName: " + this.getLastname()
+				+ "\n\t pass: " + this.password;
 	}
 
+	/**
+	 * @return the firstname
+	 */
+	public String getFirstname() {
+		return firstname;
+	}
+
+	/**
+	 * @param firstname the firstname to set
+	 */
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
+	
 	
 }

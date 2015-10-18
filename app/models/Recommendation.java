@@ -4,27 +4,28 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import com.datastax.driver.mapping.annotations.Column;
+import com.datastax.driver.mapping.annotations.PartitionKey;
+import com.datastax.driver.mapping.annotations.Table;
 
-@Entity
-@Table(name = "recommendations", schema = "play_cassandra@cassandra_pu")
+/**
+ * Reccommendations must implement Serializable Interface 
+ * to satisfy Spark RDD requirements
+ * @author pg1712
+ *
+ */
+@Table(keyspace = "play_cassandra", name = "recommendations")
 public class Recommendation implements Serializable{
 	
-	private static final long serialVersionUID = 3L;
-	
-	@Id
+	@PartitionKey
+	@Column(name = "email")
 	public String email;
 	
-	@Column(name = "rec-list")
+	@Column(name = "rec-map")
 	public Map<String, Double> recMap;
 	
 	
-	public Recommendation() {
-		
-	}
+	public Recommendation() {}
 	
 	public  Recommendation(String usermail){
 		this.email = usermail;
@@ -46,17 +47,17 @@ public class Recommendation implements Serializable{
 	}
 
 	/**
-	 * @return the recList
+	 * @return the recMap
 	 */
-	public Map<String, Double> getRecList() {
+	public Map<String, Double> getRecMap() {
 		return recMap;
 	}
 
 	/**
-	 * @param recList the recList to set
+	 * @param recMap the recMap to set
 	 */
-	public void setRecList(Map<String, Double> recList) {
-		this.recMap = recList;
+	public void setRecMap(Map<String, Double> recMap) {
+		this.recMap = recMap;
 	}
 	
 	/**

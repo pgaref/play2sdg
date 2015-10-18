@@ -4,56 +4,45 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import com.impetus.kundera.index.Index;
-import com.impetus.kundera.index.IndexCollection;
+import com.datastax.driver.mapping.annotations.Column;
+import com.datastax.driver.mapping.annotations.PartitionKey;
+import com.datastax.driver.mapping.annotations.Table;
+import com.google.common.base.Objects;
 
 
-
-//@Security.Authenticated(Secured.class)
-//CREATE table playlists( id uuid, folder text, usermail text, tracks list<text>, PRIMARY KEY (id) );
-@Entity
-@Table(name = "playlists", schema = "play_cassandra@cassandra_pu")
-//Secondary index
-@IndexCollection(columns = { @Index(name = "usermail") })
+@Table(keyspace = "play_cassandra", name = "playlists")
 public class PlayList{
-	
-    @Id
-    public UUID id;
-    
-    @Column(name = "folder")
-    public String folder;
-    
-    @Column(name = "usermail")
-    public String usermail;
-    
-    @ElementCollection
-    @Column(name = "tracks")
-    public List<String> tracks;
-    
-    public PlayList(){}
-    
-    
-    public PlayList(String usermail, String fname) {
-    	
-    	this.id = UUID.randomUUID();
-    	this.folder = fname;
-    	this.usermail= usermail;
-    	this.tracks = new ArrayList<String>();
-    	
-    }
-    
-    public void addRatingSong(Track s){
-    	if(tracks == null)
-    		tracks = new ArrayList<String>();
-    	
-    	tracks.add(s.getTitle());
-    }
+
+	@PartitionKey
+	@Column(name = "id")
+	public UUID id;
+
+	@Column(name = "folder")
+	public String folder;
+
+	@Column(name = "usermail")
+	public String usermail;
+
+	@Column(name = "tracks")
+	public List<String> tracks;
+
+	public PlayList() {}
+
+	public PlayList(String usermail, String fname) {
+
+		this.id = UUID.randomUUID();
+		this.folder = fname;
+		this.usermail = usermail;
+		this.tracks = new ArrayList<String>();
+
+	}
+
+	public void addRatingSong(String track) {
+		if (tracks == null)
+			tracks = new ArrayList<String>();
+
+		tracks.add(track);
+	}
 
 	/**
 	 * @return the id
@@ -63,7 +52,8 @@ public class PlayList{
 	}
 
 	/**
-	 * @param id the id to set
+	 * @param id
+	 *            the id to set
 	 */
 	public void setId(UUID id) {
 		this.id = id;
@@ -77,7 +67,8 @@ public class PlayList{
 	}
 
 	/**
-	 * @param folder the folder to set
+	 * @param folder
+	 *            the folder to set
 	 */
 	public void setFolder(String folder) {
 		this.folder = folder;
@@ -91,7 +82,8 @@ public class PlayList{
 	}
 
 	/**
-	 * @param usermail the usermail to set
+	 * @param usermail
+	 *            the usermail to set
 	 */
 	public void setUsermail(String usermail) {
 		this.usermail = usermail;
@@ -106,76 +98,25 @@ public class PlayList{
 		return tracks;
 	}
 
-
 	/**
-	 * @param tracks the tracks to set
+	 * @param tracks
+	 *            the tracks to set
 	 */
 	public void setTracks(List<String> tracks) {
 		this.tracks = tracks;
 	}
 	
-	public String toString(){
-		
-		return "\n--------------------------------------------------"
-				+ "\n Playlist: "+this.folder
-				+"\n usermail: "+ this.usermail 
-				+"\n Songs: "+ ( tracks != null? this.tracks.toString() : " empty");
+	@Override
+	public int hashCode() {
+		return Objects.hashCode(this.id);
 	}
 	
-	/*
-	 * JPA Connector functionality for Easy accessibility
-	 
-    
-	//PlayList with one song
-    public static PlayList create(User  u, String folder, String songTitle){
-    	PlayList pl = new PlayList(u.getEmail(), folder);
-    	Track listsong = CassandraController.findTrackbyTitle(songTitle);
-    	pl.addRatingSong(listsong);
-    	CassandraController.persist(pl);
-    	return pl;
-    }
-    // Empty PlayList
-    public static PlayList create(User  u, String folder){
-    	PlayList pl = new PlayList(u.getEmail(), folder);
-    	CassandraController.persist(pl);
-    	return pl;
-    }
-    
-    public static void remove(UUID id){
-    	PlayList p = CassandraController.getByID(id);
-    	CassandraController.remove(p);
-    }
-    
-    public static List<PlayList> findExisting(String usermail){
-    	List<PlayList> pl = CassandraController.getUserPlayLists(usermail);
-    	if(pl == null){
-    		System.out.println("User: " + usermail + " has no playlists!!!");
-    		return null;
-    	}
-    	return pl;
-    }
-    
-    public static boolean hasPlayLists(String usermail){
-    	List<PlayList> pl = CassandraController.getUserPlayLists(usermail);
-    	
-    	if(pl == null)
-    		return false;
-    	
-    	return (pl.size() > 0);
-    }
-    
-    public static void addSong(String usermail, Track song){
-    	PlayList p = CassandraController.getUserPlayLists(usermail).get(0);
-    	p.addRatingSong(song);
-    	CassandraController.persist(p);
-    }
-    
-    public static void playListRename(UUID id, String newname){
-    	PlayList p = CassandraController.getByID(id);
-    	CassandraController.playlistRename(p, newname);
-    }
-	*/
 
+	public String toString() {
 
-
+		return "\n--------------------------------------------------"
+				+ "\n Playlist: " + this.folder + "\n usermail: "
+				+ this.usermail + "\n Songs: "
+				+ (tracks != null ? this.tracks.toString() : " empty");
+	}
 }
