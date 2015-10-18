@@ -3,9 +3,7 @@ package controllers;
 import java.util.List;
 import java.util.UUID;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.map.ObjectMapper;
-
+import managers.ClusterManager;
 import models.PlayList;
 import models.Track;
 import models.User;
@@ -20,7 +18,8 @@ import play.mvc.Security;
 public class PlayListController extends Controller {
 
     private static final DynamicForm dynForm = play.data.Form.form();
-    
+	
+	private static Track lastPageTrack=null;
     
     public static Result add(String SongTitle) {
     	PlayList newPlay = PlayListController.create(Login.findUser(request().username()), dynForm.bindFromRequest().get("folder"));
@@ -65,25 +64,25 @@ public class PlayListController extends Controller {
 	//PlayList with one song
     public static PlayList create(User  u, String folder, String songTitle){
     	PlayList pl = new PlayList(u.getEmail(), folder);
-    	Track listsong = CassandraController.findTrackbyTitle(songTitle);
-    	pl.addRatingSong(listsong);
-    	CassandraController.persist(pl);
+    	Track listsong = Application.dxController.findTrackbyTitle(songTitle).get(0);
+    	pl.addRatingSong(listsong.getTitle());
+    	Application.dxController.persist(pl);
     	return pl;
     }
     // Empty PlayList
     public static PlayList create(User  u, String folder){
     	PlayList pl = new PlayList(u.getEmail(), folder);
-    	CassandraController.persist(pl);
+    	Application.dxController.persist(pl);
     	return pl;
     }
     
     public static void remove(UUID id){
-    	PlayList p = CassandraController.getByID(id);
-    	CassandraController.remove(p);
+    	PlayList p = Application.dxController.findByPlaylistID(id);
+    	Application.dxController.remove(p);
     }
     
     public static List<PlayList> findExisting(String usermail){
-    	List<PlayList> pl = CassandraController.getUserPlayLists(usermail);
+    	List<PlayList> pl = Application.dxController.getUserPlayLists(usermail);
     	if(pl == null){
     		System.out.println("User: " + usermail + " has no playlists!!!");
     		return null;
@@ -92,7 +91,7 @@ public class PlayListController extends Controller {
     }
     
     public static boolean hasPlayLists(String usermail){
-    	List<PlayList> pl = CassandraController.getUserPlayLists(usermail);
+    	List<PlayList> pl = Application.dxController.getUserPlayLists(usermail);
     	
     	if(pl == null)
     		return false;
@@ -101,14 +100,16 @@ public class PlayListController extends Controller {
     }
     
     public static void addSong(PlayList playlist, Track song){
-    	playlist.addRatingSong(song);
-    	CassandraController.persist(playlist);
+    	playlist.addRatingSong(song.getTitle());
+    	Application.dxController.persist(playlist);
     }
     
     public static void playListRename(UUID id, String newname){
-    	PlayList p = CassandraController.getByID(id);
-    	CassandraController.playlistRename(p, newname);
+    	PlayList p = Application.dxController.findByPlaylistID(id);
+    	p.setFolder(newname);
+    	Application.dxController.persist(p);
     }
+    
     
 	/*
 	 * JPA Connector functionality for Easy accessibility
@@ -116,47 +117,59 @@ public class PlayListController extends Controller {
 	
 	public static Track create(String id, String title, String artist, String released){
 		Track newSong = new Track(id, title, artist, released);
-		CassandraController.persist(newSong);
+		Application.dxController.persist(newSong);
 		return newSong;
 	}
 
 	public static Track findByTitle(String title) {
-		return CassandraController.findTrackbyTitle(title);
+		return Application.dxController.findTrackbyTitle(title).get(0);
 	}
 	
 	public static Track findBytTrackID(String id){
-		return CassandraController.findByTrackID(id);
+		return Application.dxController.findByTrackID(id);
 	}
 	
-	public static Track findByID(int id){
-		List<Track> l = PlayListController.findAllSongs();
-		if(id > l.size()){
-			System.out.println("ID Cannot be greater than size!!");
-			return null;
-		}
-		return l.get(id);
-	}
 
-	public static List<Track> findAllSongs() {
-		return CassandraController.listAllTracks();
+	public static List<Track> getIndexPageTracks() {
+		List<Track> tmp;
+		if(PlayListController.lastPageTrack == null){
+			tmp = Application.dxController.getTracksPage(20);
+			PlayListController.lastPageTrack = tmp.get(tmp.size()-1);
+			return tmp;
+		}
+		tmp =  Application.dxController.getNextTracksPage(PlayListController.lastPageTrack.getTrack_id(), 20);
+		PlayListController.lastPageTrack = tmp.get(tmp.size()-1);
+		return tmp;
 	}
 	
 	public static List<Track> getTracksPage(int PageNo){
-		return CassandraController.getTracksPage(PageNo, 50);
+		return Application.dxController.getTracksPage(20);
 	}
-	
+	/*
+	 * Function called FROM main.html ajax to refresh page Tracks
+	 */
 	public static List<Track> getnextTracksPage(String lastcurrentPageTrack){
-		return CassandraController.getNextTracksPage(lastcurrentPageTrack);
+		return getIndexPageTracks();
 	}
 	
+	//Iterating through all results is performance killer!!
+
+//	public static Track findByID(int id){
+//	List<Track> l = PlayListController.findAllSongs();
+//	if(id > l.size()){
+//		System.out.println("ID Cannot be greater than size!!");
+//		return null;
+//	}
+//	return l.get(id);
+//}
 	
-	public static int getSongID(String title) {
-		List<Track> l = PlayListController.findAllSongs();
-		for (int i = 0; i < l.size(); i++) {
-			if (l.get(i).title.equals(title))
-				return i;
-		}
-		return -1;
-	}
+//	public static int getSongID(String title) {
+//		List<Track> l = PlayListController.findAllSongs();
+//		for (int i = 0; i < l.size(); i++) {
+//			if (l.get(i).title.equals(title))
+//				return i;
+//		}
+//		return -1;
+//	}
 	
 }
