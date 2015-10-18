@@ -1,4 +1,4 @@
-@(songsRec: Recommendation, jobStats: Stats, user: User)
+@(songsRec: Recommendation, jobStats: StatsTimeseries, user: User)
 
 <!DOCTYPE html>
 <html>
@@ -70,7 +70,7 @@
                         <h3>Collaborative filtering job Stats</h3>
                     </header>
                     <ul class="list">
-                        @jobStats.getStatsMap().map { case (statkey, statvalue) =>
+                        @jobStats.getMetricsMap().map { case (statkey, statvalue) =>
                         	<li data-task-id="@statkey">
     							<h4>@statkey</h4>
     							<span class="stats">  @statvalue </span>
