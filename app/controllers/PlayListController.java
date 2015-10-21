@@ -138,6 +138,10 @@ public class PlayListController extends Controller {
 			return tmp;
 		}
 		tmp =  Application.dxController.getNextTracksPage(PlayListController.lastPageTrack.getTrack_id(), 20);
+		//In case we run out of Tracks!! (a benchmark can do that ) 
+		if(tmp.isEmpty())
+			tmp = Application.dxController.getTracksPage(20);
+		
 		PlayListController.lastPageTrack = tmp.get(tmp.size()-1);
 		return tmp;
 	}

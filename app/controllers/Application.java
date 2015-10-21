@@ -15,6 +15,7 @@ import models.StatsTimeseries;
 import models.Track;
 import models.User;
 import play.Routes;
+import play.Logger;
 import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Result;
@@ -34,7 +35,8 @@ public class Application extends Controller {
     @Security.Authenticated(Secured.class)
     public static Result index() {
     	currentUserMail = request().username();
-    	System.out.println("Logged in as User: "+ request().username() );
+    	System.out.print(".");
+    	Logger.debug("Logged in as User: "+ request().username() );
     	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.getTracksPage(0), Login.findUser(request().username()), (int)dxController.getCounterValue(CassandraDxQueryController.trackCounter.getId())) );
     }
    
@@ -53,6 +55,7 @@ public class Application extends Controller {
     @Security.Authenticated(Secured.class)
     public static Result getUserRecommendations(){
     	Recommendation userRec = dxController.getUserRecommendations(request().username());
+    	Logger.debug("Got Recommendation: "+ userRec.toString());
     	//StatsTimeseries jobStats = CassandraController.getSparkJobStats();
     	return ok(new ObjectMapper().convertValue(userRec, JsonNode.class));
     }
@@ -66,7 +69,7 @@ public class Application extends Controller {
     @Security.Authenticated(Secured.class)
     public static Result rate(UUID playListID, String track_id){
     	Track found =  PlayListController.findBytTrackID(track_id);
-    	System.out.println("\n\n\n ---> ############ Plain track id:  " + track_id + " - Found Title " + found.getTitle());
+    	Logger.debug("\n\n\n ---> ############ Plain track id:  " + track_id + " - Found Title " + found.getTitle());
     	PlayList p = dxController.findByPlaylistID(playListID);
     	PlayListController.addSong(p, found);
     	return ok(views.html.ratings.rateitem.render(found.title, p.id, p.folder));
@@ -75,14 +78,14 @@ public class Application extends Controller {
     @Security.Authenticated(Secured.class)
     public static Result createPlayList(){
     	PlayList newPlay = PlayListController.create(Login.findUser(request().username()), "tmpList");
-    	System.out.println("Just create Playlist "+ newPlay.toString());
+    	Logger.debug("Just create Playlist "+ newPlay.toString());
     	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.getIndexPageTracks(),  Login.findUser(request().username()),  (int)dxController.getCounterValue(CassandraDxQueryController.trackCounter.getId())) );
     }
     
     @Security.Authenticated(Secured.class)
     public static Result deletePlayListSong(UUID playListID, String song){
     	
-    	System.out.println("\n -----Delete request: "+ playListID + " - " + song);
+    	Logger.debug("\n -----Delete request: "+ playListID + " - " + song);
     	dxController.deleteUserPlayListSong(playListID, song);
     	//return ok();	
     	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.getIndexPageTracks(),  Login.findUser(request().username()), (int)dxController.getCounterValue(CassandraDxQueryController.trackCounter.getId())) );
