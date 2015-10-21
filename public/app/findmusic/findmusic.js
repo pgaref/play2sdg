@@ -13,7 +13,7 @@ angular.module('myApp.findmusic', ['ngRoute'])
 	
 		$http.get('/recommend').
 		success(function(data, status, headers, config) {
-		  	$scope.songs = data.recMap;
+		  	$scope.songs = data.recmap;
 		}).
 		error(function(data, status, headers, config) {
 		  console.error(status);

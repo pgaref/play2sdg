@@ -78,7 +78,7 @@ angular.module('myApp.statistics', ['ngRoute'])
             var rows1 = new Array();
             for(var i in job1Data){
                 var d = job1Data[i];
-                var mapData = d.statsMap;
+                var mapData = d.metricsmap;
                 if(mapData !== undefined){
                     rows1.push([new Date(d.timestamp), parseFloat(mapData[stat])]);
                 }
@@ -89,7 +89,7 @@ angular.module('myApp.statistics', ['ngRoute'])
             var rows2 = new Array();
             for(var x in lineData[1]){
                 var d = job2Data[x];
-                var mapData = d.statsMap;
+                var mapData = d.metricsmap;
                 if(mapData !== undefined){
                     rows2.push([new Date(d.timestamp), parseFloat(mapData[stat])]);
                 }
@@ -119,7 +119,7 @@ angular.module('myApp.statistics', ['ngRoute'])
 			var memory  = 0;
 			var arrayLength = gaugeData.length;
             for (var i = 0; i < arrayLength; i++) {
-            	var g_m = gaugeData[i].statsMap;
+            	var g_m = gaugeData[i].metricsmap;
                 system_loadavg += parseFloat(g_m['system-loadavg']);
                 memory += 1 - ((g_m['mem-total'] - g_m['mem-avail'] ) / g_m['mem-total']);
             }
