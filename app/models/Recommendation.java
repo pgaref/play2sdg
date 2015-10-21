@@ -21,15 +21,20 @@ public class Recommendation implements Serializable{
 	@Column(name = "email")
 	public String email;
 	
-	@Column(name = "rec-map")
-	public Map<String, Double> recMap;
+	@Column(name = "recmap")
+	public Map<String, Double> recmap;
 	
 	
 	public Recommendation() {}
 	
 	public  Recommendation(String usermail){
 		this.email = usermail;
-		this.recMap = new HashMap<String, Double>();
+		this.recmap = new HashMap<String, Double>();
+	}
+	
+	public  Recommendation(String usermail, HashMap<String, Double> recmap){
+		this.email = usermail;
+		this.recmap = recmap;
 	}
 
 	/**
@@ -47,17 +52,17 @@ public class Recommendation implements Serializable{
 	}
 
 	/**
-	 * @return the recMap
+	 * @return the recmap
 	 */
-	public Map<String, Double> getRecMap() {
-		return recMap;
+	public Map<String, Double> getRecmap() {
+		return recmap;
 	}
 
 	/**
-	 * @param recMap the recMap to set
+	 * @param recmap the recmap to set
 	 */
-	public void setRecMap(Map<String, Double> recMap) {
-		this.recMap = recMap;
+	public void setRecmap(Map<String, Double> recmap) {
+		this.recmap = recmap;
 	}
 	
 	/**
@@ -66,17 +71,17 @@ public class Recommendation implements Serializable{
 	 * @param score
 	 */
 	public void addRecommendation(String track , double score){
-		if(this.recMap == null)
-			this.recMap = new HashMap<String, Double>();
-		this.recMap.put(track, score);
+		if(this.recmap == null)
+			this.recmap = new HashMap<String, Double>();
+		this.recmap.put(track, score);
 	}
 
 	public String toString(){
 		StringBuffer s = new StringBuffer();
 		s.append("\n--------------------------------------------------");
 		s.append("\n User: " + this.email);
-		for(String key : this.recMap.keySet()){
-			s.append("\n -> Rec Song: "+ key+ " Score: "+ recMap.get(key));
+		for(String key : this.recmap.keySet()){
+			s.append("\n -> Rec Song: "+ key+ " Score: "+ recmap.get(key));
 		}
 		return s.toString();
 		

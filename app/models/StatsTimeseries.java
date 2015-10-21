@@ -1,5 +1,6 @@
 package models;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +12,7 @@ import com.datastax.driver.mapping.annotations.Table;
 
 
 @Table(keyspace="play_cassandra", name = "statseries")
-public class StatsTimeseries {
+public class StatsTimeseries implements Serializable{
 	
 	//partition key
 	@PartitionKey
@@ -22,15 +23,15 @@ public class StatsTimeseries {
     @Column(name = "timestamp")
 	private java.util.Date timestamp;
 	
-	@Column(name = "metrics-map")
-	private Map<String, String> metricsMap;
+	@Column(name = "metricsmap")
+	private Map<String, String> metricsmap;
 	
 	public StatsTimeseries(){}
 	
 	public StatsTimeseries(String id){
 		this.id = id;
 		this.timestamp = new Date();
-		this.metricsMap = new HashMap<String, String>();
+		this.metricsmap = new HashMap<String, String>();
 	}
 	
 	/**
@@ -62,24 +63,23 @@ public class StatsTimeseries {
 	}
 
 	/**
-	 * @return the metricsMap
+	 * @return the metricsmap
 	 */
-	public Map<String, String> getMetricsMap() {
-		return metricsMap;
+	public Map<String, String> getMetricsmap() {
+		return metricsmap;
 	}
 
 	/**
-	 * @param metricsMap the metricsMap to set
+	 * @param metricsmap the metricsmap to set
 	 */
-	public void setMetricsMap(Map<String, String> metricsMap) {
-		this.metricsMap = metricsMap;
+	public void setMetricsmap(Map<String, String> metricsmap) {
+		this.metricsmap = metricsmap;
 	}
-
 	
 	public String toString(){
 		StringBuffer toret = new StringBuffer();
-		for(String k :this.getMetricsMap().keySet() )
-			toret.append( "K: "+ k + " V: "+ this.getMetricsMap().get(k) );
+		for(String k :this.getMetricsmap().keySet() )
+			toret.append( "K: "+ k + " V: "+ this.getMetricsmap().get(k) );
 		
 		return "D: "+ this.getTimestamp() +
 				"ID: "+ this.getId() +
