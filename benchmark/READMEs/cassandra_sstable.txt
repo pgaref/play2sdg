@@ -1,0 +1,43 @@
+# Cassandra
+wget http://mirror.ox.ac.uk/sites/rsync.apache.org/cassandra/2.1.9/apache-cassandra-2.1.9-src.tar.gz
+wget http://mirror.ox.ac.uk/sites/rsync.apache.org/cassandra/2.1.9/apache-cassandra-2.1.9-bin.tar.gzs
+
+#Cassandra Load Data
+Schema should be created from play application.
+
+create KEYSPACE play_cassandra WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 1 };
+
+
+## EXPORT DATA => Snaphost tool
+
+./bin/nodetool snapshot play_cassandra
+ =>Requested creating snapshot(s) for [play_cassandra] with snapshot name [1445091582621]
+ =>Snapshot directory: 1445091582621
+
+sudo find ./ -name "1445091582621"
+cp -r ./data/data/play_cassandra/users-e48201a0711711e5ab78a70046707b22/snapshots/1445091582621 ../play_cassandra/users
+cp -r ././data/data/play_cassandra/statseries-e846aac0711711e5ab78a70046707b22/snapshots/1445091582621 ../play_cassandra/statseries
+cp -r ./data/data/play_cassandra/counters-e1bd6360711711e5ab78a70046707b22/snapshots/1445091582621 ../play_cassandra/counters
+cp -r ./data/data/play_cassandra/stats-7b981470711e11e5ab78a70046707b22/snapshots/1445091582621 ../play_cassandra/stats
+cp -r ./data/data/play_cassandra/tracks-e57402c0711711e5ab78a70046707b22/snapshots/1445091582621 ../play_cassandra/tracks
+cp -r ./data/data/play_cassandra/playlists-e2b41f70711711e5ab78a70046707b22/snapshots/1445091582621 ../play_cassandra/playlists
+
+
+sstable2json <sstable>
+
+
+## IMPORT DATA => sstableload Tool
+./apache-cassandra-2.1.9/tools/bin/sstableloader -d 146.179.131.141 ./play_cassandra/users/
+./apache-cassandra-2.1.9/bin/sstableloader -d 146.179.131.141 ./play_cassandra/tracks/
+./apache-cassandra-2.1.9/bin/sstableloader -d 146.179.131.141 ./play_cassandra/counters/
+./apache-cassandra-2.1.9/bin/sstableloader -d 146.179.131.141 ./play_cassandra/recommendations/
+./apache-cassandra-2.1.9/bin/sstableloader -d 146.179.131.141 ./play_cassandra/statseries/
+./apache-cassandra-2.1.9/bin/sstableloader -d 146.179.131.141 ./play_cassandra/stats/
+
+#cqlsh
+sstableloader -d localhost play_cassandra/recommendations/
+sstableloader -d localhost play_cassandra/
+sstableloader -d localhost play_cassandra/counters/
+sstableloader -d localhost play_cassandra/stats/
+## Dont not forget playlists!!!!
+./apache-cassandra-2.1.9/bin/sstableloader -d wombat30.doc.res.ic.ac.uk play_cassandra/playlists/

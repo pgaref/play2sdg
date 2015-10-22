@@ -1,0 +1,35 @@
+##Spark version used is 1.2.0
+## Dependencies so far
+sudo apt-get install libgfortran3
+
+#Play
+sh ./play2sdg-*/start -Dhttp.port=$PORT -Xms1900m -Xmx6144m
+
+## Produce synthetic workload
+stress -c 4
+stress -c 4 -m 4 --vm-bytes 10G
+
+## Containers Port forward
+1765  sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 9042 -j DNAT --to 10.0.3.104:9042
+1766  sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 9160 -j DNAT --to 10.0.3.104:9160
+1780  sudo iptables -t nat -A PREROUTING -i eth0 -p tcp --dport 31801 -j DNAT --to 10.0.3.104:31801
+1991  sudo iptables -t nat -L
+1992  sudo iptables -t nat -D PREROUTING 3
+
+## Containers isolation
+sudo lxc-cgroup -n play-container cpuset.cpus 0,1
+sudo lxc-cgroup -n spark-container cpuset.cpus 2,3
+
+
+## Cassandra limits configuration!
+
+pico /etc/security/limits.conf
+
+## pgaref Cassandra optimisation!!
+
+pg1712           -       memlock        unlimited
+pg1712           -       nofile         100000
+pg1712           -       nproc          32768
+pg1712           -       as             unlimited
+
+Attention! If limits do dont work: uncomment from  /etc/pam.d/su => # session    required   pam_limits.so 

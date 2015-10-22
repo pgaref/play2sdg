@@ -1,0 +1,77 @@
+    6  sudo service hadoop-hdfs-datanode stop
+    7  sudo rm -r /data/*
+    8  sudo mkdir -p /data/1/dfs/dn /data/2/dfs/dn /data/3/dfs/dn /data/4/dfs/dn
+    9  sudo chmod 700 /data/1/dfs/nn /nfsmount/dfs/nn
+   10  ls
+   11  rm cdh4-repository_1.0_all.deb.1
+   12  rm cdh4-repository_1.0_all.deb
+   13  wget http://archive.cloudera.com/cdh4/one-click-install/precise/amd64/cdh4-repository_1.0_all.deb
+   14  sudo apt-get remove hadoop-*
+   15  sudo apt-get remove hadoop-hdfs*
+   16  sudo rm /etc/apt/sources.list.d/cloudera-cdh5.list
+   17  sudo apt-get update
+   18  sudo dpkg -i cdh4-repository_1.0_all.deb
+   19  sudo apt-get update
+   20  sudo apt-get install hadoop-hdfs-datanode
+   21  sudo rm /etc/apt/sources.list.d/cloudera-cdh5.list.save
+   22  sudo apt-get update
+   23  sudo apt-get install hadoop-hdfs-datanode
+   24  sudo pico /etc/apt/sources.list.d/cloudera-cdh4.list
+   25  sudo apt-get update
+   26  sudo apt-get install hadoop-hdfs-datanode
+   27  sudo apt-get remove hadoop-hdfs
+   28  sudo apt-get autoremove
+   29  sudo apt-get install hadoop-hdfs-datanode
+   30  sudo service hadoop-hdfs-datanode stop
+   31  sudo pico /etc/apt/sources.list.d/cloudera-cdh4.list
+   32  sudo update-alternatives --install /etc/hadoop/conf hadoop-conf /etc/hadoop/conf.mesos 50
+   33  sudo update-alternatives --set hadoop-conf /etc/hadoop/conf.mesos
+   34  sudo chown -R hdfs:hdfs /data/
+   35  sudo chmod -R 777 /data/
+   36  sudo service hadoop-hdfs-datanode start
+   37  tail -f /var/log/hadoop-hdfs/hadoop-hdfs-datanode-wombat26.log
+
+
+
+
+   15  curl -s http://archive.cloudera.com/cdh4/ubuntu/lucid/amd64/cdh/archive.key | sudo apt-key add -
+   16  sudo apt-get update; sudo apt-get install hadoop-0.20-mapreduce-tasktracker hadoop-hdfs-datanode
+   17  wget http://archive.cloudera.com/cdh4/one-click-install/squeeze/amd64/cdh4-repository_1.0_all.deb
+   18  sudo dpkg -i cdh4-repository_1.0_all.deb
+   19  sudo apt-get update; sudo apt-get install hadoop-0.20-mapreduce-tasktracker hadoop-hdfs-datanode
+   20  Y
+   21  sudo apt-get install hadoop-client
+   22  cat ~/.bashrc
+   23  pico ~/.bashrc
+   24  sudo mkdir -p /data/1/dfs/dn /data/2/dfs/dn /data/3/dfs/dn /data/4/dfs/dn
+   25  sudo chown -R hdfs:hdfs /data/1/dfs/nn /nfsmount/dfs/nn /data/1/dfs/dn /data/2/dfs/dn /data/3/dfs/dn /data/4/dfs/dn
+   26  mkdir tmp
+   27  sudo mkdir /etc/hadoop/conf.mesos
+   28  sudo cp tmp/* /etc/hadoop/conf.mesos/
+   29  sudo update-alternatives --install /etc/hadoop/conf hadoop-conf /etc/hadoop/conf.mesos 50
+   30  sudo update-alternatives --set hadoop-conf /etc/hadoop/conf.mesos
+   31  sudo service hadoop-hdfs-datanode restart
+   32  sudo service hadoop-hdfs-datanode stop
+   33  sudo service hadoop-hdfs-datanode start
+
+
+## Working on wombat29 => PRECISE release 
+sudo pico /etc/apt/sources.list.d/cloudera-cdh4.list
+## Add lines 
+deb [arch=amd64] http://archive.cloudera.com/cdh4/ubuntu/precise/amd64/cdh precise-cdh4.7.0 contrib
+deb-src http://archive.cloudera.com/cdh4/ubuntu/precise/amd64/cdh precise-cdh4.7.0 contrib
+## Configuration files
+sudo cp -R conf.mesos/ /etc/hadoop/
+sudo update-alternatives --install /etc/hadoop/conf hadoop-conf /etc/hadoop/conf.mesos 50
+sudo update-alternatives --set hadoop-conf /etc/hadoop/conf.mesos
+sudo chown -R hdfs:hdfs /data/
+sudo mkdir -p /data/1/dfs/dn /data/2/dfs/dn /data/3/dfs/dn /data/4/dfs/dn
+sudo chown -R hdfs:hdfs /data/1/dfs/nn /nfsmount/dfs/nn /data/1/dfs/dn /data/2/dfs/dn /data/3/dfs/dn /data/4/dfs/dn
+sudo chmod -R 777 /data/
+
+## Format Namenode
+sudo -u hdfs hadoop namenode -format
+
+## Make sure user has privilidges
+hadoop fs -chown pg1712:pg1712 /
+hadoop fs -mkdir /spark-data
