@@ -5,7 +5,8 @@
 
 while :
 do
-	./spark-1.1.0/bin/spark-submit --master local[*] --driver-memory 1g --class main.java.uk.ac.imperial.lsds.play2sdg.SparkCollaborativeFiltering ./play2sdg-Spark-module-0.0.1-SNAPSHOT-driver.jar
+	/home/pg1712/spark-1.2.0-bin-cdh4/bin/spark-submit --master local[*] --driver-memory 1g --class main.java.uk.ac.imperial.lsds.play2sdg.SparkCollaborativeFiltering /home/pg1712/play2sdg-Spark-module-1.2-driver.jar local[*] 192.168.0.16
+
 	echo "Spark CF Job done! Repeat!"
 done
 
