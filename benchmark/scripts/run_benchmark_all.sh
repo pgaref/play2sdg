@@ -10,11 +10,13 @@
 # Dependencies so far: pssh, pip install psutil, ..	       #
 # Script needs to be pushed to all workers to launche      #
 ############################################################
-RUN='w16_colocated_cc_play'
+RUN='play_alone_w16-v2'
 #Stats collection variable
 STATS='1'
 #Variable to control Spark initialisation
-SPARK='1'
+SPARK='0'
+#Variable to clear caches
+CACHE_CLEAR='0'
 
 PLAY_WORKERS=("wombat16")
 SPARK_WORKERS=("wombat16")
@@ -161,11 +163,14 @@ do
 #		ssh $worker 'rm /home/pg1712/play2sdg-1.0-SNAPSHOT/RUNNING_PID'
         printf "done\n"
 	done
-
-	clear_cache PLAY_WORKERS
-	if [ "$SPARK" == "1" ]; then
-    	clear_cache SPARK_WORKERS
+    
+    if [ "$CACHE_CLEAR" == "1" ]; then
+	    clear_cache PLAY_WORKERS
+	    if [ "$SPARK" == "1" ]; then
+    	    clear_cache SPARK_WORKERS
+        fi
     fi
+    
 	echo 'All Done - Sleeping for 1m... '
 	sleep 1m
 done
