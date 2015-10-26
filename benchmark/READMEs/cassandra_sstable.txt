@@ -1,6 +1,6 @@
 # Cassandra
 wget http://mirror.ox.ac.uk/sites/rsync.apache.org/cassandra/2.1.9/apache-cassandra-2.1.9-src.tar.gz
-wget http://mirror.ox.ac.uk/sites/rsync.apache.org/cassandra/2.1.9/apache-cassandra-2.1.9-bin.tar.gzs
+wget http://mirror.ox.ac.uk/sites/rsync.apache.org/cassandra/2.1.9/apache-cassandra-2.1.9-bin.tar.gz
 
 #Cassandra Load Data
 Schema should be created from play application.

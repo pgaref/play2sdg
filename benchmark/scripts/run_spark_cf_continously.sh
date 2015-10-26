@@ -1,6 +1,7 @@
 #!/bin/bash
 # Author: pg1712@imperial.ac.uk - pgaref.github.io
 # Automating the Play-Spark test process
+# sudo apt-get install libgfortran3
 # -------------------------------------------------
 
 _term() { 
