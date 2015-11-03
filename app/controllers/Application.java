@@ -43,12 +43,13 @@ public class Application extends Controller {
     
     @Security.Authenticated(Secured.class)
     public static Result getNextTracks(String lastcurrentPageTrack){
-    	return ok(new ObjectMapper().convertValue(PlayListController.getnextTracksPage(lastcurrentPageTrack), JsonNode.class));
+    	//return ok(new ObjectMapper().convertValue(PlayListController.getnextTracksPage(lastcurrentPageTrack), JsonNode.class));
+    	return ok(new ObjectMapper().convertValue(PlayListController.getTracksPage(0), JsonNode.class));
     }
 
     @Security.Authenticated(Secured.class)
     public static Result getNextPage(String lastcurrentPageTrack){
-    	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.getnextTracksPage(lastcurrentPageTrack), Login.findUser(request().username()), (int)dxController.getCounterValue(CassandraDxQueryController.trackCounter.getId())) );
+    	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.getTracksPage(0), Login.findUser(request().username()), (int)dxController.getCounterValue(CassandraDxQueryController.trackCounter.getId())) );
     }
     
     
@@ -79,7 +80,7 @@ public class Application extends Controller {
     public static Result createPlayList(){
     	PlayList newPlay = PlayListController.create(Login.findUser(request().username()), "tmpList");
     	Logger.debug("Just create Playlist "+ newPlay.toString());
-    	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.getIndexPageTracks(),  Login.findUser(request().username()),  (int)dxController.getCounterValue(CassandraDxQueryController.trackCounter.getId())) );
+    	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.getTracksPage(0),  Login.findUser(request().username()),  (int)dxController.getCounterValue(CassandraDxQueryController.trackCounter.getId())) );
     }
     
     @Security.Authenticated(Secured.class)
@@ -88,7 +89,7 @@ public class Application extends Controller {
     	Logger.debug("\n -----Delete request: "+ playListID + " - " + song);
     	dxController.deleteUserPlayListSong(playListID, song);
     	//return ok();	
-    	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.getIndexPageTracks(),  Login.findUser(request().username()), (int)dxController.getCounterValue(CassandraDxQueryController.trackCounter.getId())) );
+    	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.getTracksPage(0),  Login.findUser(request().username()), (int)dxController.getCounterValue(CassandraDxQueryController.trackCounter.getId())) );
     }
 
 
@@ -104,11 +105,11 @@ public class Application extends Controller {
     
     @Security.Authenticated(Secured.class)
     public static Result addSpotifySongsbyArtist(String artist){
-		return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.getIndexPageTracks(),  Login.findUser(request().username()), (int)dxController.getCounterValue(CassandraDxQueryController.trackCounter.getId())) );
+		return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.getTracksPage(0),  Login.findUser(request().username()), (int)dxController.getCounterValue(CassandraDxQueryController.trackCounter.getId())) );
     }
     
     public static Result allSongs(){
-    	return ok(new ObjectMapper().convertValue(PlayListController.getIndexPageTracks().size(), JsonNode.class));
+    	return ok(new ObjectMapper().convertValue(PlayListController.getTracksPage(0).size(), JsonNode.class));
     }
     
     public static Result getUserName(){

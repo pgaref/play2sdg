@@ -19,8 +19,9 @@ public class PlayListController extends Controller {
 
     private static final DynamicForm dynForm = play.data.Form.form();
 	
+    /*
 	private static Track lastPageTrack=null;
-    
+    */ 
     public static Result add(String SongTitle) {
     	PlayList newPlay = PlayListController.create(Login.findUser(request().username()), dynForm.bindFromRequest().get("folder"));
     	return ok(views.html.ratings.rategroup.render(newPlay));
@@ -129,7 +130,7 @@ public class PlayListController extends Controller {
 		return Application.dxController.findByTrackID(id);
 	}
 	
-
+	/*
 	public static List<Track> getIndexPageTracks() {
 		List<Track> tmp;
 		if(PlayListController.lastPageTrack == null){
@@ -145,15 +146,17 @@ public class PlayListController extends Controller {
 		PlayListController.lastPageTrack = tmp.get(tmp.size()-1);
 		return tmp;
 	}
+	*/
 	
-	public static List<Track> getTracksPage(int PageNo){
-		return Application.dxController.getTracksPage(20);
-	}
 	/*
 	 * Function called FROM main.html ajax to refresh page Tracks
+	 * 
+		public static List<Track> getnextTracksPage(String lastcurrentPageTrack){
+			return getIndexPageTracks();
+		}
 	 */
-	public static List<Track> getnextTracksPage(String lastcurrentPageTrack){
-		return getIndexPageTracks();
+	public static List<Track> getTracksPage(int PageNo){
+		return Application.dxController.getTracksPage(20);
 	}
 	
 	//Iterating through all results is performance killer!!
