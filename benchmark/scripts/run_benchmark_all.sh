@@ -141,16 +141,16 @@ do
 	echo "Stopping $STATS_SCRIPT on workers: "$PLAY_WORKERS"..."
 	parallel-ssh -H "$PLAY_WORKERS" "killall -u $USER -SIGINT python"
 	
-    #Trick to pass the array by name
-    if [ "$SPARK" == "1" ]; then
-    	stop_spark  SPARK_WORKERS
+    	#Trick to pass the array by name
+    	if [ "$SPARK" == "1" ]; then
+    	    stop_spark  SPARK_WORKERS
 	    sleep 1
 	fi
 	
 	stop_play_app   PLAY_WORKERS
 	sleep 1
 	stop_cassandra	PLAY_WORKERS
-    sleep 1
+    	sleep 1
 
 
 	# collect statistics

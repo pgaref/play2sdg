@@ -10,11 +10,12 @@
 # Dependencies so far: pssh, pip install psutil, ..	       #
 # Script needs to be pushed to all workers before launch   #
 ############################################################
-RUN='w16_lxc_colocated_play'
+RUN='w16_seep_lxc_multithread_kv'
 #Stats collection variable
 STATS='1'
 #Variable to control Spark initialisation
-SPARK='1'
+SPARK='0'
+SEEP='1'
 #Variable to clear caches
 CACHE_CLEAR='1'
 
@@ -38,11 +39,23 @@ clear_cache() {
 stop_play_lxc() {
     #Pass the argument array by name
 	name=$1[@]
-    argument_array=("${!name}")
+    	argument_array=("${!name}")
 	echo "Stopping Play Container on servers: ${argument_array[@]}"
-    for worker in ${argument_array[@]}; do
+    	for worker in ${argument_array[@]}; do
     	printf "Stopping play APP on $worker..."
 		ssh $worker "sudo lxc-stop -n play-container"
+		printf "done\n"
+	done
+}
+
+stop_seep_lxc() {
+    #Pass the argument array by name
+	name=$1[@]
+    	argument_array=("${!name}")
+	echo "Stopping SEEP Container on servers: ${argument_array[@]}"
+   	for worker in ${argument_array[@]}; do
+    	printf "Stopping SEEP on $worker..."
+		ssh $worker "sudo lxc-stop -n seep-container"
 		printf "done\n"
 	done
 }
@@ -110,7 +123,16 @@ do
 	    echo "Starting Spark"
 	    parallel-ssh -H "$SPARK_WORKERS" "sudo lxc-start -d -n spark-container"
 	    printf "Wait Spark to settle..."
-	    sleep 60
+	    sleep 50
+	    printf "done\n"
+	fi
+
+	# Start SEEP
+	if [ "$SEEP" == "1" ]; then
+	    echo "Starting SEEP"
+	    parallel-ssh -H "$SPARK_WORKERS" "sudo lxc-start -d -n seep-container"
+	    printf "Wait SEEP to settle..."
+	    sleep 10
 	    printf "done\n"
 	fi
 
@@ -129,9 +151,14 @@ do
 	echo "Stopping $STATS_SCRIPT on workers: "$PLAY_WORKERS"..."
 	parallel-ssh -H "$PLAY_WORKERS" "killall -u $USER -SIGINT python"
 	
-    #Trick to pass the array by name
-    if [ "$SPARK" == "1" ]; then
-    	stop_spark_lxc  SPARK_WORKERS
+    	#Trick to pass the array by name
+    	if [ "$SPARK" == "1" ]; then
+    	    stop_spark_lxc  SPARK_WORKERS
+	    sleep 1
+	fi
+	#Trick to pass the array by name
+    	if [ "$SEEP" == "1" ]; then
+    	    stop_seep_lxc  SPARK_WORKERS
 	    sleep 1
 	fi
 	
@@ -150,12 +177,12 @@ do
         printf "done\n"
 	done
     
-    if [ "$CACHE_CLEAR" == "1" ]; then
-	    clear_cache PLAY_WORKERS
-	    if [ "$SPARK" == "1" ]; then
-    	    clear_cache SPARK_WORKERS
-        fi
-    fi
+    	if [ "$CACHE_CLEAR" == "1" ]; then
+	    	clear_cache PLAY_WORKERS
+	    	if [ "$SPARK" == "1" ]; then
+    	    	clear_cache SPARK_WORKERS
+        	fi
+    	fi
     
 	echo 'All Done - Sleeping for 1m... '
 	sleep 1m
