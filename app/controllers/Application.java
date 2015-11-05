@@ -35,7 +35,6 @@ public class Application extends Controller {
     @Security.Authenticated(Secured.class)
     public static Result index() {
     	currentUserMail = request().username();
-    	System.out.print(".");
     	Logger.debug("Logged in as User: "+ request().username() );
     	return ok(views.html.index.render(PlayListController.findExisting(request().username()), PlayListController.getTracksPage(0), Login.findUser(request().username()), (int)dxController.getCounterValue(CassandraDxQueryController.trackCounter.getId())) );
     }
