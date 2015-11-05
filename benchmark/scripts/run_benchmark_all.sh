@@ -10,23 +10,38 @@
 # Dependencies so far: pssh, pip install psutil, ..	       #
 # Script needs to be pushed to all workers to launche      #
 ############################################################
-RUN='play_alone_w16-v2'
+RUN='NO-HT-w16-PlayAlone-full-resources'
 #Stats collection variable
 STATS='1'
 #Variable to control Spark initialisation
 SPARK='0'
 #Variable to clear caches
-CACHE_CLEAR='0'
+CACHE_CLEAR='1'
 
 PLAY_WORKERS=("wombat16")
 SPARK_WORKERS=("wombat16")
 
-clear_cache() {
-    #Pass the argument array by name
+
+
+stop_generic_services(){
+	#Pass the argument array by name
 	name=$1[@]
-    argument_array=("${!name}")
-    echo "Clearing caches on servers: ${argument_array[@]}"    
-	for worker in ${argument_array[@]}; do
+	echo "Stopping system services.."    
+	ssh localhost "sudo service memcached stop"
+	ssh localhost "sudo service apache2 stop"
+    	for worker in ${argument_array[@]}; do
+		ssh $worker "sudo service memcached stop"
+		ssh $worker "sudo service apache2 stop"
+	printf "done\n"
+	done
+}
+
+clear_cache() {
+	#Pass the argument array by name
+	name=$1[@]
+    	argument_array=("${!name}")
+    	echo "Clearing caches on servers: ${argument_array[@]}"    
+    	for worker in ${argument_array[@]}; do
 		printf "Clearing system cache on $worker..."
 		ssh $worker "sudo sync"
 		ssh $worker "sudo sh -c 'echo 3 >/proc/sys/vm/drop_caches'"
@@ -36,30 +51,30 @@ clear_cache() {
 }
 
 stop_play_app() {
-    #Pass the argument array by name
+    	#Pass the argument array by name
 	name=$1[@]
-    argument_array=("${!name}")
-	echo "Stopping Play on servers: ${argument_array[@]}"
-    for worker in ${argument_array[@]}; do
-    	printf "Stopping play APP on $worker..."
+    	argument_array=("${!name}")
+    	echo "Stopping Play on servers: ${argument_array[@]}"
+    	for worker in ${argument_array[@]}; do
+    		printf "Stopping play APP on $worker..."
 		ssh $worker "killall run_play.sh"
 		printf "done\n"
 	done
 }
 
 stop_spark() {
-    #Pass the argument array by name
+    	#Pass the argument array by name
 	name=$1[@]
-    argument_array=("${!name}")
+   	argument_array=("${!name}")
 	echo "Stopping Spark on servers: ${argument_array[@]}..."
 	parallel-ssh -H "${argument_array[@]}" "killall -u $USER run_spark_cf_continously.sh"
 }
 
 stop_cassandra() {
-    #Pass the argument array by name
-    name=$1[@]
-    argument_array=("${!name}")
-    echo "Stopping Cassandra on: ${argument_array[@]}..."
+    	#Pass the argument array by name
+    	name=$1[@]
+    	argument_array=("${!name}")
+    	echo "Stopping Cassandra on: ${argument_array[@]}..."
 	local PID_File='/home/pg1712/apache-cassandra-2.1.9/casspid'
 	parallel-ssh -H "${argument_array[@]}" "killall -u $USER java"
 }
@@ -95,6 +110,11 @@ sed -i '3349s/.*/ \t<stringProp name="projects">'$RUN'<\/stringProp> /' /home/pg
 clients=("5" "10" "50" "100" "200" "300" "400" "500" "600" "700" "800" "900" "1000" "1200" "1500")
 #clients=("5" "10" "50" "100" "200" "300" "400" "500")
 
+#Make sure no services are running!!
+stop_generic_services PLAY_WORKERS
+if [ "$SPARK" == "1" ]; then
+	stop_generic_services SPARK_WORKERS
+fi
 
 
 for (( i=0; i<${#clients[@]}; i++ ));
@@ -140,18 +160,6 @@ do
 
 	echo "Stopping $STATS_SCRIPT on workers: "$PLAY_WORKERS"..."
 	parallel-ssh -H "$PLAY_WORKERS" "killall -u $USER -SIGINT python"
-	
-    	#Trick to pass the array by name
-    	if [ "$SPARK" == "1" ]; then
-    	    stop_spark  SPARK_WORKERS
-	    sleep 1
-	fi
-	
-	stop_play_app   PLAY_WORKERS
-	sleep 1
-	stop_cassandra	PLAY_WORKERS
-    	sleep 1
-
 
 	# collect statistics
 	for worker in ${PLAY_WORKERS}; do
@@ -163,13 +171,29 @@ do
 #		ssh $worker 'rm /home/pg1712/play2sdg-1.0-SNAPSHOT/RUNNING_PID'
         printf "done\n"
 	done
+
+
+	########################################
+	#And finally stop the running processes
+	########################################
+
+    	#Trick to pass the array by name
+    	if [ "$SPARK" == "1" ]; then
+    	    stop_spark  SPARK_WORKERS
+	    sleep 1
+	fi
+	
+	stop_play_app   PLAY_WORKERS
+	sleep 1
+	stop_cassandra	PLAY_WORKERS
+    	sleep 1
     
-    if [ "$CACHE_CLEAR" == "1" ]; then
+    	if [ "$CACHE_CLEAR" == "1" ]; then
 	    clear_cache PLAY_WORKERS
 	    if [ "$SPARK" == "1" ]; then
-    	    clear_cache SPARK_WORKERS
-        fi
-    fi
+    	    	clear_cache SPARK_WORKERS
+            fi
+    	fi
     
 	echo 'All Done - Sleeping for 1m... '
 	sleep 1m
