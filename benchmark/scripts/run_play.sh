@@ -14,7 +14,7 @@ _term() {
 trap _term SIGTERM
 
 rm /home/pg1712/play2sdg-1.0-SNAPSHOT/RUNNING_PID
-exec /bin/sh /home/pg1712/play2sdg-1.0-SNAPSHOT/start -Dhttp.port=$_PORT &
+exec /bin/sh /home/pg1712/play2sdg-1.0-SNAPSHOT/start -Dlogger.file=/home/pg1712/scripts/play_conf/logger.xml -Dhttp.port=$_PORT &
 
 child=$! 
 wait "$child"
