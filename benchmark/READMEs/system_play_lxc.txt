@@ -29,7 +29,7 @@ pico /etc/security/limits.conf
 
 pg1712           -       memlock        unlimited
 pg1712           -       nofile         100000
-pg1712           -       nproc          32768
+pg1712           -       nproc          65536
 pg1712           -       as             unlimited
 
 Attention! If limits do dont work: uncomment from  /etc/pam.d/su => # session    required   pam_limits.so 
