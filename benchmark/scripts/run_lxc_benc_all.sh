@@ -10,17 +10,31 @@
 # Dependencies so far: pssh, pip install psutil, ..	       #
 # Script needs to be pushed to all workers before launch   #
 ############################################################
-RUN='w16_seep_lxc_multithread_kv'
+RUN='NO-HT-w16_LXC_PlayOnly'
 #Stats collection variable
 STATS='1'
 #Variable to control Spark initialisation
 SPARK='0'
-SEEP='1'
+SEEP= '0'
 #Variable to clear caches
 CACHE_CLEAR='1'
 
 PLAY_WORKERS=("wombat16")
 SPARK_WORKERS=("wombat16")
+
+
+stop_generic_services(){
+	#Pass the argument array by name
+	name=$1[@]
+	echo "Stopping system services.."    
+	ssh localhost "sudo service memcached stop"
+	ssh localhost "sudo service apache2 stop"
+    	for worker in ${argument_array[@]}; do
+		ssh $worker "sudo service memcached stop"
+		ssh $worker "sudo service apache2 stop"
+	printf "done\n"
+	done
+}
 
 clear_cache() {
     #Pass the argument array by name
@@ -104,6 +118,11 @@ sed -i '3349s/.*/ \t<stringProp name="projects">'$RUN'<\/stringProp> /' /home/pg
 clients=("5" "10" "50" "100" "200" "300" "400" "500" "600" "700" "800" "900" "1000" "1200" "1500")
 #clients=("5" "10" "50" "100" "200" "300" "400" "500")
 
+#Make sure no services are running!!
+stop_generic_services PLAY_WORKERS
+if [ "$SPARK" == "1" ]; then
+	stop_generic_services SPARK_WORKERS
+fi
 
 
 for (( i=0; i<${#clients[@]}; i++ ));
@@ -151,21 +170,6 @@ do
 	echo "Stopping $STATS_SCRIPT on workers: "$PLAY_WORKERS"..."
 	parallel-ssh -H "$PLAY_WORKERS" "killall -u $USER -SIGINT python"
 	
-    	#Trick to pass the array by name
-    	if [ "$SPARK" == "1" ]; then
-    	    stop_spark_lxc  SPARK_WORKERS
-	    sleep 1
-	fi
-	#Trick to pass the array by name
-    	if [ "$SEEP" == "1" ]; then
-    	    stop_seep_lxc  SPARK_WORKERS
-	    sleep 1
-	fi
-	
-	stop_play_lxc   PLAY_WORKERS
-	sleep 1
-
-
 	# collect statistics
 	for worker in ${PLAY_WORKERS}; do
 		printf "Retrieving stats from $worker..."
@@ -176,13 +180,31 @@ do
 #		ssh $worker 'rm /home/pg1712/play2sdg-1.0-SNAPSHOT/RUNNING_PID'
         printf "done\n"
 	done
-    
-    	if [ "$CACHE_CLEAR" == "1" ]; then
-	    	clear_cache PLAY_WORKERS
-	    	if [ "$SPARK" == "1" ]; then
-    	    	clear_cache SPARK_WORKERS
-        	fi
-    	fi
+	########################################
+	#And finally stop the running processes
+	########################################
+	
+    #Trick to pass the array by name
+    if [ "$SPARK" == "1" ]; then
+    	stop_spark_lxc  SPARK_WORKERS
+	    sleep 1
+	fi
+	#Trick to pass the array by name
+    if [ "$SEEP" == "1" ]; then
+    	stop_seep_lxc  SPARK_WORKERS
+	    sleep 1
+	fi
+	
+	stop_play_lxc   PLAY_WORKERS
+	sleep 1
+
+
+    if [ "$CACHE_CLEAR" == "1" ]; then
+	    clear_cache PLAY_WORKERS
+	    if [ "$SPARK" == "1" ]; then
+    	    clear_cache SPARK_WORKERS
+        fi
+    fi
     
 	echo 'All Done - Sleeping for 1m... '
 	sleep 1m
