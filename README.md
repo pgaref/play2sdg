@@ -21,7 +21,7 @@ http://wombat30.doc.res.ic.ac.uk/play2sdg-1.0-SNAPSHOT.zip
 sh ./play2sdg-*/start -Dhttp.port=$PORT
 
 For custom logging: 
--Dlogger.file=/home/pg1712/scripts/play_conf/logger.xml
+**-Dlogger.file=/home/pg1712/scripts/play_conf/logger.xml**
 
 
 ## Spark Java application - Packaging
