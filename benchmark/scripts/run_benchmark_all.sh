@@ -95,6 +95,8 @@ RESULTS=${RESULTS_FOLDER}/${FILE_BASE}
 echo "Creating: $RESULTS - folder to store results"
 mkdir -p ${RESULTS}
 
+# -n - tells JMeter to run in non-GUI mode
+# -t - specifies the path to source .jmx script to run
 _jmeter_run="sh apache-jmeter-2.13/bin/jmeter.sh -n -t apache-jmeter-2.13/bin/play2sdg-datastax-benchmark.jmx -l"
 _jmeter_results=${RESULTS}/jmeter_results
 echo "Creating Jmeter Results Path: $_jmeter_results"
