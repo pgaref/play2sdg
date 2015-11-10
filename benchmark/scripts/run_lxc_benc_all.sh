@@ -10,7 +10,7 @@
 # Dependencies so far: pssh, pip install psutil, ..	       #
 # Script needs to be pushed to all workers before launch   #
 ############################################################
-RUN='NO-HT-w16_LXC_PlayOnly'
+RUN='NO-HT-w16_LXC_PlayOnly-v2'
 #Stats collection variable
 STATS='1'
 #Variable to control Spark initialisation
