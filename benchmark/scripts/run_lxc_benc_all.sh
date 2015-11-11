@@ -10,16 +10,16 @@
 # Dependencies so far: pssh, pip install psutil, ..	       #
 # Script needs to be pushed to all workers before launch   #
 ############################################################
-RUN='NO-HT-w16_LXC_PlayOnly-v2'
+RUN='NO-HT-w16w19-PlaySpark-NodeIsolation-2NIC-v2'
 #Stats collection variable
 STATS='1'
 #Variable to control Spark initialisation
 SPARK='0'
 SEEP= '0'
 #Variable to clear caches
-CACHE_CLEAR='1'
+CACHE_CLEAR='0'
 
-PLAY_WORKERS=("wombat16")
+PLAY_WORKERS=("wombat16" "wombat19")
 SPARK_WORKERS=("wombat16")
 
 
@@ -130,12 +130,12 @@ do
     
 	echo 'Updating Jmeter properties to: '${clients[$i]}' clients'
 	sed -i '20s/.*/ \t<stringProp name="ThreadGroup.num_threads">'${clients[$i]}'<\/stringProp> /' /home/pg1712/apache-jmeter-2.13/bin/play2sdg-datastax-benchmark.jmx
-
-	echo "Starting Play-Cassandra LXC"
-	parallel-ssh -H "$PLAY_WORKERS" "sudo lxc-start -d -n play-container"
-	printf "Wait to settle..."
-	sleep 40
-	printf "done\n"
+# ONLY FOR THIS EXPERIMENT 
+#	echo "Starting Play-Cassandra LXC"
+#	parallel-ssh -H "$PLAY_WORKERS" "sudo lxc-start -d -n play-container"
+#	printf "Wait to settle..."
+#	sleep 40
+#	printf "done\n"
 	
 	# Start Spark
 	if [ "$SPARK" == "1" ]; then
@@ -157,8 +157,11 @@ do
 
 	# run the gathering statistics script on the play workers
 	if [ "$STATS" == "1" ]; then
-		echo "Starting $STATS_SCRIPT on workers: "$PLAY_WORKERS"..."
-		parallel-ssh -H "$PLAY_WORKERS" "cd $SCRIPTS_HOME/ && screen -dm -S 'stats' python $STATS_SCRIPT -i ${IFACE} -f ${STATS_FILENAME}"
+		# parallel-ssh -H "${PLAY_WORKERS[@]}" "cd $SCRIPTS_HOME/ && screen -dm -S 'stats' python $STATS_SCRIPT -i ${IFACE} -f ${STATS_FILENAME}"
+		for worker in ${PLAY_WORKERS[@]}; do
+			echo "Starting $STATS_SCRIPT on workers: "$worker"..."
+			ssh $worker "cd $SCRIPTS_HOME/ && screen -dm -S 'stats' python $STATS_SCRIPT -i ${IFACE} -f ${STATS_FILENAME}"
+		done
 	fi
 	sleep 1
 	
@@ -166,14 +169,15 @@ do
 	echo 'Now Running Jmeter with params : '$_jmeter_run $_jmeter_results${clients[$i]}'clients.jtl'
 	eval $_jmeter_run $_jmeter_results/${clients[$i]}'clients.jtl'
 
-
-	echo "Stopping $STATS_SCRIPT on workers: "$PLAY_WORKERS"..."
-	parallel-ssh -H "$PLAY_WORKERS" "killall -u $USER -SIGINT python"
-	
+	for worker in ${PLAY_WORKERS[@]}; do
+	#	parallel-ssh -H "${PLAY_WORKERS[@]}" "killall -u $USER -SIGINT python"
+		echo "Stopping $STATS_SCRIPT on workers: "$worker"..."
+		ssh $worker "killall -u $USER -SIGINT python"
+	done
 	# collect statistics
-	for worker in ${PLAY_WORKERS}; do
+	for worker in ${PLAY_WORKERS[@]}; do
 		printf "Retrieving stats from $worker..."
-		scp $worker:${SCRIPTS_HOME}/${STATS_FILENAME} ${RESULTS}/${STATS_FILENAME}_$worker_${clients[$i]}'clients'
+		scp $worker:${SCRIPTS_HOME}/${STATS_FILENAME} ${RESULTS}/${worker}_${clients[$i]}'clients'_${STATS_FILENAME}
 #		scp $worker:${_jmeter_results} ${_jmeter_results}_$worker
 		ssh $worker "rm ${SCRIPTS_HOME}/${STATS_FILENAME}"
 #		ssh $worker "rm ${_jmeter_results}"
@@ -184,27 +188,26 @@ do
 	#And finally stop the running processes
 	########################################
 	
-    #Trick to pass the array by name
-    if [ "$SPARK" == "1" ]; then
-    	stop_spark_lxc  SPARK_WORKERS
-	    sleep 1
+	#Trick to pass the array by name
+	if [ "$SPARK" == "1" ]; then
+		stop_spark_lxc  SPARK_WORKERS
+		sleep 1
 	fi
 	#Trick to pass the array by name
-    if [ "$SEEP" == "1" ]; then
-    	stop_seep_lxc  SPARK_WORKERS
-	    sleep 1
+	if [ "$SEEP" == "1" ]; then
+		stop_seep_lxc  SPARK_WORKERS
+		sleep 1
 	fi
 	
-	stop_play_lxc   PLAY_WORKERS
-	sleep 1
+#	stop_play_lxc   PLAY_WORKERS
+#	sleep 1
 
-
-    if [ "$CACHE_CLEAR" == "1" ]; then
-	    clear_cache PLAY_WORKERS
-	    if [ "$SPARK" == "1" ]; then
-    	    clear_cache SPARK_WORKERS
-        fi
-    fi
+	if [ "$CACHE_CLEAR" == "1" ]; then
+		clear_cache PLAY_WORKERS
+		if [ "$SPARK" == "1" ]; then
+			clear_cache SPARK_WORKERS
+		fi
+	fi
     
 	echo 'All Done - Sleeping for 1m... '
 	sleep 1m
