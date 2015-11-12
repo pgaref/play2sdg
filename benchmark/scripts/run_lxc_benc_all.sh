@@ -111,7 +111,7 @@ touch ${RESULTS}/${RUN}
 
 #JMeter Project Name (to upload)
 echo "Updating Jmeters Upload Project Name: $RUN "
-sed -i '3320s/.*/ \t<stringProp name="projects">'$RUN'<\/stringProp> /' /home/pg1712/apache-jmeter-2.13/bin/play2sdg-datastax-benchmark.jmx
+sed -i '3254s/.*/ \t<stringProp name="projects">'$RUN'<\/stringProp> /' /home/pg1712/apache-jmeter-2.13/bin/play2sdg-datastax-benchmark.jmx
 
 
 #For more powerfull servers
@@ -130,10 +130,8 @@ do
     
 	echo 'Updating Jmeter properties to: '${clients[$i]}' clients'
 	sed -i '20s/.*/ \t<stringProp name="ThreadGroup.num_threads">'${clients[$i]}'<\/stringProp> /' /home/pg1712/apache-jmeter-2.13/bin/play2sdg-datastax-benchmark.jmx
-	sed_jmeter_results='\\/home\\/'$USER'\\/scripts\\/results\\/'$FILE_BASE'\\/jmeter_results\\/'
-	echo 'Sed path '${sed_jmeter_results}
-	sed -i '3222s/.*/ \t<stringProp name="filename">'\\/home\\/$USER\\/scripts\\/results\\/$FILE_BASE\\/jmeter_results\\/SummaryReport_${clients[$i]}clients.csv'<\/stringProp> /' /home/pg1712/apache-jmeter-2.13/bin/play2sdg-datastax-benchmark.jmx
-	sed -i '3257s/.*/ \t<stringProp name="filename">'\\/home\\/$USER\\/scripts\\/results\\/$FILE_BASE\\/jmeter_results\\/AggregateReport_${clients[$i]}clients.csv'<\/stringProp> /' /home/pg1712/apache-jmeter-2.13/bin/play2sdg-datastax-benchmark.jmx
+#	sed -i '3222s/.*/ \t<stringProp name="filename">'\\/home\\/$USER\\/scripts\\/results\\/$FILE_BASE\\/jmeter_results\\/SummaryReport_${clients[$i]}clients.csv'<\/stringProp> /' /home/pg1712/apache-jmeter-2.13/bin/play2sdg-datastax-benchmark.jmx
+#	sed -i '3257s/.*/ \t<stringProp name="filename">'\\/home\\/$USER\\/scripts\\/results\\/$FILE_BASE\\/jmeter_results\\/AggregateReport_${clients[$i]}clients.csv'<\/stringProp> /' /home/pg1712/apache-jmeter-2.13/bin/play2sdg-datastax-benchmark.jmx
 
 # ONLY FOR THIS EXPERIMENT 
 #	echo "Starting Play-Cassandra LXC"
@@ -171,8 +169,8 @@ do
 	sleep 1
 	
 
-	echo 'Now Running Jmeter with params : '$_jmeter_run $_jmeter_results${clients[$i]}'clients.jtl'
-	eval $_jmeter_run $_jmeter_results/${clients[$i]}'clients.jtl'
+	echo 'Now Running Jmeter with params : '$_jmeter_run $_jmeter_results/SummaryReport_${clients[$i]}'clients.csv'
+	eval $_jmeter_run $_jmeter_results/SummaryReport_${clients[$i]}'clients.csv'
 
 	for worker in ${PLAY_WORKERS[@]}; do
 	#	parallel-ssh -H "${PLAY_WORKERS[@]}" "killall -u $USER -SIGINT python"
