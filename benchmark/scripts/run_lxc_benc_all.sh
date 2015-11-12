@@ -10,7 +10,7 @@
 # Dependencies so far: pssh, pip install psutil, ..	       #
 # Script needs to be pushed to all workers before launch   #
 ############################################################
-RUN='NO-HT-w16w19-PlaySpark-NodeIsolation-2NIC-v2'
+RUN='NO-HT-w16w19-PlaySpark-NodeIsolation-2NIC-v3'
 #Stats collection variable
 STATS='1'
 #Variable to control Spark initialisation
@@ -111,7 +111,7 @@ touch ${RESULTS}/${RUN}
 
 #JMeter Project Name (to upload)
 echo "Updating Jmeters Upload Project Name: $RUN "
-sed -i '3349s/.*/ \t<stringProp name="projects">'$RUN'<\/stringProp> /' /home/pg1712/apache-jmeter-2.13/bin/play2sdg-datastax-benchmark.jmx
+sed -i '3320s/.*/ \t<stringProp name="projects">'$RUN'<\/stringProp> /' /home/pg1712/apache-jmeter-2.13/bin/play2sdg-datastax-benchmark.jmx
 
 
 #For more powerfull servers
@@ -130,6 +130,11 @@ do
     
 	echo 'Updating Jmeter properties to: '${clients[$i]}' clients'
 	sed -i '20s/.*/ \t<stringProp name="ThreadGroup.num_threads">'${clients[$i]}'<\/stringProp> /' /home/pg1712/apache-jmeter-2.13/bin/play2sdg-datastax-benchmark.jmx
+	sed_jmeter_results='\\/home\\/'$USER'\\/scripts\\/results\\/'$FILE_BASE'\\/jmeter_results\\/'
+	echo 'Sed path '${sed_jmeter_results}
+	sed -i '3222s/.*/ \t<stringProp name="filename">'\\/home\\/$USER\\/scripts\\/results\\/$FILE_BASE\\/jmeter_results\\/SummaryReport_${clients[$i]}clients.csv'<\/stringProp> /' /home/pg1712/apache-jmeter-2.13/bin/play2sdg-datastax-benchmark.jmx
+	sed -i '3257s/.*/ \t<stringProp name="filename">'\\/home\\/$USER\\/scripts\\/results\\/$FILE_BASE\\/jmeter_results\\/AggregateReport_${clients[$i]}clients.csv'<\/stringProp> /' /home/pg1712/apache-jmeter-2.13/bin/play2sdg-datastax-benchmark.jmx
+
 # ONLY FOR THIS EXPERIMENT 
 #	echo "Starting Play-Cassandra LXC"
 #	parallel-ssh -H "$PLAY_WORKERS" "sudo lxc-start -d -n play-container"
