@@ -10,7 +10,7 @@
 # Dependencies so far: pssh, pip install psutil, ..	       #
 # Script needs to be pushed to all workers before launch   #
 ############################################################
-RUN='NO-HT-w16w19-PlaySpark-NodeIsolation-2NIC-v3'
+RUN='NO-HT-w16w19-PlaySpark-NodeIsolation-2NIC-v4'
 #Stats collection variable
 STATS='1'
 #Variable to control Spark initialisation
@@ -201,7 +201,7 @@ do
 		stop_seep_lxc  SPARK_WORKERS
 		sleep 1
 	fi
-	
+# ONLY FOR THIS EXPERIMENT 	
 #	stop_play_lxc   PLAY_WORKERS
 #	sleep 1
 
@@ -212,8 +212,8 @@ do
 		fi
 	fi
     
-	echo 'All Done - Sleeping for 1m... '
-	sleep 1m
+	echo 'All Done - Sleeping for 10s... '
+	sleep 10s
 done
 
 echo 'Finished all Jmeter tests!!!!'
