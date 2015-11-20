@@ -11,7 +11,7 @@
 # Script needs to be pushed to all workers before launch   #
 ############################################################
 
-RUN='NO-HT-w16-PlaySpark-NoIsolation-v2'
+RUN='NO-HT-w16_LXC_PlaySpark-Multiplexed'
 #Stats collection variable
 STATS='1'
 #Variable to control Spark initialisation
@@ -56,8 +56,8 @@ start_play() {
     	argument_array=("${!name}")
     	echo "Starting Play on servers: ${argument_array[@]}"
     	for worker in ${argument_array[@]}; do
-    		printf "Starting play APP on $worker..."
-		ssh $worker "cd $SCRIPTS_HOME/ && screen -dm -S 'play_run' ./run_play.sh > run_play.out"
+    		printf "Starting play LXC on $worker..."
+		ssh $worker "sudo lxc-start -d -n play-container"
 		printf "done\n"
 	done
 }
@@ -69,8 +69,8 @@ stop_play() {
     	argument_array=("${!name}")
     	echo "Stopping Play on servers: ${argument_array[@]}"
     	for worker in ${argument_array[@]}; do
-    		printf "Stopping play APP on $worker..."
-		ssh $worker "killall run_play.sh"
+    		printf "Stopping play LXC on $worker..."
+		ssh $worker "sudo lxc-stop -n play-container"
 		printf "done\n"
 	done
 }
@@ -81,8 +81,8 @@ start_spark() {
    	argument_array=("${!name}")
 	echo "Starting Spark on servers: ${argument_array[@]}"
 	for worker in ${argument_array[@]}; do
-		printf "Starting Spark on $worker..."
-		ssh $worker "cd $SCRIPTS_HOME/ && screen -dm -S 'spark_run' ./run_spark_cf_continously.sh > run_spark.out"
+		printf "Starting Spark LXC on $worker..."
+		ssh $worker "sudo lxc-start -d -n spark-container"
 		printf "done\n"
 	done
 }
@@ -93,32 +93,8 @@ stop_spark() {
 	argument_array=("${!name}")
 	echo "Stopping Spark Container on servers: ${argument_array[@]}"
     	for worker in ${argument_array[@]}; do
-    		printf "Stopping Spark on $worker..."
-		ssh $worker "killall -u $USER run_spark_cf_continously.sh"
-		printf "done\n"
-	done
-}
-
-start_cassandra() {
-    	#Pass the argument array by name
-	name=$1[@]
-    	argument_array=("${!name}")
-    	echo "Starting Cassandra on servers: ${argument_array[@]}"
-    	for worker in ${argument_array[@]}; do
-    		printf "Starting Cassandra on $worker..."
-		ssh $worker "cd $BASE_DIR/ && ./apache-cassandra-2.1.9/bin/cassandra -p ./apache-cassandra-2.1.9/casspid"
-		printf "done\n"
-	done
-}
-
-stop_cassandra() {
-    	#Pass the argument array by name
-	name=$1[@]
-    	argument_array=("${!name}")
-    	echo "Starting Play on servers: ${argument_array[@]}"
-    	for worker in ${argument_array[@]}; do
-    		printf "Starting play APP on $worker..."
-		ssh $worker "killall -u $USER java"
+    		printf "Stopping Spark LXC on $worker..."
+		ssh $worker "sudo lxc-stop -n spark-container"
 		printf "done\n"
 	done
 }
@@ -161,17 +137,14 @@ if [ "$SPARK" == "1" ]; then
 fi
 
 
-
 for (( i=0; i<${#clients[@]}; i++ ));
 do
-    
 	echo 'Updating Jmeter properties to: '${clients[$i]}' clients'
 	sed -i '20s/.*/ \t<stringProp name="ThreadGroup.num_threads">'${clients[$i]}'<\/stringProp> /' /home/pg1712/apache-jmeter-2.13/bin/play2sdg-datastax-benchmark.jmx
 
-	start_cassandra PLAY_WORKERS
-	sleep 20
 	start_play PLAY_WORKERS
-	sleep 10
+	sleep 25
+
 	if [ "$SPARK" == "1" ]; then
 		start_spark SPARK_WORKERS
 	fi
@@ -206,7 +179,6 @@ do
 	#And finally stop the running processes
 	########################################
 	stop_play PLAY_WORKERS
-	stop_cassandra PLAY_WORKERS
 
 	if [ "$SPARK" == "1" ]; then
 		stop_spark  SPARK_WORKERS
