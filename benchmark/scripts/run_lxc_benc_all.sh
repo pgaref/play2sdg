@@ -1,25 +1,26 @@
 #!/bin/bash
 
 ############################################################
-# Author: pg1712@imperial.ac.uk - pgaref.github.io	       #
+# Author: pg1712@imperial.ac.uk - pgaref.github.io	   #
 # Runs Jmeter Bechmark with different number of client	   #
 # Also collects CPU and bandwidth statistics from workers  #
 ############################################################
 
 ############################################################
-# Dependencies so far: pssh, pip install psutil, ..	       #
+# Dependencies so far: pssh, pip install psutil, ..	   #
 # Script needs to be pushed to all workers before launch   #
 ############################################################
-RUN='NO-HT-w16w19-PlaySpark-NodeIsolation-2NIC-v4'
+
+RUN='NO-HT-w16w19-PlaySpark'
 #Stats collection variable
 STATS='1'
 #Variable to control Spark initialisation
-SPARK='0'
+SPARK='1'
 SEEP= '0'
 #Variable to clear caches
 CACHE_CLEAR='0'
 
-PLAY_WORKERS=("wombat16" "wombat19")
+PLAY_WORKERS=("wombat16")
 SPARK_WORKERS=("wombat16")
 
 
@@ -30,58 +31,59 @@ stop_generic_services(){
 	ssh localhost "sudo service memcached stop"
 	ssh localhost "sudo service apache2 stop"
     	for worker in ${argument_array[@]}; do
+		printf "Stopping services on $worker..."
 		ssh $worker "sudo service memcached stop"
 		ssh $worker "sudo service apache2 stop"
-	printf "done\n"
+		printf "done\n"
 	done
 }
 
 clear_cache() {
-    #Pass the argument array by name
+	#Pass the argument array by name
 	name=$1[@]
-    argument_array=("${!name}")
-    echo "Clearing caches on servers: ${argument_array[@]}"    
+	argument_array=("${!name}")
+	echo "Clearing caches on servers: ${argument_array[@]}"    
 	for worker in ${argument_array[@]}; do
 		printf "Clearing system cache on $worker..."
 		ssh $worker "sudo sync"
-		ssh $worker "sudo sh -c 'echo 3 >/proc/sys/vm/drop_caches'"
+		ssh $worker "sudo /bin/sh -c 'echo 3 >/proc/sys/vm/drop_caches'"
 		printf "done\n"
 	done
 	sleep 30
 }
 
 stop_play_lxc() {
-    #Pass the argument array by name
+	#Pass the argument array by name
 	name=$1[@]
     	argument_array=("${!name}")
 	echo "Stopping Play Container on servers: ${argument_array[@]}"
     	for worker in ${argument_array[@]}; do
-    	printf "Stopping play APP on $worker..."
-		ssh $worker "sudo lxc-stop -n play-container"
+		printf "Stopping play APP on $worker..."
+		ssh $worker "sudo /usr/bin/lxc-stop -n play-container"
 		printf "done\n"
 	done
 }
 
 stop_seep_lxc() {
-    #Pass the argument array by name
+    	#Pass the argument array by name
 	name=$1[@]
     	argument_array=("${!name}")
 	echo "Stopping SEEP Container on servers: ${argument_array[@]}"
    	for worker in ${argument_array[@]}; do
-    	printf "Stopping SEEP on $worker..."
-		ssh $worker "sudo lxc-stop -n seep-container"
+    		printf "Stopping SEEP on $worker..."
+		ssh $worker "sudo /usr/bin/lxc-stop -n seep-container"
 		printf "done\n"
 	done
 }
 
 stop_spark_lxc() {
-    #Pass the argument array by name
+    	#Pass the argument array by name
 	name=$1[@]
-    argument_array=("${!name}")
+    	argument_array=("${!name}")
 	echo "Stopping Spark Container on servers: ${argument_array[@]}"
-    for worker in ${argument_array[@]}; do
-    	printf "Stopping Spark on $worker..."
-		ssh $worker "sudo lxc-stop -n spark-container"
+    	for worker in ${argument_array[@]}; do
+    		printf "Stopping Spark on $worker..."
+		ssh $worker "sudo /usr/bin/lxc-stop -n spark-container"
 		printf "done\n"
 	done
 }
