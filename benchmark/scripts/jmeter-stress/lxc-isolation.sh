@@ -11,7 +11,7 @@
 # Script needs to be pushed to all workers before launch   #
 ############################################################
 
-RUN='NO-HT-w16_LXC_PlaySpark-Multiplexed'
+RUN='NO-HT-w16_LXC_PlaySpark-CPU_Share(2:1)'
 #Stats collection variable
 STATS='1'
 #Variable to control Spark initialisation
@@ -30,14 +30,15 @@ stop_generic_services(){
 	ssh localhost "sudo service memcached stop"
 	ssh localhost "sudo service apache2 stop"
     	for worker in ${argument_array[@]}; do
+		printf "Stopping services on $worker..."
 		ssh $worker "sudo service memcached stop"
 		ssh $worker "sudo service apache2 stop"
-	printf "done\n"
+		printf "done\n"
 	done
 }
 
 clear_cache() {
-    #Pass the argument array by name
+    	#Pass the argument array by name
 	name=$1[@]
     	argument_array=("${!name}")
     	echo "Clearing caches on servers: ${argument_array[@]}"    
@@ -57,7 +58,8 @@ start_play() {
     	echo "Starting Play on servers: ${argument_array[@]}"
     	for worker in ${argument_array[@]}; do
     		printf "Starting play LXC on $worker..."
-		ssh $worker "sudo lxc-start -d -n play-container"
+		ssh $worker "sudo /usr/bin/lxc-start -n play-container -d"
+		ssh $worker "sudo iptables -t nat -A PREROUTING -i eth1 -p tcp --dport 9000 -j DNAT --to 10.0.3.194:9000"
 		printf "done\n"
 	done
 }
@@ -70,7 +72,8 @@ stop_play() {
     	echo "Stopping Play on servers: ${argument_array[@]}"
     	for worker in ${argument_array[@]}; do
     		printf "Stopping play LXC on $worker..."
-		ssh $worker "sudo lxc-stop -n play-container"
+		ssh $worker "sudo /usr/bin/lxc-stop -n play-container"
+		ssh $worker "sudo iptables -t nat -D PREROUTING 1"
 		printf "done\n"
 	done
 }
@@ -82,7 +85,7 @@ start_spark() {
 	echo "Starting Spark on servers: ${argument_array[@]}"
 	for worker in ${argument_array[@]}; do
 		printf "Starting Spark LXC on $worker..."
-		ssh $worker "sudo lxc-start -d -n spark-container"
+		ssh $worker "sudo /usr/bin/lxc-start -n spark-container -d"
 		printf "done\n"
 	done
 }
@@ -94,7 +97,7 @@ stop_spark() {
 	echo "Stopping Spark Container on servers: ${argument_array[@]}"
     	for worker in ${argument_array[@]}; do
     		printf "Stopping Spark LXC on $worker..."
-		ssh $worker "sudo lxc-stop -n spark-container"
+		ssh $worker "sudo /usr/bin/lxc-stop -n spark-container"
 		printf "done\n"
 	done
 }
