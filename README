@@ -13,6 +13,10 @@ sudo apt-get update; sudo apt-get install hadoop-hdfs-datanode
 sudo service hadoop-hdfs-datanode stop
 sudo apt-get install hadoop-client
 
+#On NameNode
+sudo mkdir -p /data/1/dfs/nn /nfsmount/dfs/nn
+
+#On DataNodes
 sudo mkdir -p /data/1/dfs/dn /data/2/dfs/dn /data/3/dfs/dn /data/4/dfs/dn
 sudo chown -R hdfs:hdfs /data/1/dfs/nn /nfsmount/dfs/nn /data/1/dfs/dn /data/2/dfs/dn /data/3/dfs/dn /data/4/dfs/dn
 
